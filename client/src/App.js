@@ -1,22 +1,34 @@
-
-import './App.css';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import Login from './components/Login/Login';
+import Home from './components/HomePage/HomePage';
+import Register from './components/Login/Register';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route
+} from 'react-router-dom';
+import useToken from './components/Login/useToken';
 
 function App() {
-    const [apiResponse, setApiResponse] = useState('');
-
-    useEffect(() => {
-        axios.get('http://localhost:9000/testAPI')
-        .then(response => setApiResponse(response.data))
-        .catch(error => console.log(error))
-    }, []);
-
-  return (
-    <div className="App">
-        <p>{apiResponse}</p>
-    </div>
-  );
+    const { token, setToken } = useToken();
+    
+    return (
+    <Router>
+    <Switch>
+        <Route path='/login'>
+            <Login
+                ifLogin={token}
+                setLogin={(status) => setToken(status)}
+            />
+        </Route>
+        <Route path='/register'>
+            <Register ifLogin={token}/>
+        </Route>
+        <Route path='/'>
+            <Home ifLogin={token} setLogin={(status) => setToken(status)} />
+        </Route>
+    </Switch>
+    </Router>
+    );
 }
 
 export default App;
