@@ -1,6 +1,5 @@
 import Login from './components/Login/Login';
 import Home from './components/HomePage/HomePage';
-import Register from './components/Login/Register';
 import {
     BrowserRouter as Router,
     Switch,
@@ -21,7 +20,10 @@ function App() {
             />
         </Route>
         <Route path='/register'>
-            <Register ifLogin={token}/>
+            <Login
+                ifLogin={token}
+                setLogin={(status) => setToken(status)}
+            />
         </Route>
         <Route path='/'>
             <Home ifLogin={token} setLogin={(status) => setToken(status)} />

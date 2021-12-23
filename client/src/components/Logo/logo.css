@@ -1,0 +1,14 @@
+@import url('https://allfont.net/allfont.css?fonts=caviar-dreams');
+
+.logo {
+    font-family: Caviar Dreams;
+    font-weight: bold;
+    color: black;
+    font-size: inherit;
+}
+
+.logo:before {
+    color: white;
+    content: "abc";
+}
+   

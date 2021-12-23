@@ -30,8 +30,8 @@ async function addUser({ firstName, lastName, email, username, password }) {
     try {
         const res = await pool.query(`
         INSERT INTO users (user_id, first_name, last_name, username, password, email)
-        VALUES ('${uuid}', '${firstName}', '${lastName}', '${username}', '${hashedPassword}', '${email}')`);
-        return res;
+        VALUES ('${uuid}', '${firstName}', '${lastName}', '${username}', '${hashedPassword}', '${email}') RETURNING user_id`);
+        return res.rows[0].user_id;
     } catch (error) {
         console.log(error);
         return error;
@@ -40,32 +40,32 @@ async function addUser({ firstName, lastName, email, username, password }) {
 
 router.post("/add", function(req, res) {
     userData = req.body;
-    console.log(userData);
     addUser(userData)
         .then(result => {
-            if (result.rowCount === 1) {
-                res.send(true);
+            if (typeof result === 'string') {
+                res.send(result);
             }
             else {
-                res.send(false);
+                res.send('');
             }
         });
 });
 
-async function checkUsernameAvailability(username) {
+async function checkUsernameEmailAvailability({username, email}) {
     try {
         const res = await pool.query(`
-        SELECT EXISTS(SELECT user_id FROM users WHERE username = '${username}')`);
-        return res.rows[0].exists;
+        SELECT
+            EXISTS(SELECT user_id FROM users WHERE username = '${username}') as username,
+            EXISTS(SELECT user_id FROM users WHERE email = '${email}') as email`);
+        return res.rows[0];
     } catch (error) {
         return error;
     }
 }
 
-router.get("/checkUsername/:username/", function(req, res) {
-    userData = req.params;
-    console.log(userData);
-    checkUsernameAvailability(userData.username)
+router.get("/checkUsernameEmail/", function(req, res) {
+    userData = req.query;
+    checkUsernameEmailAvailability(userData)
         .then(result => res.send(result));
 });
 

@@ -1,65 +1,40 @@
 
-import axios from 'axios'
-import { useForm } from 'react-hook-form';
+import { Redirect } from 'react-router-dom';
 import { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
+import Logo from '../Logo/Logo';
 import './login.css';
 
 function Login(props) {
-    const {register, handleSubmit, formState: { errors }} = useForm();
-    
-    const [loginText, setLoginText] = useState('');
-    
-    function onClick(data) {
-        axios({
-            method: 'post',
-            url: '/users/auth/',
-            data: data,
-            config: {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }
-        })
-            .then(response => {
-                if (response.data === '') {
-                    setLoginText('Failed to login')
-                }
-                else {
-                    props.setLogin(response.data);
-                }
-            })
-    }
-    
+    const [isRightPanel, setRightPanel] = useState(true);
+
     if (props.ifLogin !== -1) {
         return <Redirect to='/'/>
     }
     else {
         return (
-        <div className='form-container'>
-            <h1>Hello!</h1>
-            <h2 className='form-error'>{loginText}</h2>
-
-            <form onSubmit={handleSubmit(onClick)}>
-                <input
-                    type='text'
-                    placeholder='Username'
-                    {...register("username", { required: true })}
-                />
-                {errors.username && <p>Login is required</p>}
-
-                <input
-                    type='password'
-                    placeholder='Password'
-                    {...register("password", { required: true })}
-                />
-                {errors.password && <p>Password is required</p>}
-
-                <button type='submit'>Submit</button>
-            </form>
-
-            <p><Link to='/register'>Create new account</Link></p>
+        <div className={`container ${isRightPanel ? "" : "right-panel-active"}`} id="container">
+            <div className="form-container sign-up-container">
+                <RegisterForm setLogin={props.setLogin}/>
+            </div>
+            <div className="form-container sign-in-container">
+                <LoginForm setLogin={props.setLogin}/>
+            </div>
+            <div className="overlay-container">
+                <div className="overlay">
+                    <div className="overlay-panel overlay-left">
+                        <h1>Magazyn <Logo /></h1>
+                        <p>Stwórz nowe konto lub zaloguj się jeśli już je posiadasz</p>
+                        <button className="ghost" onClick={() => setRightPanel(true)} id="signIn">Zaloguj się</button>
+                    </div>
+                    <div className="overlay-panel overlay-right">
+                        <h1>Magazyn <Logo /></h1>
+                        <p>Zaloguj się lub stwórz nowe konto</p>
+                        <button className="ghost" onClick={() => setRightPanel(false)} id="signUp">Zarejestruj się</button>
+                    </div>
+                </div>
+            </div>
         </div>
         );
     }
