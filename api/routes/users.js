@@ -5,9 +5,6 @@ var pool = require("../db");
 const jwtDecode = require('jwt-decode');
 const { v4: uuidv4 } = require('uuid');
 const { createToken, hashPassword, verifyPassword } = require('../utils');
-const cookieParser = require('cookie-parser');
-
-router.use(cookieParser());
 
 async function getUser(username) {
     const res = await pool.query(`

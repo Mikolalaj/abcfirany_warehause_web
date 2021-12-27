@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
+var csrf = require('csurf');
+var csrfProtection = csrf({ cookie: true });
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,6 +26,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
+
+app.use(csrfProtection);
+
+app.get('/api/csrf-token', async function(req, res) {
+  res.json({
+    csrfToken: req.csrfToken()
+  });
+})
+
 app.use('/api/products', productsRouter);
 
 // catch 404 and forward to error handler

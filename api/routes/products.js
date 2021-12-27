@@ -3,9 +3,7 @@ var router = express.Router();
 var pool = require("../db");
 const jwt = require('express-jwt');
 const jwtDecode = require('jwt-decode');
-const cookieParser = require('cookie-parser');
 
-router.use(cookieParser());
 
 const attachUser = (req, res, next) => {
     const token = req.cookies.token;
