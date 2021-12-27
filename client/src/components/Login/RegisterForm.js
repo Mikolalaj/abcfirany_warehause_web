@@ -1,5 +1,4 @@
 
-import axios from 'axios'
 import { publicFetch } from '../../utils/fetch';
 import { useForm } from 'react-hook-form';
 import { useState, useContext } from 'react';
@@ -14,38 +13,36 @@ function RegisterForm(props) {
     const [usernameText, setUsernameText] = useState('');
     const [emailText, setEmailText] = useState('');
     
-    function onClickRegister(formData) {
-        axios.get('/users/checkUsernameEmail/', { params: { username: formData.username, email: formData.email } })
-            .then(async res => {
-                if (res.data.username === false && res.data.email === false) {
-                    setUsernameText('');
-                    setEmailText('');
+    async function onClickRegister(formData) {
+        const res = await publicFetch.get('users/checkUsernameEmail/', {username: formData.username, email: formData.email});
+        if (res.data.username === false && res.data.email === false) {
+            setUsernameText('');
+            setEmailText('');
 
-                    const { data } = await publicFetch.post('users/signup', formData);
-                    if (typeof data.token === 'undefined') {
-                        setFailText('Nie udało się zarejestrować')
-                    }
-                    else {
-                        authContext.setAuthState(data);
-                        props.setRedirectOnLogin(true);
-                    }
-                } else {
-                    if (res.data.username) {
-                        setUsernameText('Login jest już zajęty');
-                    }
-                    else {
-                        setUsernameText('');
-                    }
+            const { data } = await publicFetch.post('users/signup', formData);
+            if (typeof data.token === 'undefined') {
+                setFailText('Nie udało się zarejestrować')
+            }
+            else {
+                authContext.setAuthState(data);
+                props.setRedirectOnLogin(true);
+            }
+        }
+        else {
+            if (res.data.username) {
+                setUsernameText('Login jest już zajęty');
+            }
+            else {
+                setUsernameText('');
+            }
 
-                    if (res.data.email) {
-                        setEmailText('Email jest już zajęty');
-                    }
-                    else {
-                        setEmailText('');
-                    }
-                }
-            })
-            .catch(err => console.log(err))
+            if (res.data.email) {
+                setEmailText('Email jest już zajęty');
+            }
+            else {
+                setEmailText('');
+            }
+        }
     }
     
     return (

@@ -5,6 +5,9 @@ var pool = require("../db");
 const jwtDecode = require('jwt-decode');
 const { v4: uuidv4 } = require('uuid');
 const { createToken, hashPassword, verifyPassword } = require('../utils');
+const cookieParser = require('cookie-parser');
+
+router.use(cookieParser());
 
 async function getUser(username) {
     const res = await pool.query(`
@@ -48,6 +51,10 @@ router.post('/auth', async (req, res) => {
                 username: user.username,
                 admin: user.admin
             };
+
+            res.cookie('token', token, {
+                httpOnly: true
+            });
     
             return res.json({
                 message: 'Autoryzacja uzyskana!',
@@ -113,34 +120,37 @@ router.post("/signup", async function(req, res) {
             admin: false
         };
 
-        addUser(userData)
-            .then(result => {
-                if (result === 1) {
-                    const token = createToken(userData);
-                    const decodedToken = jwtDecode(token);
-                    const expiresAt = decodedToken.exp;
+        const result = await addUser(userData);
 
-                    const userInfo = {
-                        firstName: userData.firstName,
-                        lastName: userData.lastName,
-                        email: userData.email,
-                        username: userData.username,
-                        admin: userData.admin
-                    };
+        if (result === 1) {
+            const token = createToken(userData);
+            const decodedToken = jwtDecode(token);
+            const expiresAt = decodedToken.exp;
 
-                    return res.json({
-                        message: 'Użytkownik został dodany!',
-                        token,
-                        userInfo,
-                        expiresAt
-                    });
-                }
-                else {
-                    return res
-                        .status(400)
-                        .json({message: 'Wystąpił błąd podczas dodawania użytkownika.'});
-                }
+            const userInfo = {
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email,
+                username: userData.username,
+                admin: userData.admin
+            };
+
+            res.cookie('token', token, {
+                httpOnly: true
             });
+
+            return res.json({
+                message: 'Użytkownik został dodany!',
+                token,
+                userInfo,
+                expiresAt
+            });
+        }
+        else {
+            return res
+                .status(400)
+                .json({message: 'Wystąpił błąd podczas dodawania użytkownika.'});
+        }
     }
     catch (error) {
         console.log(error);

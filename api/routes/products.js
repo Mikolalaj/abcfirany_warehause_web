@@ -3,14 +3,17 @@ var router = express.Router();
 var pool = require("../db");
 const jwt = require('express-jwt');
 const jwtDecode = require('jwt-decode');
+const cookieParser = require('cookie-parser');
+
+router.use(cookieParser());
 
 const attachUser = (req, res, next) => {
-    const token = req.headers.authorization;
+    const token = req.cookies.token;
     if (!token) {
         return res.status(401).json({ message: 'Błąd autoryzacji' });
     }
 
-    const decodedToken = jwtDecode(token.slice(7));
+    const decodedToken = jwtDecode(token);
 
     if (!decodedToken) {
         return res.status(401).json({ message: 'Błąd autoryzacji' });
@@ -27,7 +30,8 @@ const checkJwt = jwt({
     secret: process.env.JWT_SECRET,
     algorithms: ['HS256'],
     issuer: 'api.abcfirany',
-    audience: 'api.abcfirany'
+    audience: 'api.abcfirany',
+    getToken: req => req.cookies.token
 });
 
 router.use(checkJwt);

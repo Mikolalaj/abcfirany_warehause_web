@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
     })
 
     function setAuthInfo({ token, expiresAt, userInfo }) {
-        localStorage.setItem('token', token);
+        
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
         localStorage.setItem('expiresAt', expiresAt);
         setAuthState({
@@ -26,7 +26,7 @@ const AuthProvider = ({ children }) => {
     }
 
     function logout() {
-        localStorage.removeItem('token');
+        
         localStorage.removeItem('userInfo');
         localStorage.removeItem('expiresAt');
         setAuthState({
