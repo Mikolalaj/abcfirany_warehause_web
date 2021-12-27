@@ -1,10 +1,14 @@
 
 import axios from 'axios'
+import { publicFetch } from '../../utils/fetch';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 function RegisterForm(props) {
     const {register, handleSubmit, formState: { errors }} = useForm();
+
+    const authContext = useContext(AuthContext);
 
     const [failText, setFailText] = useState('');
     const [usernameText, setUsernameText] = useState('');
@@ -12,29 +16,19 @@ function RegisterForm(props) {
     
     function onClickRegister(formData) {
         axios.get('/users/checkUsernameEmail/', { params: { username: formData.username, email: formData.email } })
-            .then(res => {
+            .then(async res => {
                 if (res.data.username === false && res.data.email === false) {
                     setUsernameText('');
                     setEmailText('');
-                    axios({
-                        method: 'post',
-                        url: '/users/add/',
-                        data: formData,
-                        config: {
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                    })
-                        .then(response => {
-                            if (response.data === false) {
-                                setFailText('Nie udało się zarejestrować')
-                            }
-                            else {
-                                props.setLogin(response.data)
-                            }
-                        })
+
+                    const { data } = await publicFetch.post('users/signup', formData);
+                    if (typeof data.token === 'undefined') {
+                        setFailText('Nie udało się zarejestrować')
+                    }
+                    else {
+                        authContext.setAuthState(data);
+                        props.setRedirectOnLogin(true);
+                    }
                 } else {
                     if (res.data.username) {
                         setUsernameText('Login jest już zajęty');

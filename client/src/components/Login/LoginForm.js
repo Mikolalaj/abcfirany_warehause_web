@@ -1,33 +1,25 @@
 
-import axios from 'axios'
+import { publicFetch } from '../../utils/fetch';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 function LoginForm(props) {
     const {register, handleSubmit, formState: { errors }} = useForm();
+
+    const authContext = useContext(AuthContext);
     
     const [failText, setFailText] = useState('');
     
-    function onClickLogin(data) {
-        axios({
-            method: 'post',
-            url: '/users/auth/',
-            data: data,
-            config: {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }
-        })
-            .then(response => {
-                if (response.data === '') {
-                    setFailText('Niepoprawny login lub hasło')
-                }
-                else {
-                    props.setLogin(response.data);
-                }
-            })
+    async function onClickLogin(formData) {
+        const { data } = await publicFetch.post('users/auth', formData);
+        if (typeof data.token === 'undefined') {
+            setFailText('Niepoprawny login lub hasło')
+        }
+        else {
+            authContext.setAuthState(data);
+            props.setRedirectOnLogin(true);
+        }
     }
     
     return (
