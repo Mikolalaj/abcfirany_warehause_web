@@ -23,7 +23,7 @@ function LoginForm(props) {
     }
     
     return (
-    <form onSubmit={handleSubmit(onClickLogin)}>
+    <form className='login-form' onSubmit={handleSubmit(onClickLogin)}>
         <h3>Zaloguj się</h3>
         <input
             type='text'

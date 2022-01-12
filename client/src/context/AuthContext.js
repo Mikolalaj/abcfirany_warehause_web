@@ -37,7 +37,6 @@ const AuthProvider = ({ children }) => {
     }
 
     function isAuthenticated() {
-        if (!authState.token || !authState.expiresAt) return false;
         return new Date().getTime() / 1000 < authState.expiresAt;
     }
 

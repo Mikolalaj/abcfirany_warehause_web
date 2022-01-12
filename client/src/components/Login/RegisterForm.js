@@ -46,7 +46,7 @@ function RegisterForm(props) {
     }
     
     return (
-    <form onSubmit={handleSubmit(onClickRegister)}>
+    <form className='login-form' onSubmit={handleSubmit(onClickRegister)}>
         <h3>Utwórz nowe konto</h3>
         <input
             type='text'

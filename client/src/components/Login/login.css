@@ -1,90 +1,10 @@
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,800');
-
-* {
-	box-sizing: border-box;
-}
-
-body {
-	background: #f6f5f7;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
-}
-
-h1 {
-	font-weight: bold;
-	margin: 0;
-}
-
-p {
-	font-size: 14px;
-	font-weight: 100;
-	line-height: 20px;
-	letter-spacing: 0.5px;
-	margin: 20px 0 30px;
-}
-
-button {
-	border-radius: 20px;
-	border: 1px solid #c96696;
-	background-color: #c96696;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 45px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	transition: transform 80ms ease-in;
-}
-
-button:active {
-	transform: scale(0.95);
-}
-
-button:focus {
-	outline: none;
-}
-
 .ghost {
 	background-color: transparent;
 	border-color: #FFFFFF;
 }
 
-form {
-	background-color: #FFFFFF;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	padding: 0 50px;
-	height: 100%;
-	text-align: center;
-}
-
-form h3 {
-    font-weight: bold;
-    font-size: 32px;
-}
-
-form button {
-    margin-top: 10px;
-}
-
-input {
-	background-color: #eee;
-	border: none;
-	padding: 12px 15px;
-	margin: 8px 0 4px 0;
-	width: 100%;
-    border-radius: 5px;
-}
-
-.container {
+.login-box {
 	background-color: #fff;
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
@@ -94,6 +14,7 @@ input {
 	width: 768px;
 	max-width: 100%;
 	min-height: 570px;
+	margin: 190px auto 0 auto;
 }
 
 .form-container {
@@ -108,7 +29,7 @@ input {
 	z-index: 2;
 }
 
-.container.right-panel-active .sign-in-container {
+.login-box.right-panel-active .sign-in-container {
 	transform: translateX(100%);
 }
 
@@ -119,7 +40,7 @@ input {
 	z-index: 1;
 }
 
-.container.right-panel-active .sign-up-container {
+.login-box.right-panel-active .sign-up-container {
 	transform: translateX(100%);
 	opacity: 1;
 	z-index: 5;
@@ -140,7 +61,7 @@ input {
     font-size: 32px;
 }
 
-.container.right-panel-active .overlay-container{
+.login-box.right-panel-active .overlay-container{
 	transform: translateX(-100%);
 }
 
@@ -160,7 +81,7 @@ input {
 	transition: transform 0.6s ease-in-out;
 }
 
-.container.right-panel-active .overlay {
+.login-box.right-panel-active .overlay {
   	transform: translateX(50%);
 }
 
@@ -183,7 +104,7 @@ input {
 	transform: translateX(-20%);
 }
 
-.container.right-panel-active .overlay-left {
+.login-box.right-panel-active .overlay-left {
 	transform: translateX(0);
 }
 
@@ -192,7 +113,7 @@ input {
 	transform: translateX(0);
 }
 
-.container.right-panel-active .overlay-right {
+.login-box.right-panel-active .overlay-right {
 	transform: translateX(20%);
 }
 
@@ -207,4 +128,54 @@ input {
     color: #c96696;
     font-size: 0.85rem;
     font-weight: 600;
+}
+
+.login-box button {
+	border-radius: 20px;
+	border: 1px solid #c96696;
+	background-color: #c96696;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+}
+
+.login-box button:active {
+	transform: scale(0.95);
+}
+
+.login-box button:focus {
+	outline: none;
+}
+
+.login-form {
+	background-color: #FFFFFF;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 50px;
+	height: 100%;
+	text-align: center;
+}
+
+.login-form h3 {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.login-form button {
+    margin-top: 10px;
+}
+
+.login-form input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0 4px 0;
+	width: 100%;
+    border-radius: 5px;
 }

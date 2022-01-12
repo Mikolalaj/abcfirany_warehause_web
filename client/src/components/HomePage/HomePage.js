@@ -2,7 +2,6 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 import { FetchContext } from '../../context/FetchContext';
 import './homepage.css'
 
@@ -48,7 +47,6 @@ function Home() {
             );
         })}
     </div>
-    
     );
 }
 
