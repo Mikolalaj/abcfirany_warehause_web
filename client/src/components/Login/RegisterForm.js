@@ -14,34 +14,22 @@ function RegisterForm(props) {
     const [emailText, setEmailText] = useState('');
     
     async function onClickRegister(formData) {
-        const res = await publicFetch.get('users/checkUsernameEmail/', {username: formData.username, email: formData.email});
-        if (res.data.username === false && res.data.email === false) {
+        const {data: {username, email}} = await publicFetch.get('users/checkUsernameEmail/', {username: formData.username, email: formData.email});
+        if (!username && !email) {
             setUsernameText('');
             setEmailText('');
 
-            const { data } = await publicFetch.post('users/signup', formData);
-            if (typeof data.token === 'undefined') {
-                setFailText('Nie udało się zarejestrować')
-            }
-            else {
+            try {
+                const { data } = await publicFetch.post('users/signup', formData);
                 authContext.setAuthState(data);
                 props.setRedirectOnLogin(true);
+            } catch ({ response: {data: {message}} }) {
+                setFailText(message)
             }
         }
         else {
-            if (res.data.username) {
-                setUsernameText('Login jest już zajęty');
-            }
-            else {
-                setUsernameText('');
-            }
-
-            if (res.data.email) {
-                setEmailText('Email jest już zajęty');
-            }
-            else {
-                setEmailText('');
-            }
+            username ? setUsernameText('Login jest już zajęty') : setUsernameText('');
+            email ? setEmailText('Email jest już zajęty') : setEmailText('');
         }
     }
     

@@ -12,13 +12,12 @@ function LoginForm(props) {
     const [failText, setFailText] = useState('');
     
     async function onClickLogin(formData) {
-        const { data } = await publicFetch.post('users/auth', formData);
-        if (typeof data.token === 'undefined') {
-            setFailText('Niepoprawny login lub hasło')
-        }
-        else {
+        try {
+            const { data } = await publicFetch.post('users/auth', formData);
             authContext.setAuthState(data);
             props.setRedirectOnLogin(true);
+        } catch ({ response: {data: {message}} }) {
+            setFailText(message)
         }
     }
     
