@@ -1,15 +1,19 @@
 import './Popup.css'
+import { IoClose } from 'react-icons/io5'
 
-function Popup({ children, trigger }) {
+function Popup({ children, trigger, closePopup }) {
+
     return (
         trigger ? (
-        <div className="popup">
+        <div className='popup'>
             <div className="popup-inner">
-                <button className="close-popup">Close</button>
-                {children}
+                <div onClick={closePopup} className="close-popup"><IoClose /></div>
+                <div className="popup-content">
+                    {children}
+                </div>
             </div>
         </div>
-        ) : ""
+        ) : ''
     )
 }
 

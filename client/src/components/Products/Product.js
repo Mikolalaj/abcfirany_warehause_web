@@ -1,6 +1,7 @@
 import "./Product.css";
 
 import Detail from "./Detail/Detail";
+import Popup from "../Popup/Popup";
 
 import { useState } from "react";
 
@@ -11,7 +12,6 @@ import { IoMdPricetag } from "react-icons/io";
 function Product({ symbol, product_id, comments, sale, img, category }) {
 
     const [showDetail, setShowDetail] = useState(false);
-    const [showBackground, setShowBackground] = useState(false);
 
     function category_icon(category) {
         switch (category) {
@@ -26,15 +26,10 @@ function Product({ symbol, product_id, comments, sale, img, category }) {
         }
     }
 
-    function showDetailPage() {
-        setShowDetail(true);
-        showBackground(true);
-    }
-
     return (
         <>
-        {showDetail && <Detail />}
-        <div onClick={showDetailPage} className={`product ${category}`} key={product_id}>
+        <Popup trigger={showDetail} closePopup={()=>setShowDetail(false)}><Detail /></Popup>
+        <div onClick={()=>setShowDetail(true)} className={`product ${category}`} key={product_id}>
             <div className="image-wrapper">
                 <img className="image" src={img} alt={symbol} />
             </div>
