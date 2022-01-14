@@ -1,0 +1,103 @@
+.product {
+    background-color: #f5f5f5;
+    display: inline-flex;
+    margin: 20px;
+    border: solid;
+    border-radius: 10px;
+    border-width: 0 0 0 6px;
+    cursor: pointer;
+    width: 350px;
+    height: 170px;
+    -webkit-box-shadow: 8px 8px 28px -24px rgba(101, 101, 101, 1);
+    -moz-box-shadow: 8px 8px 28px -24px rgba(101, 101, 101, 1);
+    box-shadow: 8px 8px 28px -24px rgba(101, 101, 101, 1);
+}
+
+.product:hover .image {
+    transform:scale(1.1);
+    -ms-transform:scale(1.1); /* IE 9 */
+    -moz-transform:scale(1.1); /* Firefox */
+    -webkit-transform:scale(1.1); /* Safari and Chrome */
+    -o-transform:scale(1.1); /* Opera */
+}
+
+.image-wrapper {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.image {
+    height: 170px;
+    width: 120px;
+    object-fit: cover;
+    border-radius: 5px 0 0 5px;
+    transition: ease-in 0.15s;
+}
+
+.description {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px 10px 10px;;
+    height: 170px;
+    width: 220px;
+}
+
+.description p {
+    margin: 0;
+}
+
+.symbol {
+    font-size: 27px;
+    margin: 0;
+}
+
+.sale.notvisible {
+    visibility: hidden;
+}
+
+.comments {
+    font-size: 15px;
+}
+
+.product svg {
+    font-size: 30px;
+    align-self: flex-end;
+    margin-top: auto;
+}
+
+.Pillow {
+    border-color: #4575c2;
+}
+
+.Pillow svg {
+    color: #4575c2;
+}
+
+.Premade {
+    border-color: #e6c638;
+}
+
+.Premade svg {
+    color: #e6c638;
+}
+
+.Meter {
+    border-color: #c96696;
+}
+
+.Meter svg {
+    color: #c96696;
+}
+
+svg.sale {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    color: rgb(218, 33, 33);
+    font-size: 25px;
+    margin: 0;
+}

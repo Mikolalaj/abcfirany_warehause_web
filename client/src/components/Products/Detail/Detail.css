@@ -1,0 +1,9 @@
+.product-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    background-color: rgb(184, 104, 104);
+}

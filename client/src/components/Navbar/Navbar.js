@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { ImStatsBars, ImSearch } from "react-icons/im";
-import { FaPlusCircle } from 'react-icons/fa';
+import { FaPlusCircle, FaUserAlt } from 'react-icons/fa';
 import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
 import { HiHome } from 'react-icons/hi';
 
@@ -11,29 +11,34 @@ function Navbar() {
 
     const menuItems = [
         {
-            name: 'Home',
+            name: 'Strona główna',
             link: '/',
             icon: <HiHome />
         },
         {
-            name: 'Stats',
-            link: '/stats',
-            icon: <ImStatsBars />
-        },
-        {
-            name: 'Search',
+            name: 'Wyszukiwanie produktów',
             link: '/search',
             icon: <ImSearch />
         },
         {
-            name: 'Add',
+            name: 'Dodaj produkt',
             link: '/add',
             icon: <FaPlusCircle />
         },
         {
-            name: 'Settings',
+            name: 'Ustawienia',
             link: '/settings',
             icon: <IoSettingsSharp />
+        },
+        {
+            name: 'Statystyki',
+            link: '/stats',
+            icon: <ImStatsBars />
+        },
+        {
+            name: 'Twoje konto',
+            link: '/account',
+            icon: <FaUserAlt />
         }
     ];
 
@@ -47,8 +52,8 @@ function Navbar() {
 
     return (
         <nav className="sidebar">
-            {menuItems.map(item =>
-                <Link className='menu-item' to={item.link}>
+            {menuItems.map((item, index) =>
+                <Link key={index} className='menu-item' to={item.link}>
                     {item.icon}
                     <p className='item-tooltip'>
                         {item.name}
@@ -58,7 +63,7 @@ function Navbar() {
             <div className='menu-item' onClick={onLogoutButtonClick}>
                 <IoLogOut />
                 <p className='item-tooltip'>
-                    Log Out
+                    Wyloguj się
                 </p>
             </div>
         </nav>

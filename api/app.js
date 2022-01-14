@@ -7,7 +7,6 @@ var cors = require("cors");
 var csrf = require('csurf');
 var csrfProtection = csrf({ cookie: true });
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
 
@@ -24,7 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 
 app.use(csrfProtection);

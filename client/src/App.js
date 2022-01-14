@@ -1,6 +1,6 @@
 import Login from './pages/Login';
-import Home from './components/HomePage/HomePage';
-import Admin from './components/Admin/Admin';
+import Dashboard from './pages/Dashboard';
+import Admin from './pages/Admin';
 import {
     BrowserRouter as Router,
     Switch,
@@ -18,7 +18,6 @@ import Navbar from './components/Navbar/Navbar';
 function AuthenticatedRoute({ children, ...rest }) {
     const authContext = useContext(AuthContext);
     const { isAuthenticated } = authContext;
-    console.log(isAuthenticated());
     return (
         <Route {...rest} render={() =>
             isAuthenticated() ? <><Navbar /><div className='page-content'>{children}</div></> : <Redirect to='/login' />
@@ -50,7 +49,7 @@ function Routes() {
             <Admin />
         </AdminRoute>
         <AuthenticatedRoute path='/' exact>
-            <Home />
+            <Dashboard />
         </AuthenticatedRoute>
     </Switch>
     )
