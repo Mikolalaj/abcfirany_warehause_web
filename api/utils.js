@@ -1,5 +1,19 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+var camelCase = require('lodash.camelcase');
+
+function camelize(object) {
+    if (Array.isArray(object)) {
+        return object.map(camelize);
+    } else if (object && typeof object === 'object') {
+        const newObject = {};
+        Object.keys(object).forEach(key => {
+            newObject[camelCase(key)] = camelize(object[key]);
+        });
+        return newObject;
+    }
+    return object;
+} 
 
 const hashPassword = password => {
     return new Promise((resolve, reject) => {
@@ -41,5 +55,6 @@ const createToken = userData => {
 module.exports = {
     createToken,
     hashPassword,
-    verifyPassword
+    verifyPassword,
+    camelize
 };

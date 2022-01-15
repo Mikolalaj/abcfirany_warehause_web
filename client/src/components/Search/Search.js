@@ -16,7 +16,7 @@ function Search() {
     async function searchProducts(event) {
         event.preventDefault();
         try {
-            const { data } = await fetchContext.authAxios.get(`/products/${searchSymbol}`);
+            const { data } = await fetchContext.authAxios.get(`/products/search/${searchSymbol}`);
             setProducts(data);
         } catch ({ response: {data: {message}} }) {
             console.log(message);

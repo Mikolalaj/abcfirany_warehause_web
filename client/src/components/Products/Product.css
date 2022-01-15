@@ -6,7 +6,7 @@
     border-radius: 10px;
     border-width: 0 0 0 6px;
     cursor: pointer;
-    width: 320px;
+    width: 300px;
     height: 170px;
     -webkit-box-shadow: 8px 8px 28px -24px rgba(101, 101, 101, 1);
     -moz-box-shadow: 8px 8px 28px -24px rgba(101, 101, 101, 1);
@@ -41,7 +41,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
-    padding: 5px 10px 10px 10px;;
+    padding: 30px 10px 10px 10px;;
     height: 170px;
     width: 220px;
 }

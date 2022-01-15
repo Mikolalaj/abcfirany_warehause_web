@@ -1,38 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var pool = require("../db");
-const jwt = require('express-jwt');
-const jwtDecode = require('jwt-decode');
-
-
-const attachUser = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.status(401).json({ message: 'Błąd autoryzacji' });
-    }
-
-    const decodedToken = jwtDecode(token);
-
-    if (!decodedToken) {
-        return res.status(401).json({ message: 'Błąd autoryzacji' });
-    }
-    else {
-        req.user = decodedToken;
-        next();
-    }
-};
-
-router.use(attachUser);
-
-const checkJwt = jwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ['HS256'],
-    issuer: 'api.abcfirany',
-    audience: 'api.abcfirany',
-    getToken: req => req.cookies.token
-});
-
-router.use(checkJwt);
 
 const requireAdmin = (req, res, next) => {
     const { admin } = req.user;
@@ -42,17 +10,54 @@ const requireAdmin = (req, res, next) => {
     next();
 };
 
-async function searchForProduct(symbol_search) {
-    const res = await pool.query(`
-    SELECT * FROM products WHERE symbol LIKE '${symbol_search}%'`);
-    return res.rows;
-}
-
-router.get("/:symbol_search", function(req, res) {
+router.get("/search/:symbol_search", async function(req, res, next) {
     symbol_search = req.params.symbol_search;
-    console.log(req.user);
-    searchForProduct(symbol_search)
-        .then(result => res.send(result));
+    const { rows } = await pool.query(`
+    SELECT
+        *,
+        (SELECT COUNT(product_id) FROM products_meter WHERE products_meter.product_id = products.product_id) AS meter_count,
+        (SELECT COUNT(product_id) FROM products_premade WHERE products_premade.product_id = products.product_id) AS premade_count,
+        (SELECT COUNT(product_id) FROM pillows WHERE pillows.product_id = products.product_id) AS pillows_count,
+        (SELECT COUNT(product_id) FROM towels WHERE towels.product_id = products.product_id) AS towels_count
+    FROM products
+    WHERE symbol LIKE '${symbol_search}%'`);
+    req.body = rows;
+    next();
+});
+
+router.get("/search/premade/:product_id", async function(req, res, next) {
+    product_id = req.params.product_id;
+    const { rows } = await pool.query(`
+    SELECT
+        product_premade_id,
+        shelving,
+        column_number as column,
+        shelf,
+        size,
+        amount,
+        finish,
+        comments
+    FROM products_premade
+    WHERE product_id = '${product_id}'`);
+    req.body = rows;
+    next();
+});
+
+router.get("/search/meter/:product_id", async function(req, res, next) {
+    product_id = req.params.product_id;
+    const { rows } = await pool.query(`
+    SELECT
+        product_meter_id,
+        shelving,
+        column_number as column,
+        shelf,
+        width,
+        amount,
+        comments
+    FROM products_meter
+    WHERE product_id = '${product_id}'`);
+    req.body = rows;
+    next();
 });
 
 module.exports = router;

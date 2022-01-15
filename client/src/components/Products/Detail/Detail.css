@@ -11,7 +11,14 @@
 
 .product-detail {
     font-size: 20px;
-    width: 550px;
+}
+
+.product-detail.meter {
+    width: 600px;
+}
+
+.product-detail.premade {
+    width: 800px;
 }
 
 .icons {

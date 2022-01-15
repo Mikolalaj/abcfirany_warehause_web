@@ -7,7 +7,7 @@ import { useState } from "react";
 
 import { IoMdPricetag } from "react-icons/io";
 
-function Product({ symbol, product_id, comments, sale, img, category }) {
+function Product({ symbol, productId, comments, sale, img, category }) {
 
     const [showDetail, setShowDetail] = useState(false);
 
@@ -18,13 +18,17 @@ function Product({ symbol, product_id, comments, sale, img, category }) {
             return 'Gotowe'
         } else if (category === 'Meter') {
             return 'Metraż'
+        } else if (category === 'Towel') {
+            return 'Ręczniki'
         }
     }
 
     return (
         <>
-        <Popup trigger={showDetail} closePopup={()=>setShowDetail(false)}><Detail /></Popup>
-        <div onClick={()=>setShowDetail(true)} className={`product ${category}`} key={product_id}>
+        <Popup trigger={showDetail} closePopup={()=>setShowDetail(false)}>
+            <Detail productId={productId} category={category} />
+        </Popup>
+        <div onClick={()=>setShowDetail(true)} className={`product ${category}`} key={productId}>
             <div className="image-wrapper">
                 <img className="image" src={img} alt={symbol} />
             </div>
