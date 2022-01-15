@@ -6,7 +6,7 @@
     border-radius: 10px;
     border-width: 0 0 0 6px;
     cursor: pointer;
-    width: 350px;
+    width: 320px;
     height: 170px;
     -webkit-box-shadow: 8px 8px 28px -24px rgba(101, 101, 101, 1);
     -moz-box-shadow: 8px 8px 28px -24px rgba(101, 101, 101, 1);
@@ -46,7 +46,7 @@
     width: 220px;
 }
 
-.description p {
+.comments {
     margin: 0;
 }
 
@@ -73,7 +73,7 @@
     border-color: #4575c2;
 }
 
-.Pillow svg {
+.category.Pillow {
     color: #4575c2;
 }
 
@@ -81,7 +81,7 @@
     border-color: #e6c638;
 }
 
-.Premade svg {
+.category.Premade {
     color: #e6c638;
 }
 
@@ -89,15 +89,24 @@
     border-color: #c96696;
 }
 
-.Meter svg {
+.category.Meter {
     color: #c96696;
+}
+
+.category {
+    font-size: 15px;
+    font-weight: 600;
+    margin: auto 0 0 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
 }
 
 svg.sale {
     position: absolute;
     top: 2px;
     right: 2px;
-    color: rgb(218, 33, 33);
+    color: rgb(223, 74, 74);
     font-size: 25px;
     margin: 0;
 }

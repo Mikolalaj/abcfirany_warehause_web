@@ -5,24 +5,19 @@ import Popup from "../Popup/Popup";
 
 import { useState } from "react";
 
-import { GiPillow } from "react-icons/gi";
-import { FaPoo, FaCannabis, FaDove } from "react-icons/fa";
 import { IoMdPricetag } from "react-icons/io";
 
 function Product({ symbol, product_id, comments, sale, img, category }) {
 
     const [showDetail, setShowDetail] = useState(false);
 
-    function category_icon(category) {
-        switch (category) {
-            case "Pillow":
-                return <GiPillow />;
-            case "Premade":
-                return <FaPoo />;
-            case "Meter":
-                return <FaCannabis />;
-            default:
-                return <FaDove />;
+    function category_name(category) {
+        if (category === 'Pillow') {
+            return 'Poszewki'
+        } else if (category === 'Premade') {
+            return 'Gotowe'
+        } else if (category === 'Meter') {
+            return 'Metraż'
         }
     }
 
@@ -37,7 +32,7 @@ function Product({ symbol, product_id, comments, sale, img, category }) {
                 <IoMdPricetag className={sale ? 'sale visible' : 'sale notvisible'}/>
                 <h1 className="symbol">{symbol}</h1>
                 <p className="comments">{comments}</p>
-                {category_icon(category)}
+                <p className={`category ${category}`}>{category_name(category)}</p>
             </div>
         </div>
         </>

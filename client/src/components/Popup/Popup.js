@@ -1,13 +1,18 @@
 import './Popup.css'
-import { IoClose } from 'react-icons/io5'
 
 function Popup({ children, trigger, closePopup }) {
 
+    function handleClickOutside(event) {
+        event.preventDefault();
+        if(event.target === event.currentTarget) {
+            closePopup();
+        }
+    }
+
     return (
         trigger ? (
-        <div className='popup'>
+        <div className='popup' onClick={handleClickOutside}>
             <div className="popup-inner">
-                <div onClick={closePopup} className="close-popup"><IoClose /></div>
                 <div className="popup-content">
                     {children}
                 </div>
