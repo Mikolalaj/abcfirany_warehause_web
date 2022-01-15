@@ -60,4 +60,37 @@ router.get("/search/meter/:product_id", async function(req, res, next) {
     next();
 });
 
+router.get("/search/pillow/:product_id", async function(req, res, next) {
+    product_id = req.params.product_id;
+    const { rows } = await pool.query(`
+    SELECT
+        pillow_id,
+        shelf,
+        size,
+        amount,
+        finish,
+        comments
+    FROM pillows
+    WHERE product_id = '${product_id}'`);
+    req.body = rows;
+    next();
+});
+
+router.get("/search/towel/:product_id", async function(req, res, next) {
+    product_id = req.params.product_id;
+    const { rows } = await pool.query(`
+    SELECT
+        towel_id,
+        shelving,
+        column_number as column,
+        shelf,
+        size,
+        amount,
+        comments
+    FROM towels
+    WHERE product_id = '${product_id}'`);
+    req.body = rows;
+    next();
+});
+
 module.exports = router;

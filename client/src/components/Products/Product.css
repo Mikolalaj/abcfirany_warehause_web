@@ -93,6 +93,14 @@
     color: #c96696;
 }
 
+.Towel {
+    border-color: #9c66c9;
+}
+
+.category.Towel {
+    color: #9c66c9;
+}
+
 .category {
     font-size: 15px;
     font-weight: 600;

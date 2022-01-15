@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { FetchContext } from "../../../context/FetchContext"
 import Loading from "../../Common/Loading";
-import './Detail.css';
 import DetailMeter from './DetailMeter';
 import DetailPremade from './DetailPremade';
+import DetailPillow from "./DetailPillow";
+import DetailTowel from "./DetailTowel";
+import './Detail.css';
 
 function Detail({ productId, category }) {
     const fetchContext = useContext(FetchContext);
@@ -17,12 +19,12 @@ function Detail({ productId, category }) {
                 return <DetailPremade products={products}/>;
             case 'Meter':
                 return <DetailMeter products={products} />;
-            // case 'Pillow':
-            //     return <DetailPillow products={products} />;
-            // case 'Towel':
-            //     return <DetailTowel products={products} />;
-            // default:
-            //     return null;
+            case 'Pillow':
+                return <DetailPillow products={products} />;
+            case 'Towel':
+                return <DetailTowel products={products} />;
+            default:
+                return null;
         }
     }
 
