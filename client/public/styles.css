@@ -33,6 +33,10 @@ body {
     height: 100%;
 }
 
+input, button, select, textarea {
+    font-family: "Raleway", sans-serif;
+}
+
 .page-content {
     padding: 0;
     margin-left: calc(var(--navbar-width) + 40px);

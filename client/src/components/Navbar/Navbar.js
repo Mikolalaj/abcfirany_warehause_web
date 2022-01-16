@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { ImStatsBars, ImSearch } from "react-icons/im";
 import { FaPlusCircle, FaUserAlt } from 'react-icons/fa';
 import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
+import { RiScissors2Fill } from "react-icons/ri";
 import { HiHome } from 'react-icons/hi';
 
 function Navbar() {
@@ -24,6 +25,11 @@ function Navbar() {
             name: 'Dodaj produkt',
             link: '/add',
             icon: <FaPlusCircle />
+        },
+        {
+            name: 'Dodaj metry',
+            link: '',
+            icon: <RiScissors2Fill />
         },
         {
             name: 'Ustawienia',

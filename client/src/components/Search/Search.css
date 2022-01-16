@@ -1,13 +1,13 @@
 .search {
-    margin: 0 200px 50px 200px;
+    margin: 0 auto 50px auto;
     display: flex;
     justify-content: center;
-    align-items: stretch;
     gap: 50px;
+    max-width: 600px;
 }
 
 .search input {
-    flex-grow: 8;
+    flex-grow: 7;
     padding: 9px;
     font-size: 20px;
     border-width: 1px;
@@ -23,7 +23,7 @@
 }
 
 .search button {
-    flex-grow: 2;
+    flex-grow: 3;
     background-color: var(--primary);
 	border-radius: 5px;
 	cursor: pointer;
