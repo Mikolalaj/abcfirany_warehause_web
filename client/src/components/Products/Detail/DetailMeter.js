@@ -5,7 +5,7 @@ import { MdDelete, MdEdit, MdFileCopy } from "react-icons/md";
 function DetailMeter({ products }) {
 
     return (
-    <div className='product-detail meter'>
+    <div className='products-data'>
         <Grid container spacing={1}>
             <Grid item xs={4}>
                 <div className="header">Szer. (cm)</div>

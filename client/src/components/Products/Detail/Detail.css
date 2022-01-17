@@ -11,14 +11,7 @@
 
 .product-detail {
     font-size: 20px;
-}
-
-.product-detail.meter {
-    width: 600px;
-}
-
-.product-detail.premade {
-    width: 800px;
+    margin: 0 50px;
 }
 
 .icons {
@@ -42,7 +35,14 @@
 }
 
 .product-detail .copy {
-    color: #449536;
+    color: var(--green);
+}
+
+.product-detail .back {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
 .row {

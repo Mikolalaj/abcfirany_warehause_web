@@ -1,0 +1,39 @@
+.detail-header {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 50px;
+    gap: 50px;
+}
+
+.detail-header img {
+    width: 250px;
+    height: 250px;
+}
+
+.detail-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 50%;
+}
+
+.detail-description h1 {
+    font-size: 55px;
+    margin: 0 0 15px 0;
+}
+
+.detail-description p {
+    font-size: 20px;
+    margin: 0 0 20px 0;
+    text-align: left;
+}
+
+.detail-description .sale {
+    display: flex;
+    align-items: center;
+    color: var(--red);
+    font-weight: 600;
+    gap: 5px;
+}

@@ -1,11 +1,14 @@
 import { useState, useContext } from 'react';
 import { FetchContext } from '../../context/FetchContext';
 import ProductsList from '../Products/ProductsList';
-import './Search.css'
+import Detail from '../Products/Detail/Detail';
+import { SearchContext } from '../../context/SearchContext';
+import './SearchProducts.css'
 
-function Search() {
+function SearchProducts() {
     const fetchContext = useContext(FetchContext);
-
+    const searchContext = useContext(SearchContext);
+    
     const [searchSymbol, setSearchSymbol] = useState('');
     const [products, setProducts] = useState([]);
 
@@ -29,9 +32,14 @@ function Search() {
         <input type="text" placeholder='Symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
         <button type='submit'>Szukaj</button>
     </form>
-    <ProductsList products={products} />
+    {searchContext.searchResults
+        ?
+        <ProductsList products={products} />
+        :
+        <Detail {...searchContext.chosenProductData}/>
+    }
     </>
     );
 }
 
-export default Search;
+export default SearchProducts;

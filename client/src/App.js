@@ -1,6 +1,7 @@
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
+import Search from './pages/Search';
 import {
     BrowserRouter as Router,
     Switch,
@@ -48,6 +49,9 @@ function Routes() {
         <AdminRoute path='/admin'>
             <Admin />
         </AdminRoute>
+        <AuthenticatedRoute path='/search'>
+            <Search />
+        </AuthenticatedRoute>
         <AuthenticatedRoute path='/' exact>
             <Dashboard />
         </AuthenticatedRoute>

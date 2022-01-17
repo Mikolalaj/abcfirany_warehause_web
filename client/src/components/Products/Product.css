@@ -114,7 +114,7 @@ svg.sale {
     position: absolute;
     top: 2px;
     right: 2px;
-    color: rgb(223, 74, 74);
+    color: var(--red);
     font-size: 25px;
     margin: 0;
 }

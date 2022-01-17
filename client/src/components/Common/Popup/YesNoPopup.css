@@ -1,0 +1,28 @@
+.yes-no-popup h1 {
+    font-size: 25px;
+    font-weight: 300;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+.yes-no-popup div {
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 30px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+}
+
+.yes-no-popup .popup-yes {
+    background-color: var(--green);
+}
+
+.yes-no-popup .popup-no {
+    background-color: var(--red);
+}

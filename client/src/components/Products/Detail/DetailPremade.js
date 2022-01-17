@@ -5,7 +5,7 @@ import { MdDelete, MdEdit, MdFileCopy } from "react-icons/md";
 function DetailPremade({ products }) {
 
     return (
-        <div className='product-detail premade'>
+        <div className='products-data'>
         <Grid container spacing={1}>
             <Grid item xs={2}>
                 <div className="header">Wymiar</div>

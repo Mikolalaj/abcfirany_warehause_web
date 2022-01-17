@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import Search from '../components/Search/Search';
 
 function Dashboard() {
     const [greeting, setGreeting] = useState('Dzień dobry');
@@ -18,7 +17,6 @@ function Dashboard() {
     return (
         <div>
             <h1>{greeting} {authState.userInfo.firstName}</h1>
-            <Search />
         </div>
     )
 }
