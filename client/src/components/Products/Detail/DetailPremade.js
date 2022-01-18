@@ -47,7 +47,7 @@ function DetailPremade({ products }) {
                 </Grid>
                 <Grid item xs={1}>
                     <ManageIcons
-                        productId={product.id}
+                        product={product}
                         productsList={productsList}
                         setProductsList={setProductsList}
                         category='premade'

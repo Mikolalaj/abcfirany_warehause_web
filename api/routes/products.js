@@ -43,11 +43,24 @@ router.get("/search/premade/:product_id", async function(req, res, next) {
     next();
 });
 
-router.delete("/delete/premade/:product_premade_id", async function(req, res, next) {
+router.delete("/delete/premade/:product_premade_id", async function(req, res) {
     product_premade_id = req.params.product_premade_id;
     const response = await pool.query(`
     DELETE FROM products_premade
     WHERE product_premade_id = '${product_premade_id}'`);
+    res.send(response);
+});
+
+router.put("/take/premade", async function(req, res) {
+    const { productPremadeId, newAmount } = req.body;
+    console.log(productPremadeId, newAmount);
+    const response = await pool.query(`
+    UPDATE
+        products_premade
+    SET
+        amount = ${newAmount}
+    WHERE
+        product_premade_id = '${productPremadeId}'`);
     res.send(response);
 });
 
