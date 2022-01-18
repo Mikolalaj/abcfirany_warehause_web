@@ -29,7 +29,7 @@ router.get("/search/premade/:product_id", async function(req, res, next) {
     product_id = req.params.product_id;
     const { rows } = await pool.query(`
     SELECT
-        product_premade_id,
+        product_premade_id as id,
         shelving,
         column_number as column,
         shelf,
@@ -43,11 +43,19 @@ router.get("/search/premade/:product_id", async function(req, res, next) {
     next();
 });
 
+router.delete("/delete/premade/:product_premade_id", async function(req, res, next) {
+    product_premade_id = req.params.product_premade_id;
+    const response = await pool.query(`
+    DELETE FROM products_premade
+    WHERE product_premade_id = '${product_premade_id}'`);
+    res.send(response);
+});
+
 router.get("/search/meter/:product_id", async function(req, res, next) {
     product_id = req.params.product_id;
     const { rows } = await pool.query(`
     SELECT
-        product_meter_id,
+        product_meter_id as id,
         shelving,
         column_number as column,
         shelf,
@@ -64,7 +72,7 @@ router.get("/search/pillow/:product_id", async function(req, res, next) {
     product_id = req.params.product_id;
     const { rows } = await pool.query(`
     SELECT
-        pillow_id,
+        pillow_id as id,
         shelf,
         size,
         amount,
@@ -80,7 +88,7 @@ router.get("/search/towel/:product_id", async function(req, res, next) {
     product_id = req.params.product_id;
     const { rows } = await pool.query(`
     SELECT
-        towel_id,
+        towel_id as id,
         shelving,
         column_number as column,
         shelf,

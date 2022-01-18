@@ -13,13 +13,16 @@ function DetailPillow({ products }) {
             <Grid item xs={2}>
                 <div className="header">Ilość (szt.)</div>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
                 <div className="header">Wykończenie</div>
             </Grid>
             <Grid item xs={2}>
                 <div className="header">Półka</div>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
+                <div className="header">Uwagi</div>
+            </Grid>
+            <Grid item xs={1}>
             </Grid>
         </Grid>
         <div className="data-rows">
@@ -31,13 +34,16 @@ function DetailPillow({ products }) {
                 <Grid item xs={2}>
                     <div className="data">{product.amount}</div>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
                     <div className="data">{product.finish}</div>
                 </Grid>
                 <Grid item xs={2}>
                     <div className="data">{product.shelf}</div>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
+                    <div className="data">{product.comments}</div>
+                </Grid>
+                <Grid item xs={1}>
                     <div className="icons">
                         <MdDelete className="delete"/>
                         <MdEdit className="edit"/>

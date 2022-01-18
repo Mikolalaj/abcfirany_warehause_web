@@ -21,6 +21,7 @@ function SearchProducts() {
         try {
             const { data } = await fetchContext.authAxios.get(`/products/search/${searchSymbol}`);
             setProducts(data);
+            searchContext.setSearchResults(true);
         } catch ({ response: {data: {message}} }) {
             console.log(message);
         }
