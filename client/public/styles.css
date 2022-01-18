@@ -64,3 +64,17 @@ p {
     text-align: center;
     margin: 15px;
 }
+
+input {
+    font-size: inherit;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-style: solid;
+    border-radius: 5px;
+}
+
+input:focus {
+    outline:none;
+}

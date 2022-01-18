@@ -1,0 +1,24 @@
+.cut-popup {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cut-popup h1 {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.cut-popup p {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--red);
+    margin: 0;
+}
+
+.cut-popup input {
+    padding: 7px;
+    width: 100px;
+}

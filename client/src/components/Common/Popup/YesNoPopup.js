@@ -1,11 +1,12 @@
 import Popup from "./Popup";
 import './YesNoPopup.css';
 
-function YesNoPopup({ trigger, closePopup, message, onYes, onNo }) {
+function YesNoPopup({ trigger, closePopup, message, errorMessage, onYes, onNo }) {
     return (
         <Popup trigger={trigger} closePopup={closePopup}>
             <div className='yes-no-popup' >
                 <h1>{message}</h1>
+                <p>{errorMessage}</p>
                 <div className="popup-buttons">
                     <div className="popup-no" onClick={onNo}>
                         Nie
