@@ -5,6 +5,12 @@ import './ProductForm.css';
 function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     const {register, handleSubmit, formState: { errors }} = useForm();
 
+    function onSubmit(formData) {
+        let {shelfCode: shelfCode, ...rest} = formData;
+        shelfCode = shelfCode.split('-');
+        onYes({...rest, shelving: shelfCode[0], shelf: shelfCode[1], column: shelfCode[2]});
+    }
+
     return (
     <form className='product-form'>
         <input
@@ -101,7 +107,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
             <div className="popup-no" onClick={closePopup}>
                 Anuluj
             </div>
-            <div className="popup-yes" onClick={handleSubmit(onYes)}>
+            <div className="popup-yes" onClick={handleSubmit(onSubmit)}>
                 {okButtonText}
             </div>
         </div>
