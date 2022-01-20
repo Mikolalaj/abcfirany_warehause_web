@@ -17,7 +17,7 @@ function ManageIcons({ product, productsList, setProductsList }) {
 
     async function deleteProduct() {
         try {
-            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category.toLowerCase()}/${product.productId}`);
+            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category}/${product.productId}`);
             if (rowCount) {
                 let products = productsList.filter(function(product) {
                     return product.id !== product.productId;
@@ -52,7 +52,7 @@ function ManageIcons({ product, productsList, setProductsList }) {
         }
         if (amount == product.amount) {
             try {
-                const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category.toLowerCase()}/${product.id}`);
+                const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category}/${product.id}`);
                 if (rowCount) {
                     let products = productsList.filter(function(product) {
                         return product.id !== product.id;
@@ -70,7 +70,7 @@ function ManageIcons({ product, productsList, setProductsList }) {
         }
         else {
             try {
-                const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/take/${category.toLowerCase()}`, {
+                const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/take/${category}`, {
                     productPremadeId: product.id,
                     newAmount: product.amount - amount
                 });

@@ -8,7 +8,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     function onSubmit(formData) {
         let {shelfCode: shelfCode, ...rest} = formData;
         shelfCode = shelfCode.split('-');
-        onYes({...rest, shelving: shelfCode[0], shelf: shelfCode[1], column: shelfCode[2]});
+        onYes({...rest, shelving: shelfCode[0], column: shelfCode[1], shelf: shelfCode[2]});
     }
 
     return (
@@ -57,7 +57,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
             className={errors.shelfCode && 'input-error'}
             type='text'
             placeholder='Kod półki'
-            defaultValue={`${productData.shelving}-${productData.column}-${productData.shelf}`}
+            defaultValue={productData.shelving === '' ? '' : `${productData.shelving}-${productData.column}-${productData.shelf}`}
             {...register("shelfCode", {
                 required: {
                     value: true,

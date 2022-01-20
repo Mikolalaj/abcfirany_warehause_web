@@ -12,7 +12,7 @@ import DetailTowel from "./DetailTowel";
 import './Detail.css';
 
 function Detail(props) {
-    const { symbol, productId, comments, sale, img, category } = props;
+    const { productId, category } = props;
     const fetchContext = useContext(FetchContext);
     const searchContext = useContext(SearchContext);
 
@@ -21,13 +21,13 @@ function Detail(props) {
 
     function getDetail() {
         switch (category) {
-            case 'Premade':
+            case 'premade':
                 return <DetailPremade products={products}/>;
-            case 'Meter':
+            case 'meter':
                 return <DetailMeter products={products} />;
-            case 'Pillow':
+            case 'pillow':
                 return <DetailPillow products={products} />;
-            case 'Towel':
+            case 'towel':
                 return <DetailTowel products={products} />;
             default:
                 return null;

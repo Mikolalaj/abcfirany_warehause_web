@@ -8,13 +8,13 @@ function Product(props) {
     const searchContext = useContext(SearchContext);
 
     function category_name(category) {
-        if (category === 'Pillow') {
+        if (category === 'pillow') {
             return 'Poszewki'
-        } else if (category === 'Premade') {
+        } else if (category === 'premade') {
             return 'Gotowe'
-        } else if (category === 'Meter') {
+        } else if (category === 'meter') {
             return 'Metraż'
-        } else if (category === 'Towel') {
+        } else if (category === 'towel') {
             return 'Ręczniki'
         }
     }

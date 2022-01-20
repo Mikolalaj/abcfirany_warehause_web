@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var pool = require("../db");
+const { v4: uuidv4 } = require('uuid');
 
 const requireAdmin = (req, res, next) => {
     const { admin } = req.user;
@@ -53,7 +54,6 @@ router.delete("/delete/premade/:product_premade_id", async function(req, res) {
 
 router.put("/take/premade", async function(req, res) {
     const { productPremadeId, newAmount } = req.body;
-    console.log(productPremadeId, newAmount);
     const response = await pool.query(`
     UPDATE
         products_premade
@@ -61,6 +61,17 @@ router.put("/take/premade", async function(req, res) {
         amount = ${newAmount}
     WHERE
         product_premade_id = '${productPremadeId}'`);
+    res.send(response);
+});
+
+router.post("/add/premade", async function(req, res) {
+    const { productId, shelving, column, shelf, size, amount, finish, comments } = req.body;
+    const uuid = uuidv4();
+    const response = await pool.query(`
+    INSERT INTO products_premade
+        (product_id, shelving, column_number, shelf, size, amount, finish, comments, product_premade_id)
+    VALUES
+        ('${productId}', '${shelving}', '${column}', '${shelf}', '${size}', '${amount}', '${finish}', '${comments}', '${uuid}')`);
     res.send(response);
 });
 

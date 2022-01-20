@@ -9,10 +9,10 @@ import { MdAddCircle } from 'react-icons/md';
 function DetailHeader() {
     const [addPopup, setAddPopup] = useState(false);
     const fetchContext = useContext(FetchContext);
-    const { symbol, comments, sale, img } = useContext(ProductContext);
+    const { productId, symbol, comments, sale, img, category } = useContext(ProductContext);
 
     async function addProduct(formData) {
-        const response = await fetchContext.authAxios.post('/products/add', formData);
+        const response = await fetchContext.authAxios.post(`/products/add/${category}`, {...formData, productId});
         console.log(response);
     }
 
