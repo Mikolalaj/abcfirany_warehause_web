@@ -1,6 +1,6 @@
 import './Navbar.css';
 import { Link, useHistory } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { ImStatsBars, ImSearch } from "react-icons/im";
 import { FaPlusCircle, FaUserAlt } from 'react-icons/fa';
@@ -9,7 +9,6 @@ import { RiScissors2Fill } from "react-icons/ri";
 import { HiHome } from 'react-icons/hi';
 
 function Navbar() {
-
     const menuItems = [
         {
             name: 'Strona główna',
@@ -48,6 +47,16 @@ function Navbar() {
         }
     ];
 
+    useEffect(() => {
+        for (let index = 0; index < menuItems.length; index++) {
+            if (menuItems[index].link === window.location.pathname) {
+                setSelectedItem(index);
+                break;
+            }
+        }
+    }, []);
+
+    const [selectedItem, setSelectedItem] = useState(null);
     const history = useHistory();
     const authContext = useContext(AuthContext);
 
@@ -59,7 +68,8 @@ function Navbar() {
     return (
         <nav className="sidebar">
             {menuItems.map((item, index) =>
-                <Link key={index} className='menu-item' to={item.link}>
+                <Link key={index} className={`menu-item ${index===selectedItem && 'selected'}`} to={item.link} onClick={()=>setSelectedItem(index)}>
+                    <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
                     {item.icon}
                     <p className='item-tooltip'>
                         {item.name}

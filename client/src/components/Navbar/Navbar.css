@@ -41,6 +41,11 @@
     transition: ease-in 0.15s;
 }
 
+.menu-item.selected {
+    color: var(--primary);
+    border-radius: 20px;
+}
+
 .menu-item:last-child {
     margin-top: auto;
 }
@@ -57,6 +62,19 @@
 
 .menu-item:hover .item-tooltip {
     opacity: 1;
+}
+
+.menu-item .select {
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 45px;
+    border-radius: 0 5px 5px 0;
+    background-color: white;
+}
+
+.menu-item .select.not-visible {
+    display: none;
 }
 
 .item-tooltip {
