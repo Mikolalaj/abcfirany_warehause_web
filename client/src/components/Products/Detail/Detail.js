@@ -21,13 +21,13 @@ function Detail(props) {
     function getDetail() {
         switch (category) {
             case 'Premade':
-                return <DetailPremade products={products}/>;
+                return <DetailPremade symbol={symbol} products={products}/>;
             case 'Meter':
-                return <DetailMeter products={products} />;
+                return <DetailMeter symbol={symbol} products={products} />;
             case 'Pillow':
-                return <DetailPillow products={products} />;
+                return <DetailPillow symbol={symbol} products={products} />;
             case 'Towel':
-                return <DetailTowel products={products} />;
+                return <DetailTowel symbol={symbol} products={products} />;
             default:
                 return null;
         }

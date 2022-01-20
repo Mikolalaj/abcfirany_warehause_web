@@ -2,12 +2,12 @@
     margin: 0 auto 50px auto;
     display: flex;
     justify-content: center;
-    gap: 50px;
-    max-width: 600px;
+    gap: 30px;
+    max-width: 500px;
 }
 
 .search input {
-    flex-grow: 7;
+    flex-grow: 8;
     padding: 9px;
     font-size: 20px;
     border-width: 1px;
@@ -19,7 +19,7 @@
 }
 
 .search button {
-    flex-grow: 3;
+    flex-grow: 1;
     background-color: var(--primary);
 	border-radius: 5px;
 	cursor: pointer;
@@ -27,6 +27,9 @@
 	font-size: 20px;
 	padding: 9px;
     border-width: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .search button:hover {

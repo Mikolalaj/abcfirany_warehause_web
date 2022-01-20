@@ -1,8 +1,9 @@
-
+import { useState } from "react";
 import { Grid } from "@material-ui/core";
-import { MdDelete, MdEdit, MdFileCopy } from "react-icons/md";
+import ManageIcons from "./ManageIcons";
 
-function DetailTowel({ products }) {
+function DetailTowel({ products, symbol }) {
+    const [productsList, setProductsList] = useState(products);
 
     return (
         <div className='products-data'>
@@ -38,11 +39,12 @@ function DetailTowel({ products }) {
                     <div className="data">{product.comments}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <div className="icons">
-                        <MdDelete className="delete"/>
-                        <MdEdit className="edit"/>
-                        <MdFileCopy className="copy"/>
-                    </div>
+                    <ManageIcons
+                        product={{...product, ...{symbol}}}
+                        productsList={productsList}
+                        setProductsList={setProductsList}
+                        category='towel'
+                    />
                 </Grid>
             </Grid>
         ))}

@@ -1,8 +1,10 @@
 
 import { Grid } from "@material-ui/core";
-import { MdDelete, MdEdit, MdFileCopy } from "react-icons/md";
+import { useState } from "react";
+import ManageIcons from "./ManageIcons";
 
-function DetailMeter({ products }) {
+function DetailMeter({ products, symbol }) {
+    const [productsList, setProductsList] = useState(products);
 
     return (
     <div className='products-data'>
@@ -38,11 +40,12 @@ function DetailMeter({ products }) {
                     <div className="data">{product.comments}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <div className="icons">
-                        <MdDelete className="delete"/>
-                        <MdEdit className="edit"/>
-                        <MdFileCopy className="copy"/>
-                    </div>
+                    <ManageIcons
+                        product={{...product, ...{symbol}}}
+                        productsList={productsList}
+                        setProductsList={setProductsList}
+                        category='meter'
+                    />
                 </Grid>
             </Grid>
         ))}

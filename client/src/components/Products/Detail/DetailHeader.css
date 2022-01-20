@@ -1,7 +1,7 @@
 .detail-header {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     margin-bottom: 50px;
     gap: 50px;
 }
@@ -36,4 +36,18 @@
     color: var(--red);
     font-weight: 600;
     gap: 5px;
+}
+
+.add-product {
+    margin-top: auto;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add-product svg {
+    margin-right: 5px;
 }

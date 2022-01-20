@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 import { useState } from "react";
 import ManageIcons from "./ManageIcons";
 
-function DetailPremade({ products }) {
+function DetailPremade({ products, symbol }) {
     const [productsList, setProductsList] = useState(products);
 
     return (
@@ -47,7 +47,7 @@ function DetailPremade({ products }) {
                 </Grid>
                 <Grid item xs={1}>
                     <ManageIcons
-                        product={product}
+                        product={{...product, ...{symbol}}}
                         productsList={productsList}
                         setProductsList={setProductsList}
                         category='premade'

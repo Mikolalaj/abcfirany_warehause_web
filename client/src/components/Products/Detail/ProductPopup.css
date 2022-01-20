@@ -1,0 +1,16 @@
+.product-popup {
+    width: 400px;
+    margin: 20px 0;
+}
+
+.product-popup h1 {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.product-popup h2 {
+    font-size: 30px;
+    font-weight: 300;
+    margin: 0;
+}

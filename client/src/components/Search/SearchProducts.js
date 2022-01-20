@@ -1,8 +1,8 @@
 import { useState, useContext } from 'react';
 import { FetchContext } from '../../context/FetchContext';
+import { SearchContext } from '../../context/SearchContext';
 import ProductsList from '../Products/ProductsList';
 import Detail from '../Products/Detail/Detail';
-import { SearchContext } from '../../context/SearchContext';
 import './SearchProducts.css'
 
 function SearchProducts() {
@@ -30,7 +30,7 @@ function SearchProducts() {
     return (
     <>
     <form onSubmit={searchProducts} className='search'>
-        <input type="text" placeholder='Symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
+        <input type="text" placeholder='🔍 Wpisz symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
         <button type='submit'>Szukaj</button>
     </form>
     {searchContext.searchResults

@@ -5,6 +5,7 @@ import { FetchContext } from "../../../context/FetchContext";
 import { useContext, useState } from "react";
 import YesNoPopup from "../../Common/Popup/YesNoPopup";
 import CutPopup from "./CutPopup";
+import ProductPopup from "./ProductPopup";
 
 function ManageIcons({ product, productsList, setProductsList, category }) {
     const fetchContext = useContext(FetchContext);
@@ -92,6 +93,12 @@ function ManageIcons({ product, productsList, setProductsList, category }) {
         }
     }
 
+    const [editPopup, setEditPopup] = useState(false);
+
+    async function editProduct(formData) {
+        console.log(formData);
+    }
+
     return (
     <>
         <YesNoPopup 
@@ -101,6 +108,15 @@ function ManageIcons({ product, productsList, setProductsList, category }) {
             errorMessage={deletePopupError}
             onYes={deleteProduct}
             onNo={() => {setDeletePopup(false); setDeletePopupError('')}}
+        />
+        <ProductPopup
+            trigger={editPopup}
+            closePopup={() => setEditPopup(false)}
+            onYes={editProduct}
+            okButtonText='Edytuj'
+            labelText='Edytowanie produktu'
+            productData={product}
+            symbol={product.symbol}
         />
         <CutPopup
             trigger={cutPopup}
@@ -112,7 +128,7 @@ function ManageIcons({ product, productsList, setProductsList, category }) {
         />
         <div className="icons" >
             <RiScissors2Fill className="copy" onClick={()=>setCutPopup(true)}/>
-            <MdEdit className="edit"/>
+            <MdEdit className="edit" onClick={()=>setEditPopup(true)}/>
             <MdDelete className="delete" onClick={()=>setDeletePopup(true)}/>
         </div>
     </>
