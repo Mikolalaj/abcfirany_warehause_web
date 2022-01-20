@@ -2,13 +2,15 @@
 import { MdDelete, MdEdit } from "react-icons/md";
 import { RiScissors2Fill } from "react-icons/ri";
 import { FetchContext } from "../../../context/FetchContext";
+import { ProductContext } from "../../../context/ProductContext";
 import { useContext, useState } from "react";
 import YesNoPopup from "../../Common/Popup/YesNoPopup";
 import CutPopup from "./CutPopup";
 import ProductPopup from "./ProductPopup";
 
-function ManageIcons({ product, productsList, setProductsList, category }) {
+function ManageIcons({ product, productsList, setProductsList }) {
     const fetchContext = useContext(FetchContext);
+    const { category } = useContext(ProductContext);
 
     const [deletePopup, setDeletePopup] = useState(false);
     const [deletePopupError, setDeletePopupError] = useState('');
@@ -116,7 +118,6 @@ function ManageIcons({ product, productsList, setProductsList, category }) {
             okButtonText='Edytuj'
             labelText='Edytowanie produktu'
             productData={product}
-            symbol={product.symbol}
         />
         <CutPopup
             trigger={cutPopup}

@@ -1,14 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import ProductPopup from './ProductPopup';
+import { FetchContext } from '../../../context/FetchContext';
+import { ProductContext } from '../../../context/ProductContext';
 import './DetailHeader.css'
 import { IoMdPricetag } from 'react-icons/io';
 import { MdAddCircle } from 'react-icons/md';
 
-function DetailHeader({ symbol, comments, sale, img }) {
+function DetailHeader() {
     const [addPopup, setAddPopup] = useState(false);
+    const fetchContext = useContext(FetchContext);
+    const { symbol, comments, sale, img } = useContext(ProductContext);
 
-    function addProduct(formData) {
-        console.log(formData);
+    async function addProduct(formData) {
+        const response = await fetchContext.authAxios.post('/products/add', formData);
+        console.log(response);
     }
 
     return (
@@ -19,7 +24,6 @@ function DetailHeader({ symbol, comments, sale, img }) {
             onYes={addProduct}
             okButtonText='Dodaj'
             labelText='Dodawanie produktu'
-            symbol={symbol}
         />
         <div className="detail-header">
             <img src={img} alt={symbol} />

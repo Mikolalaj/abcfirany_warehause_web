@@ -1,9 +1,11 @@
 
 import { Grid } from "@material-ui/core";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import ManageIcons from "./ManageIcons";
+import { ProductContext } from "../../../context/ProductContext";
 
-function DetailMeter({ products, symbol }) {
+function DetailMeter({ products }) {
+    const { symbol } = useContext(ProductContext);
     const [productsList, setProductsList] = useState(products);
 
     return (
@@ -41,10 +43,9 @@ function DetailMeter({ products, symbol }) {
                 </Grid>
                 <Grid item xs={1}>
                     <ManageIcons
-                        product={{...product, ...{symbol}}}
+                        product={product}
                         productsList={productsList}
                         setProductsList={setProductsList}
-                        category='meter'
                     />
                 </Grid>
             </Grid>

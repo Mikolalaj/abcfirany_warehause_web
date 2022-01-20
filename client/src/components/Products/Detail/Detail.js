@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { FetchContext } from "../../../context/FetchContext"
 import { SearchContext } from "../../../context/SearchContext";
+import { ProductContext, ProductProvider } from "../../../context/ProductContext";
 import { MdOutlineArrowBackIos } from "react-icons/md"
 import Loading from "../../Common/Loading";
 import DetailHeader from "./DetailHeader";
@@ -21,13 +22,13 @@ function Detail(props) {
     function getDetail() {
         switch (category) {
             case 'Premade':
-                return <DetailPremade symbol={symbol} products={products}/>;
+                return <DetailPremade products={products}/>;
             case 'Meter':
-                return <DetailMeter symbol={symbol} products={products} />;
+                return <DetailMeter products={products} />;
             case 'Pillow':
-                return <DetailPillow symbol={symbol} products={products} />;
+                return <DetailPillow products={products} />;
             case 'Towel':
-                return <DetailTowel symbol={symbol} products={products} />;
+                return <DetailTowel products={products} />;
             default:
                 return null;
         }
@@ -49,13 +50,15 @@ function Detail(props) {
 
     return (
     isLoading ? <Loading /> :
-    <div className='product-detail'>
-        <div className='back' onClick={()=>searchContext.setSearchResults(true)}>
-            <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
+    <ProductProvider productData={props}>
+        <div className='product-detail'>
+            <div className='back' onClick={()=>searchContext.setSearchResults(true)}>
+                <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
+            </div>
+            <DetailHeader/>
+            {getDetail()}
         </div>
-        <DetailHeader symbol={symbol} comments={comments} sale={sale} img={img}/>
-        {getDetail()}
-    </div>
+    </ProductProvider>
     );
 }
 

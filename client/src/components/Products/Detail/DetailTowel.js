@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Grid } from "@material-ui/core";
 import ManageIcons from "./ManageIcons";
+import { ProductContext } from "../../../context/ProductContext";
 
-function DetailTowel({ products, symbol }) {
+function DetailTowel({ products }) {
+    const { symbol } = useContext(ProductContext);
     const [productsList, setProductsList] = useState(products);
 
     return (
