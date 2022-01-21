@@ -2,7 +2,7 @@ import {createContext} from 'react';
 
 const ProductContext = createContext();
 
-function ProductProvider({ children, productData }) {
+function ProductProvider({ children, productData, products, setProducts }) {
     const { symbol, productId, comments, sale, img, category } = productData;
 
     return (
@@ -12,7 +12,9 @@ function ProductProvider({ children, productData }) {
             comments,
             sale,
             img,
-            category
+            category,
+            products,
+            setProducts
         }}>
             {children}
         </ProductContext.Provider>

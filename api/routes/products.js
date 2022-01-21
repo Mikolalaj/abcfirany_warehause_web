@@ -64,14 +64,35 @@ router.put("/take/premade", async function(req, res) {
     res.send(response);
 });
 
-router.post("/add/premade", async function(req, res) {
+router.post("/add/premade", async function(req, res, next) {
     const { productId, shelving, column, shelf, size, amount, finish, comments } = req.body;
     const uuid = uuidv4();
-    const response = await pool.query(`
+    const { rows } = await pool.query(`
     INSERT INTO products_premade
         (product_id, shelving, column_number, shelf, size, amount, finish, comments, product_premade_id)
     VALUES
-        ('${productId}', '${shelving}', '${column}', '${shelf}', '${size}', '${amount}', '${finish}', '${comments}', '${uuid}')`);
+        ('${productId}', '${shelving}', '${column}', '${shelf}', '${size}', '${amount}', '${finish}', '${comments}', '${uuid}')
+    RETURNING
+        product_premade_id`);
+    req.body = rows;
+    next();
+});
+
+router.put("/update/premade", async function(req, res) {
+    const { productPremadeId, shelving, column, shelf, size, amount, finish, comments } = req.body;
+    const response = await pool.query(`
+    UPDATE
+        products_premade
+    SET
+        shelving = '${shelving}',
+        column_number = '${column}',
+        shelf = '${shelf}',
+        size = '${size}',
+        amount = ${amount},
+        finish = '${finish}',
+        comments = '${comments}'
+    WHERE
+        product_premade_id = '${productPremadeId}'`);
     res.send(response);
 });
 

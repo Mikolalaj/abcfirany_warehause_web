@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { FetchContext } from "../../../context/FetchContext"
 import { SearchContext } from "../../../context/SearchContext";
-import { ProductContext, ProductProvider } from "../../../context/ProductContext";
+import { ProductProvider } from "../../../context/ProductContext";
 import { MdOutlineArrowBackIos } from "react-icons/md"
 import Loading from "../../Common/Loading";
 import DetailHeader from "./DetailHeader";
@@ -22,7 +22,7 @@ function Detail(props) {
     function getDetail() {
         switch (category) {
             case 'premade':
-                return <DetailPremade products={products}/>;
+                return <DetailPremade products={products} setProducts={setProducts}/>;
             case 'meter':
                 return <DetailMeter products={products} />;
             case 'pillow':
@@ -50,12 +50,12 @@ function Detail(props) {
 
     return (
     isLoading ? <Loading /> :
-    <ProductProvider productData={props}>
+    <ProductProvider productData={props} products={products} setProducts={setProducts}>
         <div className='product-detail'>
             <div className='back' onClick={()=>searchContext.setSearchResults(true)}>
                 <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
             </div>
-            <DetailHeader/>
+            <DetailHeader products = {products} setProducts={setProducts}/>
             {getDetail()}
         </div>
     </ProductProvider>

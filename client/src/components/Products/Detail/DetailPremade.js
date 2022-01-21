@@ -1,13 +1,8 @@
 
 import { Grid } from "@material-ui/core";
-import { useState, useContext } from "react";
 import ManageIcons from "./ManageIcons";
-import { ProductContext } from "../../../context/ProductContext";
 
 function DetailPremade({ products }) {
-    const { symbol } = useContext(ProductContext);
-    const [productsList, setProductsList] = useState(products);
-
     return (
     <div className='products-data'>
         <Grid container spacing={1}>
@@ -30,7 +25,7 @@ function DetailPremade({ products }) {
             </Grid>
         </Grid>
         <div className="data-rows">
-        {productsList.map((product, index) => (
+        {products.map((product, index) => (
             <Grid key={product.id} className={`row ${index%2===0 ? 'even' : 'odd'}`} container spacing={1}>
                 <Grid item xs={2}>
                     <div className="data">{product.size}</div>
@@ -48,11 +43,7 @@ function DetailPremade({ products }) {
                     <div className="data">{product.comments}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <ManageIcons
-                        product={product}
-                        productsList={productsList}
-                        setProductsList={setProductsList}
-                    />
+                    <ManageIcons product={product} />
                 </Grid>
             </Grid>
         ))}

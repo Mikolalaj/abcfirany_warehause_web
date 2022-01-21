@@ -6,7 +6,6 @@
     width: 100%;
     height: 100%;
     background-color: #fff;
-    margin-top: 20px;
 }
 
 .product-form input {
@@ -15,12 +14,16 @@
     width: 333px;
 }
 
+.product-form input:first-of-type {
+    margin-top: 5px;
+}
+
 .product-form .input-error {
     border-color: var(--red);
 }
 
-.product-form .form-error {
+.product-form .input-error-text {
     color: var(--red);
     font-size: 17px;
-    margin-top: 5px;
+    margin: 5px 0 0 0;
 }

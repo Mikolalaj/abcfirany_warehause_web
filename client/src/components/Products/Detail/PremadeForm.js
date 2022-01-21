@@ -6,7 +6,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     const {register, handleSubmit, formState: { errors }} = useForm();
 
     function onSubmit(formData) {
-        let {shelfCode: shelfCode, ...rest} = formData;
+        let {shelfCode, ...rest} = formData;
         shelfCode = shelfCode.split('-');
         onYes({...rest, shelving: shelfCode[0], column: shelfCode[1], shelf: shelfCode[2]});
     }
@@ -29,7 +29,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
                 }
             })}
         />
-        {errors.size && <p className='form-error'>{errors.size.message}</p>}
+        {errors.size && <p className='input-error-text'>{errors.size.message}</p>}
 
         <input
             className={errors.amount && 'input-error'}
@@ -51,7 +51,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
                 }
             })}
         />
-        {errors.amount && <p className='form-error'>{errors.amount.message}</p>}
+        {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
 
         <input
             className={errors.shelfCode && 'input-error'}
@@ -69,7 +69,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
                 }
             })}
         />
-        {errors.shelfCode && <p className='form-error'>{errors.shelfCode.message}</p>}
+        {errors.shelfCode && <p className='input-error-text'>{errors.shelfCode.message}</p>}
 
         <input
             className={errors.finish && 'input-error'}
@@ -87,7 +87,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
                 }
             })}
         />
-        {errors.finish && <p className='form-error'>{errors.finish.message}</p>}
+        {errors.finish && <p className='input-error-text'>{errors.finish.message}</p>}
 
         <input
             className={errors.comments && 'input-error'}
@@ -101,7 +101,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
                 }
             })}
         />
-        {errors.comments && <p className='form-error'>{errors.comments.message}</p>}
+        {errors.comments && <p className='input-error-text'>{errors.comments.message}</p>}
 
         <div className="popup-buttons">
             <div className="popup-no" onClick={closePopup}>

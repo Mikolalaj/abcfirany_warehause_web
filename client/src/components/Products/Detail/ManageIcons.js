@@ -8,9 +8,9 @@ import YesNoPopup from "../../Common/Popup/YesNoPopup";
 import CutPopup from "./CutPopup";
 import ProductPopup from "./ProductPopup";
 
-function ManageIcons({ product, productsList, setProductsList }) {
+function ManageIcons({ product }) {
     const fetchContext = useContext(FetchContext);
-    const { category } = useContext(ProductContext);
+    const { products, setProducts, category } = useContext(ProductContext);
 
     const [deletePopup, setDeletePopup] = useState(false);
     const [deletePopupError, setDeletePopupError] = useState('');
@@ -19,11 +19,11 @@ function ManageIcons({ product, productsList, setProductsList }) {
         try {
             const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category}/${product.productId}`);
             if (rowCount) {
-                let products = productsList.filter(function(product) {
+                let newProducts = products.filter(function(product) {
                     return product.id !== product.productId;
                 });
                 setDeletePopup(false);
-                setProductsList(products);
+                setProducts(newProducts);
             }
             else {
                 setDeletePopupError("Coś poszło nie tak... 😒");
@@ -50,15 +50,15 @@ function ManageIcons({ product, productsList, setProductsList }) {
             setCutPopupError("Nie ma takiej ilości produktu 🙁");
             return;
         }
-        if (amount == product.amount) {
+        if (amount === product.amount) {
             try {
                 const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category}/${product.id}`);
                 if (rowCount) {
-                    let products = productsList.filter(function(product) {
-                        return product.id !== product.id;
+                    let newProducts = products.filter(function(prod) {
+                        return prod.id !== product.id;
                     });
                     setCutPopup(false);
-                    setProductsList(products);
+                    setProducts(newProducts);
                 }
                 else {
                     setCutPopupError("Coś poszło nie tak podczas usuwania... 😒");
@@ -76,14 +76,14 @@ function ManageIcons({ product, productsList, setProductsList }) {
                 });
                 console.log(rowCount);
                 if (rowCount) {
-                    let products = productsList.filter(function(product) {
-                        if (product.id === product.id) {
-                            product.amount = product.amount - amount;
+                    let newProducts = products.filter(function(prod) {
+                        if (prod.id === product.id) {
+                            prod.amount = product.amount - amount;
                         }
-                        return product;
+                        return prod;
                     });
                     setCutPopup(false);
-                    setProductsList(products);
+                    setProducts(newProducts);
                 }
                 else {
                     setCutPopupError("Coś poszło nie tak podczas edytowania... 😒");
@@ -96,6 +96,7 @@ function ManageIcons({ product, productsList, setProductsList }) {
     }
 
     const [editPopup, setEditPopup] = useState(false);
+    const [editPopupError, setEditPopupError] = useState('');
 
     async function editProduct(formData) {
         console.log(formData);
@@ -118,6 +119,7 @@ function ManageIcons({ product, productsList, setProductsList }) {
             okButtonText='Edytuj'
             labelText='Edytowanie produktu'
             productData={product}
+            errorMessage={editPopupError}
         />
         <CutPopup
             trigger={cutPopup}
