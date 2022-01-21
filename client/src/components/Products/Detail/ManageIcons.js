@@ -17,10 +17,10 @@ function ManageIcons({ product }) {
 
     async function deleteProduct() {
         try {
-            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category}/${product.productId}`);
+            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category}/${product.id}`);
             if (rowCount) {
-                let newProducts = products.filter(function(product) {
-                    return product.id !== product.productId;
+                let newProducts = products.filter(function(prod) {
+                    return prod.id !== product.id;
                 });
                 setDeletePopup(false);
                 setProducts(newProducts);
@@ -50,7 +50,7 @@ function ManageIcons({ product }) {
             setCutPopupError("Nie ma takiej ilości produktu 🙁");
             return;
         }
-        if (amount === product.amount) {
+        if (amount == product.amount) {
             try {
                 const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${category}/${product.id}`);
                 if (rowCount) {
@@ -99,7 +99,31 @@ function ManageIcons({ product }) {
     const [editPopupError, setEditPopupError] = useState('');
 
     async function editProduct(formData) {
-        console.log(formData);
+        try {
+            const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/update/${category}`, {...formData, productPremadeId: product.id});
+            if (rowCount) {
+                let newProducts = products.filter(function(prod) {
+                    if (prod.id === product.id) {
+                        prod.shelving = formData.shelving;
+                        prod.column = formData.column;
+                        prod.shelf = formData.shelf;
+                        prod.size = formData.size;
+                        prod.amount = formData.amount;
+                        prod.finish = formData.finish;
+                        prod.comments = formData.comments;
+                    }
+                    return prod;
+                });
+                setEditPopup(false);
+                setProducts(newProducts);
+            }
+            else {
+                setEditPopupError("Coś poszło nie tak... 😒");
+            }
+        } catch (error) {
+            setEditPopupError("Coś poszło nie tak... 😒");
+            console.log(error);
+        }
     }
 
     return (
