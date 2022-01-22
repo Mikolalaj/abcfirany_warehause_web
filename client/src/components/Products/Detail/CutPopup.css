@@ -9,16 +9,29 @@
 .cut-popup h1 {
     font-size: 20px;
     font-weight: 300;
+    margin-bottom: 0;
 }
 
-.cut-popup p {
+.cut-popup .error {
     font-size: 18px;
     font-weight: 300;
     color: var(--red);
     margin: 0 0 20px 0;
 }
 
+.cut-popup p {
+    font-size: 20px;
+    font-weight: 300;
+    margin: 0 0 0 10px;
+}
+
+.cut-popup form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .cut-popup input {
     padding: 7px;
-    width: 100px;
+    width: 70px;
 }

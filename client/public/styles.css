@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600;900&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -10,6 +12,7 @@
 }
 
 :root {
+    --black: #383838;
     --primary: #713374;
     --color-wheel-2: #ba54bf;
     --color-wheel-3: #88668A;
@@ -26,7 +29,7 @@ html {
 }
   
 body {
-    color: #2f2f2f;
+    color: var(--black);
     display: flex;
     flex-direction: column;
     font-family: "Raleway", sans-serif;
@@ -35,34 +38,40 @@ body {
     height: 100%;
 }
 
-input, button, select, textarea {
-    font-family: "Raleway", sans-serif;
-}
-
 .page-content {
     padding: 0;
     margin-left: calc(var(--navbar-width) + 40px);
     margin-right: 40px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Raleway", sans-serif;
+}
+
+p, div {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+
+input, button, select, textarea {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
 h1 {
     font-size: 4em;
     text-align: center;
-    margin: 20px;
     font-weight: 600;
 }
 
 h2 {
     font-size: 3em;
     text-align: center;
-    margin: 20px;
     font-weight: 600;
 }
 
 p {
     font-size: 1.5em;
     text-align: center;
-    margin: 15px;
 }
 
 input {

@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { FetchContext } from "../../../context/FetchContext"
-import { SearchContext } from "../../../context/SearchContext";
-import { ProductProvider } from "../../../context/ProductContext";
+import { ProductContext } from "../../../context/ProductContext";
 import { MdOutlineArrowBackIos } from "react-icons/md"
 import Loading from "../../Common/Loading";
 import DetailHeader from "./DetailHeader";
@@ -11,24 +10,22 @@ import DetailPillow from "./DetailPillow";
 import DetailTowel from "./DetailTowel";
 import './Detail.css';
 
-function Detail(props) {
-    const { productId, category } = props;
+function Detail() {
     const fetchContext = useContext(FetchContext);
-    const searchContext = useContext(SearchContext);
+    const { productId, category, setSearchPage, setChildProducts } = useContext(ProductContext);
 
-    const [products, setProducts] = useState([{}]);
     const [isLoading, setIsLoading] = useState(true);
 
     function getDetail() {
         switch (category) {
             case 'premade':
-                return <DetailPremade products={products} setProducts={setProducts}/>;
+                return <DetailPremade />;
             case 'meter':
-                return <DetailMeter products={products} />;
+                return <DetailMeter />;
             case 'pillow':
-                return <DetailPillow products={products} />;
+                return <DetailPillow />;
             case 'towel':
-                return <DetailTowel products={products} />;
+                return <DetailTowel />;
             default:
                 return null;
         }
@@ -38,7 +35,7 @@ function Detail(props) {
         async function fetchData() {
             try {
                 const { data } = await fetchContext.authAxios.get(`/products/search/${category.toLocaleLowerCase()}/${productId}`);
-                setProducts(data);
+                setChildProducts(data);
             } catch ({ response: {data: {message}} }) {
                 console.log(message);
             }
@@ -50,15 +47,13 @@ function Detail(props) {
 
     return (
     isLoading ? <Loading /> :
-    <ProductProvider productData={props} products={products} setProducts={setProducts}>
-        <div className='product-detail'>
-            <div className='back' onClick={()=>searchContext.setSearchResults(true)}>
-                <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
-            </div>
-            <DetailHeader products = {products} setProducts={setProducts}/>
-            {getDetail()}
+    <div className='product-detail'>
+        <div className='back' onClick={()=>setSearchPage(true)}>
+            <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
-    </ProductProvider>
+        <DetailHeader/>
+        {getDetail()}
+    </div>
     );
 }
 

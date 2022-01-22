@@ -1,11 +1,11 @@
 import "./Product.css";
 import { useContext } from "react";
-import { SearchContext } from '../../context/SearchContext';
+import { ProductContext } from "../../context/ProductContext";
 import { IoMdPricetag } from "react-icons/io";
 
 function Product(props) {
     const { symbol, productId, comments, sale, img, category } = props;
-    const searchContext = useContext(SearchContext);
+    const { setSearchPage, setProductData } = useContext(ProductContext);
 
     function category_name(category) {
         if (category === 'pillow') {
@@ -20,8 +20,8 @@ function Product(props) {
     }
 
     function handleProductClick() {
-        searchContext.setSearchResults(false)
-        searchContext.setChosenProductData({...props})
+        setProductData(props)
+        setSearchPage(false)
     }
 
     return (

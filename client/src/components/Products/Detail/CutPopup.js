@@ -13,14 +13,15 @@ function CutPopup({ trigger, closePopup, message, errorMessage, onYes, onNo }) {
         <Popup trigger={trigger} closePopup={closePopup}>
             <div className='cut-popup' >
                 <h1>{message}</h1>
-                <p>{errorMessage}</p>
+                <p className='error'>{errorMessage}</p>
                 <form onSubmit={()=>{onYes(amount)}}>
                     <input
+                        autoFocus
                         type='text'
-                        placeholder='szt.'
                         onChange={updateAmount}
                         amount={amount}
                     />
+                    <p>szt.</p>
                 </form>
                 <div className="popup-buttons">
                     <div className="popup-no" onClick={onNo}>

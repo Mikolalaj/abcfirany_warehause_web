@@ -1,11 +1,10 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { Grid } from "@material-ui/core";
 import ManageIcons from "./ManageIcons";
 import { ProductContext } from "../../../context/ProductContext";
 
-function DetailTowel({ products }) {
-    const { symbol } = useContext(ProductContext);
-    const [productsList, setProductsList] = useState(products);
+function DetailTowel() {
+    const { childProducts } = useContext(ProductContext);
 
     return (
         <div className='products-data'>
@@ -26,7 +25,7 @@ function DetailTowel({ products }) {
             </Grid>
         </Grid>
         <div className="data-rows">
-        {products.map((product, index) => (
+        {childProducts.map((product, index) => (
             <Grid key={index} className={`row ${index%2===0 ? 'even' : 'odd'}`} container spacing={1}>
                 <Grid item xs={2}>
                     <div className="data">{product.size}</div>
@@ -41,12 +40,7 @@ function DetailTowel({ products }) {
                     <div className="data">{product.comments}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <ManageIcons
-                        product={{...product, ...{symbol}}}
-                        productsList={productsList}
-                        setProductsList={setProductsList}
-                        category='towel'
-                    />
+                    <ManageIcons product={product} />
                 </Grid>
             </Grid>
         ))}

@@ -130,11 +130,10 @@ function ManageIcons({ product }) {
     <>
         <YesNoPopup 
             trigger={deletePopup}
-            closePopup={() => setDeletePopup(false)}
+            closePopup={() => {setDeletePopup(false); setDeletePopupError('')}}
             message='Czy na pewno chcesz usunąć ten produkt?'
             errorMessage={deletePopupError}
             onYes={deleteProduct}
-            onNo={() => {setDeletePopup(false); setDeletePopupError('')}}
         />
         <ProductPopup
             trigger={editPopup}

@@ -1,14 +1,14 @@
 import SearchProducts from '../components/Search/SearchProducts';
-import { SearchProvider } from '../context/SearchContext';
+import { ProductProvider } from '../context/ProductContext';
 
 function Search() {
     return (
-    <SearchProvider>
+    <ProductProvider>
         <div>
             <h1>Wyszukiwanie produktów</h1>
             <SearchProducts />
         </div>
-    </SearchProvider>
+    </ProductProvider>
     )
 }
 

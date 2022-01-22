@@ -14,6 +14,7 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     return (
     <form className='product-form'>
         <input
+            autoFocus
             className={errors.size && 'input-error'}
             type='text'
             placeholder='Wymiary'

@@ -19,9 +19,30 @@
     max-width: 50%;
 }
 
-.detail-description h1 {
-    font-size: 55px;
+.detail-description .symbol {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin: 0 0 15px 0;
+}
+
+
+.detail-description .symbol h1 {
+    font-size: 55px;
+    margin: 0;
+}
+
+
+.detail-description .symbol svg {
+    font-size: 35px;
+    color: var(--black);
+    margin: 10px 0 0 10px;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.detail-description .symbol:hover svg {
+    visibility: visible;
 }
 
 .detail-description p {
@@ -38,16 +59,23 @@
     gap: 5px;
 }
 
-.add-product {
+.product-options {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
     margin-top: auto;
     margin-bottom: 10px;
+}
+
+.option {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    margin-right: 20px;
 }
 
-.add-product svg {
+.option svg {
     margin-right: 5px;
 }

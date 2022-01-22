@@ -1,16 +1,15 @@
 import { useState, useContext } from 'react';
 import { FetchContext } from '../../context/FetchContext';
-import { SearchContext } from '../../context/SearchContext';
+import { ProductContext } from '../../context/ProductContext';
 import ProductsList from '../Products/ProductsList';
 import Detail from '../Products/Detail/Detail';
 import './SearchProducts.css'
 
 function SearchProducts() {
     const fetchContext = useContext(FetchContext);
-    const searchContext = useContext(SearchContext);
+    const { searchPage, setSearchPage, setSearchResult } = useContext(ProductContext);
     
     const [searchSymbol, setSearchSymbol] = useState('');
-    const [products, setProducts] = useState([]);
 
     function updateSymbol(event) {
         setSearchSymbol(event.target.value);
@@ -20,8 +19,8 @@ function SearchProducts() {
         event.preventDefault();
         try {
             const { data } = await fetchContext.authAxios.get(`/products/search/${searchSymbol}`);
-            setProducts(data);
-            searchContext.setSearchResults(true);
+            setSearchResult(data);
+            setSearchPage(true);
         } catch ({ response: {data: {message}} }) {
             console.log(message);
         }
@@ -29,16 +28,11 @@ function SearchProducts() {
 
     return (
     <>
-    <form onSubmit={searchProducts} className='search'>
-        <input type="text" placeholder='🔍 Wpisz symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
-        <button type='submit'>Szukaj</button>
-    </form>
-    {searchContext.searchResults
-        ?
-        <ProductsList products={products} />
-        :
-        <Detail {...searchContext.chosenProductData}/>
-    }
+        <form onSubmit={searchProducts} className='search'>
+            <input type="text" placeholder='🔍 Wpisz symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
+            <button type='submit'>Szukaj</button>
+        </form>
+        {searchPage ? <ProductsList /> : <Detail/>}
     </>
     );
 }

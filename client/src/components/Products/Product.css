@@ -70,19 +70,19 @@
 }
 
 .pillow {
-    border-color: #4575c2;
+    border-color: #7b6697;
 }
 
 .category.pillow {
-    color: #4575c2;
+    color: #7b6697;
 }
 
 .premade {
-    border-color: #e6c638;
+    border-color: #f6cd61;
 }
 
 .category.premade {
-    color: #e6c638;
+    color: #f6cd61;
 }
 
 .meter {
@@ -94,11 +94,11 @@
 }
 
 .towel {
-    border-color: #9c66c9;
+    border-color: #216592;
 }
 
 .category.towel {
-    color: #9c66c9;
+    color: #216592;
 }
 
 .category {
