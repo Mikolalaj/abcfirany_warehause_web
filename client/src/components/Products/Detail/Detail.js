@@ -4,10 +4,12 @@ import { ProductContext } from "../../../context/ProductContext";
 import { MdOutlineArrowBackIos } from "react-icons/md"
 import Loading from "../../Common/Loading";
 import DetailHeader from "./DetailHeader";
-import DetailMeter from './DetailMeter';
-import DetailPremade from './DetailPremade';
-import DetailPillow from "./DetailPillow";
-import DetailTowel from "./DetailTowel";
+
+import MeterListing from './Listings/MeterListing';
+import PremadeListing from './Listings/PremadeListing';
+import PillowListing from "./Listings/PillowListing";
+import TowelListing from "./Listings/TowelListing";
+
 import './Detail.css';
 
 function Detail() {
@@ -16,16 +18,16 @@ function Detail() {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    function getDetail() {
+    function getListing() {
         switch (category) {
             case 'premade':
-                return <DetailPremade />;
+                return <PremadeListing />;
             case 'meter':
-                return <DetailMeter />;
+                return <MeterListing />;
             case 'pillow':
-                return <DetailPillow />;
+                return <PillowListing />;
             case 'towel':
-                return <DetailTowel />;
+                return <TowelListing />;
             default:
                 return null;
         }
@@ -52,7 +54,7 @@ function Detail() {
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
         <DetailHeader/>
-        {getDetail()}
+        {getListing()}
     </div>
     );
 }

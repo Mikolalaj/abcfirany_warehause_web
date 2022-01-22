@@ -1,4 +1,4 @@
-import Popup from '../../Common/Popup/Popup';
+import Popup from '../../../Common/Popup/Popup';
 import { useState } from 'react';
 import './CutPopup.css';
 

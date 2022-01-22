@@ -1,12 +1,14 @@
+import { useContext, useState } from "react";
 
 import { MdDelete, MdEdit } from "react-icons/md";
 import { RiScissors2Fill } from "react-icons/ri";
+
 import { FetchContext } from "../../../context/FetchContext";
 import { ProductContext } from "../../../context/ProductContext";
-import { useContext, useState } from "react";
+
 import YesNoPopup from "../../Common/Popup/YesNoPopup";
-import CutPopup from "./CutPopup";
-import ProductPopup from "./ProductPopup";
+import CutPopup from "./Popups/CutPopup";
+import ProductPopup from "./Popups/ProductPopup";
 
 function ManageIcons({ product }) {
     const fetchContext = useContext(FetchContext);

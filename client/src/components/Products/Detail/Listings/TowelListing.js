@@ -1,14 +1,13 @@
-
 import { Grid } from "@material-ui/core";
 import { useContext } from "react";
-import ManageIcons from "./ManageIcons";
-import { ProductContext } from "../../../context/ProductContext";
+import ManageIcons from "../ManageIcons";
+import { ProductContext } from "../../../../context/ProductContext";
 
-function DetailPillow() {
+function TowelListing() {
     const { childProducts } = useContext(ProductContext);
 
     return (
-        <div className='products-data'>
+        <div className='products-listing'>
         <Grid container spacing={1}>
             <Grid item xs={2}>
                 <div className="header">Wymiar</div>
@@ -17,12 +16,9 @@ function DetailPillow() {
                 <div className="header">Ilość (szt.)</div>
             </Grid>
             <Grid item xs={2}>
-                <div className="header">Wykończenie</div>
-            </Grid>
-            <Grid item xs={2}>
                 <div className="header">Półka</div>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={5}>
                 <div className="header">Uwagi</div>
             </Grid>
             <Grid item xs={1}>
@@ -38,12 +34,9 @@ function DetailPillow() {
                     <div className="data">{product.amount}</div>
                 </Grid>
                 <Grid item xs={2}>
-                    <div className="data">{product.finish}</div>
+                    <div className="data">{product.shelving}-{product.column}-{product.shelf}</div>
                 </Grid>
-                <Grid item xs={2}>
-                    <div className="data">{product.shelf}</div>
-                </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={5}>
                     <div className="data">{product.comments}</div>
                 </Grid>
                 <Grid item xs={1}>
@@ -56,4 +49,4 @@ function DetailPillow() {
     )
 }
 
-export default DetailPillow;
+export default TowelListing;

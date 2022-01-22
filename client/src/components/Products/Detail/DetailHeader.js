@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import ProductPopup from './ProductPopup';
+import ProductPopup from './Popups/ProductPopup';
 import YesNoPopup from '../../Common/Popup/YesNoPopup'
 import { FetchContext } from '../../../context/FetchContext';
 import { ProductContext } from '../../../context/ProductContext';
@@ -9,7 +9,7 @@ import './DetailHeader.css'
 
 function DetailHeader({ products, setProducts }) {
     const fetchContext = useContext(FetchContext);
-    const { setSearchPage, productId, symbol, comments, sale, img, category } = useContext(ProductContext);
+    const { searchResult, setSearchResult, setSearchPage, productId, symbol, comments, sale, img, category } = useContext(ProductContext);
 
     const [addPopup, setAddPopup] = useState(false);
     const [addPopupError, setAddPopupError] = useState('');
@@ -32,6 +32,8 @@ function DetailHeader({ products, setProducts }) {
         try {
             const { data } = await fetchContext.authAxios.delete(`/products/delete/${category}/all/${productId}`);
             if (data.rowCount) {
+                const newSearchResult = searchResult.filter(product => product.productId !== productId);
+                setSearchResult(newSearchResult);
                 setDeletePopup(false);
                 setSearchPage(true);
             }
@@ -63,7 +65,7 @@ function DetailHeader({ products, setProducts }) {
             trigger={deletePopup}
             closePopup={() => {setDeletePopup(false); setDeletePopupError('')}}
             onYes={deleteProduct}
-            message='Czy na pewno chcesz usunąć ten produkt?'
+            message='Czy na pewno chcesz usunąć wszystkie produkty?'
             errorMessage={deletePopupError}
         />
 

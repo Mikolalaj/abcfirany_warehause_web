@@ -1,6 +1,6 @@
-import Popup from '../../Common/Popup/Popup';
-import PremadeForm from './PremadeForm';
-import { ProductContext } from '../../../context/ProductContext';
+import Popup from '../../../Common/Popup/Popup';
+import PremadeForm from '../Forms/PremadeForm';
+import { ProductContext } from '../../../../context/ProductContext';
 import { useContext } from 'react';
 import './ProductPopup.css';
 
