@@ -1,10 +1,12 @@
 
 import { publicFetch } from '../../utils/fetch';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
-function RegisterForm(props) {
+function RegisterForm() {
+    const history = useHistory();
     const {register, handleSubmit, formState: { errors }} = useForm();
 
     const authContext = useContext(AuthContext);
@@ -22,7 +24,7 @@ function RegisterForm(props) {
             try {
                 const { data } = await publicFetch.post('users/signup', formData);
                 authContext.setAuthState(data);
-                props.setRedirectOnLogin(true);
+                history.push('/dashboard');
             } catch ({ response: {data: {message}} }) {
                 setFailText(message)
             }

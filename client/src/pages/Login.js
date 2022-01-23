@@ -1,5 +1,3 @@
-
-import { Redirect } from 'react-router-dom';
 import { useState } from 'react';
 import LoginForm from '../components/Login/LoginForm';
 import RegisterForm from '../components/Login/RegisterForm';
@@ -7,17 +5,14 @@ import '../components/Login/Login.css';
 
 function Login() {
     const [isRightPanel, setRightPanel] = useState(true);
-    const [redirectOnLogin, setRedirectOnLogin] = useState(false);
 
     return (
-    <>
-    {redirectOnLogin && <Redirect to='/'/>}
     <div className={`login-box ${isRightPanel ? "" : "right-panel-active"}`}>
         <div className="form-container sign-up-container">
-            <RegisterForm setRedirectOnLogin={setRedirectOnLogin}/>
+            <RegisterForm />
         </div>
         <div className="form-container sign-in-container">
-            <LoginForm setRedirectOnLogin={setRedirectOnLogin}/>
+            <LoginForm />
         </div>
         <div className="overlay-container">
             <div className="overlay">
@@ -34,7 +29,6 @@ function Login() {
             </div>
         </div>
     </div>
-    </>
     );
 }
 

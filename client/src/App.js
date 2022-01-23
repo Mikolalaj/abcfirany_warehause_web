@@ -1,18 +1,18 @@
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
-import Search from './pages/Search';
+import SearchPage from './pages/SearchPage';
+import ProductPage from './pages/ProductPage';
+
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Redirect
 } from 'react-router-dom';
-import {
-    AuthContext,
-    AuthProvider
-} from './context/AuthContext';
+import { AuthContext, AuthProvider } from './context/AuthContext';
 import { FetchProvider } from './context/FetchContext';
+import { ProductProvider } from './context/ProductContext';
 import { useContext } from 'react';
 import Navbar from './components/Navbar/Navbar';
 
@@ -50,9 +50,12 @@ function Routes() {
             <Admin />
         </AdminRoute>
         <AuthenticatedRoute path='/search'>
-            <Search />
+            <SearchPage />
         </AuthenticatedRoute>
-        <AuthenticatedRoute path='/' exact>
+        <AuthenticatedRoute path='/product/:category/:productId'>
+            <ProductPage />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute path='/dashboard'>
             <Dashboard />
         </AuthenticatedRoute>
     </Switch>
@@ -64,7 +67,9 @@ function App() {
         <Router>
         <AuthProvider>
         <FetchProvider>
+        <ProductProvider>
             <Routes />
+        </ProductProvider>
         </FetchProvider>
         </AuthProvider>
         </Router>

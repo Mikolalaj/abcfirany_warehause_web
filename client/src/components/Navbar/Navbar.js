@@ -12,7 +12,7 @@ function Navbar() {
     const menuItems = [
         {
             name: 'Strona główna',
-            link: '/',
+            link: '/dashboard',
             icon: <HiHome />
         },
         {

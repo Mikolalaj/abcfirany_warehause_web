@@ -1,10 +1,42 @@
 import Product from './Product';
-import { useContext } from 'react';
+import { useContext, useMemo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ProductContext } from '../../context/ProductContext';
+import { FetchContext } from '../../context/FetchContext';
 import './ProductsList.css';
 
+function useQuery() {
+    const { search } = useLocation();
+    return useMemo(() => new URLSearchParams(search), [search]);
+}
+
 function ProductsList() {
-    const { searchResult } = useContext(ProductContext);
+    const { searchResult, setSearchResult } = useContext(ProductContext);
+    const { authAxios } = useContext(FetchContext);
+
+    const query = useQuery();
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const { data } = await authAxios.get('products/search', {
+                    params: {
+                        searchSymbol: searchSymbol
+                    }
+                });
+                setSearchResult(data);
+            } catch ({ response: {data: {message}} }) {
+                console.log(message);
+            }
+        }
+        
+        const searchSymbol = query.get('symbol');
+        if (searchSymbol) {
+            fetchData()
+        }
+    }, [query.get('symbol')]);
+
+
     return (
     <div className='products'>
         {searchResult.map(product => <div key={product.productId}>

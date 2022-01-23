@@ -6,20 +6,40 @@ import { ProductContext } from '../../../context/ProductContext';
 import { IoMdPricetag } from 'react-icons/io';
 import { MdAddCircle, MdEdit, MdFindInPage, MdDelete } from 'react-icons/md';
 import './DetailHeader.css'
+import { useEffect } from 'react';
 
-function DetailHeader({ products, setProducts }) {
+function DetailHeader({ productId, category }) {
     const fetchContext = useContext(FetchContext);
-    const { searchResult, setSearchResult, setSearchPage, productId, symbol, comments, sale, img, category } = useContext(ProductContext);
+    const { searchResult, setSearchResult } = useContext(ProductContext);
 
     const [addPopup, setAddPopup] = useState(false);
     const [addPopupError, setAddPopupError] = useState('');
     const [deletePopup, setDeletePopup] = useState(false);
     const [deletePopupError, setDeletePopupError] = useState('');
 
+    const [productData, setProductData] = useState({
+        symbol: '',
+        comments: '',
+        sale: '',
+        img: ''
+    });
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const { data } = await fetchContext.authAxios.get(`/products/details/${productId}`);
+                setProductData(data[0]);
+            } catch ({ response: {data: {message}} }) {
+                console.log(message);
+            }
+        }
+        fetchData();
+    }, [productId]);
+
     async function addProduct(formData) {
         try {
             const { data } = await fetchContext.authAxios.post(`/products/add/${category}`, {...formData, productId});
-            setProducts([...products, {...formData, id: data[0].productPremadeId}]);
+            setSearchResult([...searchResult, {...formData, id: data[0].productPremadeId}]);
             setAddPopup(false);
         }
         catch (error) {
@@ -35,7 +55,6 @@ function DetailHeader({ products, setProducts }) {
                 const newSearchResult = searchResult.filter(product => product.productId !== productId);
                 setSearchResult(newSearchResult);
                 setDeletePopup(false);
-                setSearchPage(true);
             }
         }
         catch (error) {
@@ -45,7 +64,7 @@ function DetailHeader({ products, setProducts }) {
     }
 
     function openInShop() {
-        let urlSymbol = encodeURI(symbol).replace('/', '[back]');
+        let urlSymbol = encodeURI(productData.symbol).replace('/', '[back]');
         let url = `https://abcfirany.pl/szukaj.html/szukaj=${urlSymbol}/opis=nie/nrkat=tak/kodprod=tak`;
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
         if (newWindow) newWindow.opener = null
@@ -70,14 +89,14 @@ function DetailHeader({ products, setProducts }) {
         />
 
         <div className="detail-header">
-            <img src={img} alt={symbol} />
+            <img src={productData.img} alt={productData.symbol} />
             <div className="detail-description">
                 <div className="symbol">
-                    <h1>{symbol}</h1>
+                    <h1>{productData.symbol}</h1>
                     <MdEdit className="edit" onClick={()=>console.log('edit')}/>
                 </div>
-                {sale && <p className="sale"><IoMdPricetag/>Wyprzedaż</p>}
-                <p>{comments}</p>
+                {productData.sale && <p className="sale"><IoMdPricetag/>Wyprzedaż</p>}
+                <p>{productData.comments}</p>
                 <div className="product-options">
                     <div className="option" onClick={() => setAddPopup(true)}><MdAddCircle />Dodaj nowy produkt</div>
                     <div className="option" onClick={openInShop}><MdFindInPage/>Wyszukaj na sklepie</div>

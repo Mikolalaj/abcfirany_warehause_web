@@ -1,11 +1,10 @@
 import "./Product.css";
-import { useContext } from "react";
-import { ProductContext } from "../../context/ProductContext";
+import { useHistory } from "react-router-dom";
 import { IoMdPricetag } from "react-icons/io";
 
 function Product(props) {
+    const history = useHistory();
     const { symbol, productId, comments, sale, img, category } = props;
-    const { setSearchPage, setProductData } = useContext(ProductContext);
 
     function category_name(category) {
         if (category === 'pillow') {
@@ -20,10 +19,9 @@ function Product(props) {
     }
 
     function handleProductClick() {
-        setProductData(props)
-        setSearchPage(false)
+        history.push(`/product/${category}/${productId}`);
     }
-
+    
     return (
     <div onClick={handleProductClick} className={`product ${category}`} key={productId}>
         <div className="image-wrapper">

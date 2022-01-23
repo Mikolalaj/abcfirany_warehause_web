@@ -11,8 +11,8 @@ const requireAdmin = (req, res, next) => {
     next();
 };
 
-router.get("/search/:symbol_search", async function(req, res, next) {
-    symbol_search = req.params.symbol_search;
+router.get("/search", async function(req, res, next) {
+    const { searchSymbol } = req.query;
     const { rows } = await pool.query(`
     SELECT
         *,
@@ -21,7 +21,21 @@ router.get("/search/:symbol_search", async function(req, res, next) {
         (SELECT COUNT(product_id) FROM pillows WHERE pillows.product_id = products.product_id) AS pillows_count,
         (SELECT COUNT(product_id) FROM towels WHERE towels.product_id = products.product_id) AS towels_count
     FROM products
-    WHERE symbol LIKE '${symbol_search}%'`);
+    WHERE symbol LIKE '${searchSymbol}%'`);
+    req.body = rows;
+    next();
+});
+
+router.get("/details/:productId", async function(req, res, next) {
+    productId = req.params.productId;
+    const { rows } = await pool.query(`
+    SELECT
+        symbol,
+        comments,
+        sale,
+        img
+    FROM products
+    WHERE product_id = '${productId}'`);
     req.body = rows;
     next();
 });

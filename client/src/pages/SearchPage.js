@@ -1,15 +1,16 @@
 import SearchProducts from '../components/Search/SearchProducts';
-import { ProductProvider } from '../context/ProductContext';
+import ProductsList from '../components/Products/ProductsList';
 
-function Search() {
+function SearchPage() {
     return (
-    <ProductProvider>
+    <>
         <div>
             <h1>Wyszukiwanie produktów</h1>
             <SearchProducts />
         </div>
-    </ProductProvider>
+        <ProductsList />
+    </>
     )
 }
 
-export default Search;
+export default SearchPage;

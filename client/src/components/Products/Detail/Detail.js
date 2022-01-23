@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { FetchContext } from "../../../context/FetchContext"
 import { ProductContext } from "../../../context/ProductContext";
 import { MdOutlineArrowBackIos } from "react-icons/md"
@@ -12,9 +13,11 @@ import TowelListing from "./Listings/TowelListing";
 
 import './Detail.css';
 
-function Detail() {
+function Detail({ category, productId }) {
+    let history = useHistory();
+
     const fetchContext = useContext(FetchContext);
-    const { productId, category, setSearchPage, setChildProducts } = useContext(ProductContext);
+    const { setChildProducts } = useContext(ProductContext);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -50,10 +53,10 @@ function Detail() {
     return (
     isLoading ? <Loading /> :
     <div className='product-detail'>
-        <div className='back' onClick={()=>setSearchPage(true)}>
+        <div className='back' onClick={history.goBack}>
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
-        <DetailHeader/>
+        <DetailHeader productId={productId} category={category}/>
         {getListing()}
     </div>
     );
