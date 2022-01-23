@@ -12,7 +12,6 @@ import {
 } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import { FetchProvider } from './context/FetchContext';
-import { ProductProvider } from './context/ProductContext';
 import { useContext } from 'react';
 import Navbar from './components/Navbar/Navbar';
 
@@ -67,9 +66,7 @@ function App() {
         <Router>
         <AuthProvider>
         <FetchProvider>
-        <ProductProvider>
             <Routes />
-        </ProductProvider>
         </FetchProvider>
         </AuthProvider>
         </Router>

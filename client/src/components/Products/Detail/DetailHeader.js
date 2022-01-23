@@ -6,40 +6,20 @@ import { ProductContext } from '../../../context/ProductContext';
 import { IoMdPricetag } from 'react-icons/io';
 import { MdAddCircle, MdEdit, MdFindInPage, MdDelete } from 'react-icons/md';
 import './DetailHeader.css'
-import { useEffect } from 'react';
 
-function DetailHeader({ productId, category }) {
+function DetailHeader() {
     const fetchContext = useContext(FetchContext);
-    const { searchResult, setSearchResult } = useContext(ProductContext);
-
+    const { childProducts, setChildProducts, product: {category, productId, img, sale, comments, symbol} } = useContext(ProductContext);
+    
     const [addPopup, setAddPopup] = useState(false);
     const [addPopupError, setAddPopupError] = useState('');
     const [deletePopup, setDeletePopup] = useState(false);
     const [deletePopupError, setDeletePopupError] = useState('');
 
-    const [productData, setProductData] = useState({
-        symbol: '',
-        comments: '',
-        sale: '',
-        img: ''
-    });
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const { data } = await fetchContext.authAxios.get(`/products/details/${productId}`);
-                setProductData(data[0]);
-            } catch ({ response: {data: {message}} }) {
-                console.log(message);
-            }
-        }
-        fetchData();
-    }, [productId]);
-
     async function addProduct(formData) {
         try {
-            const { data } = await fetchContext.authAxios.post(`/products/add/${category}`, {...formData, productId});
-            setSearchResult([...searchResult, {...formData, id: data[0].productPremadeId}]);
+            const { data } = await fetchContext.authAxios.post(`/products/add/${category}`, {...formData, productId: productId});
+            setChildProducts([...childProducts, {...formData, id: data[0].productPremadeId}]);
             setAddPopup(false);
         }
         catch (error) {
@@ -52,8 +32,8 @@ function DetailHeader({ productId, category }) {
         try {
             const { data } = await fetchContext.authAxios.delete(`/products/delete/${category}/all/${productId}`);
             if (data.rowCount) {
-                const newSearchResult = searchResult.filter(product => product.productId !== productId);
-                setSearchResult(newSearchResult);
+                const newSearchResult = childProducts.filter(product => product.productId !== productId);
+                setChildProducts(newSearchResult);
                 setDeletePopup(false);
             }
         }
@@ -64,7 +44,7 @@ function DetailHeader({ productId, category }) {
     }
 
     function openInShop() {
-        let urlSymbol = encodeURI(productData.symbol).replace('/', '[back]');
+        let urlSymbol = encodeURI(symbol).replace('/', '[back]');
         let url = `https://abcfirany.pl/szukaj.html/szukaj=${urlSymbol}/opis=nie/nrkat=tak/kodprod=tak`;
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
         if (newWindow) newWindow.opener = null
@@ -89,14 +69,14 @@ function DetailHeader({ productId, category }) {
         />
 
         <div className="detail-header">
-            <img src={productData.img} alt={productData.symbol} />
+            <img src={img} alt={symbol} />
             <div className="detail-description">
                 <div className="symbol">
-                    <h1>{productData.symbol}</h1>
+                    <h1>{symbol}</h1>
                     <MdEdit className="edit" onClick={()=>console.log('edit')}/>
                 </div>
-                {productData.sale && <p className="sale"><IoMdPricetag/>Wyprzedaż</p>}
-                <p>{productData.comments}</p>
+                {sale && <p className="sale"><IoMdPricetag/>Wyprzedaż</p>}
+                <p>{comments}</p>
                 <div className="product-options">
                     <div className="option" onClick={() => setAddPopup(true)}><MdAddCircle />Dodaj nowy produkt</div>
                     <div className="option" onClick={openInShop}><MdFindInPage/>Wyszukaj na sklepie</div>

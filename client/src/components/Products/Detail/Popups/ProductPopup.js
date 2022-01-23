@@ -1,11 +1,12 @@
 import Popup from '../../../Common/Popup/Popup';
 import PremadeForm from '../Forms/PremadeForm';
-import { ProductContext } from '../../../../context/ProductContext';
 import { useContext } from 'react';
+import { ProductContext } from '../../../../context/ProductContext';
 import './ProductPopup.css';
 
 function ProductPopup({ trigger, closePopup, onYes, okButtonText, labelText, productData, errorMessage }) {
-    const { symbol } = useContext(ProductContext);
+    const { product: { symbol } } = useContext(ProductContext);
+
     return (
         <Popup trigger={trigger} closePopup={closePopup}>
             <div className='product-popup'>

@@ -4,16 +4,22 @@ const ProductContext = createContext();
 
 function ProductProvider({ children }) {
     const [childProducts, setChildProducts] = useState({});
-    const [searchResult, setSearchResult] = useState([]);
+    const [product, setProduct] = useState({
+        productId: '',
+        symbol: '',
+        category: '',
+        comments: '',
+        sale: '',
+        img: ''
+    });
 
     return (
         <ProductContext.Provider value={{
-            // result products from search
-            searchResult,
-            setSearchResult,
             // child products
             childProducts,
-            setChildProducts
+            setChildProducts,
+            product,
+            setProduct
         }}>
             {children}
         </ProductContext.Provider>

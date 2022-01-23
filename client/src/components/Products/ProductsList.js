@@ -1,7 +1,6 @@
 import Product from './Product';
-import { useContext, useMemo, useEffect } from 'react';
+import { useContext, useMemo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ProductContext } from '../../context/ProductContext';
 import { FetchContext } from '../../context/FetchContext';
 import './ProductsList.css';
 
@@ -11,7 +10,7 @@ function useQuery() {
 }
 
 function ProductsList() {
-    const { searchResult, setSearchResult } = useContext(ProductContext);
+    const [ searchResult, setSearchResult ] = useState([]);
     const { authAxios } = useContext(FetchContext);
 
     const query = useQuery();

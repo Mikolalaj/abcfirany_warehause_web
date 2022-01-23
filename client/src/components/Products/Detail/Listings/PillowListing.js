@@ -28,25 +28,25 @@ function PillowListing() {
             </Grid>
         </Grid>
         <div className="data-rows">
-        {childProducts.map((product, index) => (
+        {childProducts.map((childProduct, index) => (
             <Grid key={index} className={`row ${index%2===0 ? 'even' : 'odd'}`} container spacing={1}>
                 <Grid item xs={2}>
-                    <div className="data">{product.size}</div>
+                    <div className="data">{childProduct.size}</div>
                 </Grid>
                 <Grid item xs={2}>
-                    <div className="data">{product.amount}</div>
+                    <div className="data">{childProduct.amount}</div>
                 </Grid>
                 <Grid item xs={2}>
-                    <div className="data">{product.finish}</div>
+                    <div className="data">{childProduct.finish}</div>
                 </Grid>
                 <Grid item xs={2}>
-                    <div className="data">{product.shelf}</div>
+                    <div className="data">{childProduct.shelf}</div>
                 </Grid>
                 <Grid item xs={3}>
-                    <div className="data">{product.comments}</div>
+                    <div className="data">{childProduct.comments}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <ManageIcons product={product} />
+                    <ManageIcons childProduct={childProduct} />
                 </Grid>
             </Grid>
         ))}

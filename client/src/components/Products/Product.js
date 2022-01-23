@@ -1,4 +1,5 @@
 import "./Product.css";
+import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { IoMdPricetag } from "react-icons/io";
 

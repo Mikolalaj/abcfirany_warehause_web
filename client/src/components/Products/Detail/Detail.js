@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { FetchContext } from "../../../context/FetchContext"
 import { ProductContext } from "../../../context/ProductContext";
 import { MdOutlineArrowBackIos } from "react-icons/md"
@@ -17,9 +17,10 @@ function Detail({ category, productId }) {
     let history = useHistory();
 
     const fetchContext = useContext(FetchContext);
-    const { setChildProducts } = useContext(ProductContext);
+    const { setChildProducts, setProduct } = useContext(ProductContext);
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingChild, setIsLoadingChild] = useState(true);
+    const [isLoadingParent, setIsLoadingParent] = useState(true);
 
     function getListing() {
         switch (category) {
@@ -36,6 +37,29 @@ function Detail({ category, productId }) {
         }
     }
 
+    // Parent product data
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const { data } = await fetchContext.authAxios.get(`/products/details/${productId}`);
+                setProduct({
+                    symbol: data[0].symbol,
+                    comments: data[0].comments,
+                    sale: data[0].sale,
+                    img: data[0].img,
+                    productId: productId,
+                    category: category,
+                })
+                setIsLoadingParent(false);
+            } catch ({ response: {data: {message}} }) {
+                console.log(message);
+            }
+        }
+        setIsLoadingParent(true);
+        fetchData();
+    }, [productId]);
+
+    // Child product data
     useEffect(() => {
         async function fetchData() {
             try {
@@ -44,19 +68,20 @@ function Detail({ category, productId }) {
             } catch ({ response: {data: {message}} }) {
                 console.log(message);
             }
-            setIsLoading(false);
+            setIsLoadingChild(false);
         }
-        setIsLoading(true);
+        setIsLoadingChild(true);
         fetchData();
+
     }, [productId, category]);
 
     return (
-    isLoading ? <Loading /> :
+    (isLoadingChild || isLoadingParent) ? <Loading /> :
     <div className='product-detail'>
         <div className='back' onClick={history.goBack}>
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
-        <DetailHeader productId={productId} category={category}/>
+        <DetailHeader />
         {getListing()}
     </div>
     );

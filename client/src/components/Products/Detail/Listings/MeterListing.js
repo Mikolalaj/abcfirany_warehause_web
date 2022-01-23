@@ -25,22 +25,22 @@ function MeterListing() {
             </Grid>
         </Grid>
         <div className="data-rows">
-        {childProducts.map((product, index) => (
+        {childProducts.map((childProduct, index) => (
             <Grid key={index} className={`row ${index%2===0 ? 'even' : 'odd'}`} container spacing={1}>
                 <Grid item xs={2}>
-                    <div className="data">{product.width}</div>
+                    <div className="data">{childProduct.width}</div>
                 </Grid>
                 <Grid item xs={2}>
-                    <div className="data">{product.amount}</div>
+                    <div className="data">{childProduct.amount}</div>
                 </Grid>
                 <Grid item xs={2}>
-                    <div className="data">{product.shelving}-{product.column}-{product.shelf}</div>
+                    <div className="data">{childProduct.shelving}-{childProduct.column}-{childProduct.shelf}</div>
                 </Grid>
                 <Grid item xs={5}>
-                    <div className="data">{product.comments}</div>
+                    <div className="data">{childProduct.comments}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <ManageIcons product={product} />
+                    <ManageIcons childProduct={childProduct} />
                 </Grid>
             </Grid>
         ))}
