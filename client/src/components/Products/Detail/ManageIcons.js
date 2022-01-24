@@ -44,7 +44,6 @@ function ManageIcons({ childProduct }) {
             setCutPopupError("Podaj ilość!");
             return;
         }
-        amount = parseFloat(amount);
         if (amount <= 0) {
             setCutPopupError("Podaj dodatnią ilość!");
             return;

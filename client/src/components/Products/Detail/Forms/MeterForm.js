@@ -2,9 +2,9 @@
 import { useForm } from 'react-hook-form';
 import './ProductForm.css';
 
-function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
+function MeterForm({ closePopup, okButtonText, onYes, productData }) {
     const {register, handleSubmit, formState: { errors }} = useForm();
-
+    
     function onSubmit(formData) {
         let {shelfCode, ...rest} = formData;
         shelfCode = shelfCode.split('-');
@@ -15,27 +15,35 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     <form className='product-form'>
         <input
             autoFocus
-            className={errors.size && 'input-error'}
-            type='text'
-            placeholder='Wymiary'
-            defaultValue={productData.size}
-            {...register("size", {
+            className={errors.width && 'input-error'}
+            type='number'
+            placeholder='Szerokość'
+            defaultValue={productData.width}
+            {...register("width", {
+                valueAsNumber: true,
                 required: {
                     value: true,
-                    message: 'Wymiar jest wymagany'
+                    message: 'Szerokość jest wymagana'
                 },
-                maxLength: {
-                    value: 10,
-                    message: 'Wymiar może mieć maksymalnie 10 znaków'
+                max: {
+                    value: 9999,
+                    message: 'Szerokość może mieć maksymalnie 4 znaków'
+                },
+                min: {
+                    value: 1,
+                    message: 'Szerokość musi być większa od 0'
+                },
+                validate: {
+                    integer: v => parseFloat(v) === parseInt(v) || 'Szerokość musi być liczbą całkowitą w cm'
                 }
             })}
         />
-        {errors.size && <p className='input-error-text'>{errors.size.message}</p>}
+        {errors.width && <p className='input-error-text'>{errors.width.message}</p>}
 
         <input
             className={errors.amount && 'input-error'}
             type='number'
-            placeholder='Ilość sztuk'
+            placeholder='Ilość metrów'
             defaultValue={productData.amount}
             {...register("amount", {
                 valueAsNumber: true,
@@ -50,6 +58,9 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
                 min: {
                     value: 1,
                     message: 'Ilość musi być większa od 0'
+                },
+                validate: {
+                    twoDecimals: v => v.toString().length <= v.toString().replace(',', '.').indexOf('.') + 3 || 'Ilość może mieć maksymalnie dwie cyfry po przecinku'
                 }
             })}
         />
@@ -72,24 +83,6 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
             })}
         />
         {errors.shelfCode && <p className='input-error-text'>{errors.shelfCode.message}</p>}
-
-        <input
-            className={errors.finish && 'input-error'}
-            type='text'
-            placeholder='Wykończenie'
-            defaultValue={productData.finish}
-            {...register("finish", {
-                required: {
-                    value: true,
-                    message: 'Wykończenie jest wymagane'
-                },
-                maxLength: {
-                    value: 100,
-                    message: 'Wykończenie może mieć maksymalnie 100 znaków'
-                }
-            })}
-        />
-        {errors.finish && <p className='input-error-text'>{errors.finish.message}</p>}
 
         <input
             className={errors.comments && 'input-error'}
@@ -117,4 +110,4 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     )
 }
 
-export default PremadeForm;
+export default MeterForm;
