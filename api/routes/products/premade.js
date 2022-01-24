@@ -66,7 +66,7 @@ router.post("/add", async function(req, res, next) {
 });
 
 router.put("/update", async function(req, res) {
-    const { productPremadeId, shelving, column, shelf, size, amount, finish, comments } = req.body;
+    const { childProductId, shelving, column, shelf, size, amount, finish, comments } = req.body;
     const response = await pool.query(`
     UPDATE
         premade
@@ -79,7 +79,7 @@ router.put("/update", async function(req, res) {
         finish = '${finish}',
         comments = '${comments}'
     WHERE
-        premade_id = '${productPremadeId}'`);
+        premade_id = '${childProductId}'`);
     res.send(response);
 });
 

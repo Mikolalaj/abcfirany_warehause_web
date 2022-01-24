@@ -65,7 +65,7 @@ router.post("/add", async function(req, res, next) {
 });
 
 router.put("/update", async function(req, res) {
-    const { TowelId, shelving, column, shelf, size, amount, comments } = req.body;
+    const { childProductId, shelving, column, shelf, size, amount, comments } = req.body;
     const response = await pool.query(`
     UPDATE
         towels
@@ -77,7 +77,7 @@ router.put("/update", async function(req, res) {
         amount = ${amount},
         comments = '${comments}'
     WHERE
-        towel_id = '${TowelId}'`);
+        towel_id = '${childProductId}'`);
     res.send(response);
 });
 

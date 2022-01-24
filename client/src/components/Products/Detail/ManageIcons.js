@@ -40,11 +40,12 @@ function ManageIcons({ childProduct }) {
     const [cutPopupError, setCutPopupError] = useState('');
 
     async function cutProduct(amount) {
-        if (amount === 0 || amount === '') {
+        if (amount === '') {
             setCutPopupError("Podaj ilość!");
             return;
         }
-        if (amount < 0) {
+        amount = parseFloat(amount);
+        if (amount <= 0) {
             setCutPopupError("Podaj dodatnią ilość!");
             return;
         }
