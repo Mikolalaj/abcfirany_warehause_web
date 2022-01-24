@@ -28,9 +28,9 @@ function Detail({ category, productId }) {
                 return <PremadeListing />;
             case 'meter':
                 return <MeterListing />;
-            case 'pillow':
+            case 'pillows':
                 return <PillowListing />;
-            case 'towel':
+            case 'towels':
                 return <TowelListing />;
             default:
                 return null;
@@ -63,7 +63,7 @@ function Detail({ category, productId }) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const { data } = await fetchContext.authAxios.get(`/products/search/${category.toLocaleLowerCase()}/${productId}`);
+                const { data } = await fetchContext.authAxios.get(`/products/${category.toLocaleLowerCase()}/search/${productId}`);
                 setChildProducts(data);
             } catch ({ response: {data: {message}} }) {
                 console.log(message);

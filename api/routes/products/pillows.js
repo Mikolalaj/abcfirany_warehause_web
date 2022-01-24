@@ -13,7 +13,7 @@ router.get("/search/:productId", async function(req, res, next) {
         shelf,
         size,
         amount,
-        finish
+        finish,
         comments
     FROM pillows
     WHERE product_id = '${productId}'`);
@@ -21,11 +21,11 @@ router.get("/search/:productId", async function(req, res, next) {
     next();
 });
 
-router.delete("/delete/one/:PillowId", async function(req, res) {
-    PillowId = req.params.PillowId;
+router.delete("/delete/one/:childProductId", async function(req, res) {
+    childProductId = req.params.childProductId;
     const response = await pool.query(`
     DELETE FROM pillows
-    WHERE pillow_id = '${PillowId}'`);
+    WHERE pillow_id = '${childProductId}'`);
     res.send(response);
 });
 
@@ -38,14 +38,14 @@ router.delete("/delete/all/:productId", async function(req, res) {
 });
 
 router.put("/take", async function(req, res) {
-    const { PillowId, newAmount } = req.body;
+    const { childProductId, newAmount } = req.body;
     const response = await pool.query(`
     UPDATE
         pillows
     SET
         amount = ${newAmount}
     WHERE
-        pillow_id = '${PillowId}'`);
+        pillow_id = '${childProductId}'`);
     res.send(response);
 });
 

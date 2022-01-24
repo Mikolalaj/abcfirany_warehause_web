@@ -19,7 +19,7 @@ function ManageIcons({ childProduct }) {
 
     async function deleteProduct() {
         try {
-            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${product.category}/one/${childProduct.id}`);
+            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/${product.category}/delete/one/${childProduct.id}`);
             if (rowCount) {
                 let newProducts = childProducts.filter(function(prod) {
                     return prod.id !== childProduct.id;
@@ -54,7 +54,7 @@ function ManageIcons({ childProduct }) {
         }
         if (amount == childProduct.amount) {
             try {
-                const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/${product.category}/one/${childProduct.id}`);
+                const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/${product.category}/delete/one/${childProduct.id}`);
                 if (rowCount) {
                     let newProducts = childProducts.filter(function(prod) {
                         return prod.id !== childProduct.id;
@@ -72,8 +72,8 @@ function ManageIcons({ childProduct }) {
         }
         else {
             try {
-                const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/take/${product.category}`, {
-                    productPremadeId: childProduct.id,
+                const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/${product.category}/take`, {
+                    childProductId: childProduct.id,
                     newAmount: childProduct.amount - amount
                 });
                 if (rowCount) {
@@ -101,7 +101,7 @@ function ManageIcons({ childProduct }) {
 
     async function editProduct(formData) {
         try {
-            const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/update/${product.category}`, {...formData, productPremadeId: childProduct.id});
+            const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/${product.category}/update`, {...formData, childProductId: childProduct.id});
             if (rowCount) {
                 let newProducts = childProducts.filter(function(prod) {
                     if (prod.id === childProduct.id) {

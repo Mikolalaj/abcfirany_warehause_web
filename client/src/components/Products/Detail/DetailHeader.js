@@ -18,8 +18,8 @@ function DetailHeader() {
 
     async function addProduct(formData) {
         try {
-            const { data } = await fetchContext.authAxios.post(`/products/add/${category}`, {...formData, productId: productId});
-            setChildProducts([...childProducts, {...formData, id: data[0].productPremadeId}]);
+            const { data } = await fetchContext.authAxios.post(`/products/${category}/add`, {...formData, productId: productId});
+            setChildProducts([...childProducts, {...formData, id: data[0].premadeId}]);
             setAddPopup(false);
         }
         catch (error) {
@@ -30,7 +30,7 @@ function DetailHeader() {
 
     async function deleteProduct() {
         try {
-            const { data } = await fetchContext.authAxios.delete(`/products/delete/${category}/all/${productId}`);
+            const { data } = await fetchContext.authAxios.delete(`/products/${category}/delete/all/${productId}`);
             if (data.rowCount) {
                 const newSearchResult = childProducts.filter(product => product.productId !== productId);
                 setChildProducts(newSearchResult);

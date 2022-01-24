@@ -1,5 +1,4 @@
 import "./Product.css";
-import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { IoMdPricetag } from "react-icons/io";
 
@@ -8,13 +7,13 @@ function Product(props) {
     const { symbol, productId, comments, sale, img, category } = props;
 
     function category_name(category) {
-        if (category === 'pillow') {
+        if (category === 'pillows') {
             return 'Poszewki'
         } else if (category === 'premade') {
             return 'Gotowe'
         } else if (category === 'meter') {
             return 'Metraż'
-        } else if (category === 'towel') {
+        } else if (category === 'towels') {
             return 'Ręczniki'
         }
     }

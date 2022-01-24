@@ -22,11 +22,11 @@ router.get("/search/:productId", async function(req, res, next) {
     next();
 });
 
-router.delete("/delete/one/:TowelId", async function(req, res) {
-    TowelId = req.params.TowelId;
+router.delete("/delete/one/:childProductId", async function(req, res) {
+    childProductId = req.params.childProductId;
     const response = await pool.query(`
     DELETE FROM towels
-    WHERE towel_id = '${TowelId}'`);
+    WHERE towel_id = '${childProductId}'`);
     res.send(response);
 });
 
@@ -39,14 +39,14 @@ router.delete("/delete/all/:productId", async function(req, res) {
 });
 
 router.put("/take", async function(req, res) {
-    const { TowelId, newAmount } = req.body;
+    const { childProductId, newAmount } = req.body;
     const response = await pool.query(`
     UPDATE
         towels
     SET
         amount = ${newAmount}
     WHERE
-        towel_id = '${TowelId}'`);
+        towel_id = '${childProductId}'`);
     res.send(response);
 });
 
