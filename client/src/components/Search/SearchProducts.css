@@ -18,6 +18,12 @@
     border-radius: 5px;
 }
 
+.search input:focus {
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: var(--color-wheel-2);
+}
+
 .search button {
     flex-grow: 1;
     background-color: var(--primary);

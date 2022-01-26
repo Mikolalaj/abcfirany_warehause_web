@@ -5,10 +5,10 @@ import {
     AmountMeterInput,
     ShelfCodeInput,
     CommentsInput } from './Inputs';
-import './ProductForm.css';
+import FormPopup from '../../../Common/Popup/FormPopup';
 
 function MeterForm({ closePopup, okButtonText, onYes, productData }) {
-    const {register, handleSubmit, formState: { errors }, setValue} = useForm();
+    const {register, handleSubmit, formState: { errors }} = useForm();
     
     function onSubmit(formData) {
         let {shelfCode, ...rest} = formData;
@@ -17,21 +17,12 @@ function MeterForm({ closePopup, okButtonText, onYes, productData }) {
     }
 
     return (
-    <form className='product-form'>
+    <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
         <WidthInput register={register} errors={errors} defaultValue={productData.width} />
         <AmountMeterInput register={register} errors={errors} defaultValue={productData.amount} />
         <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelving === '' ? '' : `${productData.shelving}-${productData.column}-${productData.shelf}`} />
-        <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />        
-
-        <div className="popup-buttons">
-            <div className="popup-no" onClick={closePopup}>
-                Anuluj
-            </div>
-            <div className="popup-yes" onClick={handleSubmit(onSubmit)}>
-                {okButtonText}
-            </div>
-        </div>
-    </form>
+        <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />
+    </FormPopup>
     )
 }
 

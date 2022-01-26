@@ -6,7 +6,7 @@ import {
     CommentsInput,
     SizeInput
 } from './Inputs';
-import './ProductForm.css';
+import FormPopup from '../../../Common/Popup/FormPopup';
 
 function TowelForm({ closePopup, okButtonText, onYes, productData }) {
     const {register, handleSubmit, formState: { errors }} = useForm();
@@ -18,21 +18,12 @@ function TowelForm({ closePopup, okButtonText, onYes, productData }) {
     }
 
     return (
-    <form className='product-form'>
+    <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
         <SizeInput register={register} errors={errors} defaultValue={productData.size} />
         <AmountPiecesInput register={register} errors={errors} defaultValue={productData.amount} />
         <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelving === '' ? '' : `${productData.shelving}-${productData.column}-${productData.shelf}`} />
         <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />
-
-        <div className="popup-buttons">
-            <div className="popup-no" onClick={closePopup}>
-                Anuluj
-            </div>
-            <div className="popup-yes" onClick={handleSubmit(onSubmit)}>
-                {okButtonText}
-            </div>
-        </div>
-    </form>
+    </FormPopup>
     )
 }
 
