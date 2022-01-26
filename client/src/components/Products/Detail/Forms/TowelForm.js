@@ -1,15 +1,16 @@
 
 import { useForm } from 'react-hook-form';
 import {
-    WidthInput,
-    AmountMeterInput,
+    AmountPiecesInput,
     ShelfCodeInput,
-    CommentsInput } from './Inputs';
+    CommentsInput,
+    SizeInput
+} from './Inputs';
 import './ProductForm.css';
 
-function MeterForm({ closePopup, okButtonText, onYes, productData }) {
-    const {register, handleSubmit, formState: { errors }, setValue} = useForm();
-    
+function TowelForm({ closePopup, okButtonText, onYes, productData }) {
+    const {register, handleSubmit, formState: { errors }} = useForm();
+
     function onSubmit(formData) {
         let {shelfCode, ...rest} = formData;
         shelfCode = shelfCode.split('-');
@@ -18,10 +19,10 @@ function MeterForm({ closePopup, okButtonText, onYes, productData }) {
 
     return (
     <form className='product-form'>
-        <WidthInput register={register} errors={errors} defaultValue={productData.width} />
-        <AmountMeterInput register={register} errors={errors} defaultValue={productData.amount} />
+        <SizeInput register={register} errors={errors} defaultValue={productData.size} />
+        <AmountPiecesInput register={register} errors={errors} defaultValue={productData.amount} />
         <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelving === '' ? '' : `${productData.shelving}-${productData.column}-${productData.shelf}`} />
-        <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />        
+        <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />
 
         <div className="popup-buttons">
             <div className="popup-no" onClick={closePopup}>
@@ -35,4 +36,4 @@ function MeterForm({ closePopup, okButtonText, onYes, productData }) {
     )
 }
 
-export default MeterForm;
+export default TowelForm;

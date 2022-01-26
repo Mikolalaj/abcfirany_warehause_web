@@ -9,20 +9,19 @@ import {
 } from './Inputs';
 import './ProductForm.css';
 
-function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
+function PillowForm({ closePopup, okButtonText, onYes, productData }) {
     const {register, handleSubmit, formState: { errors }} = useForm();
 
     function onSubmit(formData) {
         let {shelfCode, ...rest} = formData;
-        shelfCode = shelfCode.split('-');
-        onYes({...rest, shelving: shelfCode[0], column: shelfCode[1], shelf: shelfCode[2]});
+        onYes({...rest, shelf: shelfCode.toUpperCase()});
     }
 
     return (
     <form className='product-form'>
         <SizeInput register={register} errors={errors} defaultValue={productData.size} />
         <AmountPiecesInput register={register} errors={errors} defaultValue={productData.amount} />
-        <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelving === '' ? '' : `${productData.shelving}-${productData.column}-${productData.shelf}`} />
+        <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelf} type='pillows' />
         <FinishInput register={register} errors={errors} defaultValue={productData.finish} />
         <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />
 
@@ -38,4 +37,4 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     )
 }
 
-export default PremadeForm;
+export default PillowForm;

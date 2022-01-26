@@ -17,6 +17,7 @@ function DetailHeader() {
     const [deletePopupError, setDeletePopupError] = useState('');
 
     async function addProduct(formData) {
+        console.log(formData)
         try {
             const { data } = await fetchContext.authAxios.post(`/products/${category}/add`, {...formData, productId: productId});
             setChildProducts([...childProducts, {...formData, id: data[0].premadeId}]);

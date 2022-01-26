@@ -56,7 +56,7 @@ router.post("/add", async function(req, res, next) {
     INSERT INTO pillows
         (product_id, shelf, size, amount, finish, comments, pillow_id)
     VALUES
-        ('${productId}', '${shelf}', '${size}', '${amount}', '${finish}', '${comments}', '${uuid}')
+        ('${productId}', '${shelf.toUpperCase()}', '${size}', '${amount}', '${finish}', '${comments}', '${uuid}')
     RETURNING
         pillow_id`);
     req.body = rows;
@@ -69,10 +69,10 @@ router.put("/update", async function(req, res) {
     UPDATE
         pillows
     SET
-        shelf = '${shelf}',
+        shelf = '${shelf.toUpperCase()}',
         size = '${size}',
-        amount = ${amount},
-        finish = ${finish},
+        amount = '${amount}',
+        finish = '${finish}',
         comments = '${comments}'
     WHERE
         pillow_id = '${childProductId}'`);
