@@ -6,7 +6,6 @@ function Popup({ children, trigger, closePopup }) {
     const [startClick, setStartClick] = useState(null);
 
     function handleClickOutside(event) {
-        event.preventDefault();
         if(startClick === event.currentTarget) {
             closePopup();
         }

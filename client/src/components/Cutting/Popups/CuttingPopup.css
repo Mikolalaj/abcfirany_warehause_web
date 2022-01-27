@@ -1,0 +1,28 @@
+.cutting-popup {
+    width: 400px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cutting-popup h2 {
+    font-size: 30px;
+    font-weight: 300;
+    margin: 0;
+}
+
+.cutting-popup .form-error {
+    font-size: 17px;
+    color: var(--red);
+    margin-top: 10px;
+    visibility: hidden;
+}
+
+.cutting-popup .form-error:after {
+    content: '\200b';
+}
+
+.cutting-popup .form-error.visible {
+    visibility: visible;
+}

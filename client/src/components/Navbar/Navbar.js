@@ -2,6 +2,9 @@ import './Navbar.css';
 import { Link, useHistory } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+
+import CuttingPopup from '../Cutting/Popups/CuttingPopup';
+
 import { ImStatsBars, ImSearch } from "react-icons/im";
 import { FaPlusCircle, FaUserAlt } from 'react-icons/fa';
 import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
@@ -22,7 +25,7 @@ function Navbar() {
         },
         {
             name: 'Dodaj produkt',
-            link: '/add',
+            onClick: () => {setCuttingPopup(true)},
             icon: <FaPlusCircle />
         },
         {
@@ -56,6 +59,7 @@ function Navbar() {
         }
     }, []);
 
+    const [cuttingPopup, setCuttingPopup] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const history = useHistory();
     const authContext = useContext(AuthContext);
@@ -66,16 +70,45 @@ function Navbar() {
     }
 
     return (
+    <>
+        <CuttingPopup 
+            trigger={cuttingPopup}
+            closePopup={() => setCuttingPopup(false)}
+            onYes={() => setCuttingPopup(false)}
+            okButtonText='Dodaj'
+            labelText='Dodaj metry'
+            errorMessage=''
+            cuttingData={{}}
+        />
+        
         <nav className="sidebar">
-            {menuItems.map((item, index) =>
-                <Link key={index} className={`menu-item ${index===selectedItem && 'selected'}`} to={item.link} onClick={()=>setSelectedItem(index)}>
-                    <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
-                    {item.icon}
-                    <p className='item-tooltip'>
-                        {item.name}
-                    </p>
-                </Link>
-            )}
+            {menuItems.map((item, index) => {
+                if (item.link === undefined) {
+                    return (
+                        <div key={index} className='menu-item' onClick={()=>item.onClick()}>
+                            {item.icon}
+                            <p className='item-tooltip'>
+                                {item.name}
+                            </p>
+                        </div>
+                    )
+                } else {
+                    return (
+                        <Link
+                            key={index}
+                            className={`menu-item ${index===selectedItem && 'selected'}`}
+                            to={item.link}
+                            onClick={()=>setSelectedItem(index)}
+                        >
+                            <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
+                            {item.icon}
+                            <p className='item-tooltip'>
+                                {item.name}
+                            </p>
+                        </Link>
+                    )
+                }
+            })}
             <div className='menu-item' onClick={onLogoutButtonClick}>
                 <IoLogOut />
                 <p className='item-tooltip'>
@@ -83,6 +116,7 @@ function Navbar() {
                 </p>
             </div>
         </nav>
+    </>
     )
 }
 
