@@ -1,16 +1,9 @@
-const destinations = {
-    'sewing': [
-        { value: 'sewing room', label: 'Szwalnia' },
-        { value: 'shipment', label: 'Wysyłka' },
-        { value: 'warehouse', label: 'Magazyn' },
-        { value: 'lacks', label: 'Braki' }
-    ],
-    'no sewing': [
-        { value: 'shipment', label: 'Wysyłka' },
-        { value: 'warehouse', label: 'Magazyn' },
-        { value: 'lacks', label: 'Braki' }
-    ]
-}
+const destinations = [
+    { value: 'sewing room', label: 'Szwalnia' },
+    { value: 'shipment', label: 'Wysyłka' },
+    { value: 'warehouse', label: 'Magazyn' },
+    { value: 'lacks', label: 'Braki' }
+]
 
 const pillows = {
     'Gotowe': [

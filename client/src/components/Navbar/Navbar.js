@@ -2,6 +2,7 @@ import './Navbar.css';
 import { Link, useHistory } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { FetchContext } from '../../context/FetchContext';
 
 import CuttingPopup from '../Cutting/Popups/CuttingPopup';
 
@@ -25,12 +26,12 @@ function Navbar() {
         },
         {
             name: 'Dodaj produkt',
-            onClick: () => {setCuttingPopup(true)},
+            link: '/add-product',
             icon: <FaPlusCircle />
         },
         {
             name: 'Dodaj metry',
-            link: '',
+            onClick: () => {setCuttingPopup(true)},
             icon: <RiScissors2Fill />
         },
         {
@@ -60,13 +61,29 @@ function Navbar() {
     }, []);
 
     const [cuttingPopup, setCuttingPopup] = useState(false);
+    const [cuttingErrorMessage, setCuttingErrorMessage] = useState('');
     const [selectedItem, setSelectedItem] = useState(null);
     const history = useHistory();
     const authContext = useContext(AuthContext);
+    const fetchContext = useContext(FetchContext);
 
     function onLogoutButtonClick() {
         authContext.logout();
         history.push('/login');
+    }
+
+    async function addCutting(formData) {
+        try {
+            const { data } = await fetchContext.authAxios.post('/cutting/add', formData);
+            if (data[0]) {
+                setCuttingPopup(false);
+            }
+            else {
+                setCuttingErrorMessage('Wystąpił błąd podczas dodawania metrów');
+            }
+        } catch ({ response: { data: { message } } }) {
+            setCuttingErrorMessage(message)
+        }
     }
 
     return (
@@ -74,11 +91,10 @@ function Navbar() {
         <CuttingPopup 
             trigger={cuttingPopup}
             closePopup={() => setCuttingPopup(false)}
-            onYes={() => setCuttingPopup(false)}
+            onYes={addCutting}
             okButtonText='Dodaj'
             labelText='Dodaj metry'
-            errorMessage=''
-            cuttingData={{}}
+            errorMessage={cuttingErrorMessage}
         />
         
         <nav className="sidebar">

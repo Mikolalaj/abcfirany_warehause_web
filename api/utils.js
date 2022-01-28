@@ -48,7 +48,7 @@ const createToken = userData => {
         aud: 'api.abcfirany'
     },
     process.env.JWT_SECRET,
-    { algorithm: 'HS256', expiresIn: '2h' }
+    { algorithm: 'HS256', expiresIn: '24h' }
     );
 };
 

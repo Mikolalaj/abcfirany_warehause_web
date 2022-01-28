@@ -9,6 +9,7 @@ var csrfProtection = csrf({ cookie: true });
 const { camelize } = require('./utils');
 
 var usersRouter = require('./routes/users');
+var cuttingRouter = require('./routes/cutting');
 var productsRouter = require('./routes/products/products');
 var productsPremadeRouter = require('./routes/products/premade');
 var productsMeterRouter = require('./routes/products/meter');
@@ -68,6 +69,8 @@ app.get('/api/csrf-token', async function(req, res) {
 
 app.use(attachUser);
 app.use(checkJwt);
+
+app.use('/api/cutting', cuttingRouter);
 
 app.use('/api/products', productsRouter);
 app.use('/api/products/premade', productsPremadeRouter);

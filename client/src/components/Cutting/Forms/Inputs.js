@@ -4,7 +4,7 @@ import ToggleSwitch from '../../Common/ToggleSwitch';
 import { Controller } from 'react-hook-form';
 import { destinations } from '../../../dicts';
 
-function AmountInput({ register, errors, defaultValue, registerName, placeholder }) {
+function AmountInput({ register, errors, defaultValue, registerName, placeholder, autoFocus }) {
 
     function twoDecimals(input) {
         input = input.toString()
@@ -17,6 +17,7 @@ function AmountInput({ register, errors, defaultValue, registerName, placeholder
     return (
     <>
     <input
+        autoFocus={autoFocus ? true : false}
         className={errors[registerName] && 'input-error'}
         type='number'
         placeholder={placeholder}
@@ -45,10 +46,11 @@ function AmountInput({ register, errors, defaultValue, registerName, placeholder
     )
 }
 
-function CommentsInput({ register, errors, defaultValue }) {
+function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
+        autoFocus={autoFocus ? true : false}
         className={errors.comments && 'input-error'}
         type='text'
         placeholder='Uwagi'
@@ -65,17 +67,26 @@ function CommentsInput({ register, errors, defaultValue }) {
     )
 }
 
-function OrderNumberInput({ register, errors, defaultValue }) {
+function OrderNumberInput({ register, errors, defaultValue, autoFocus, setValue }) {
     const [isOn, setIsOn] = useState(true);
 
+    function updateSwitch(value) {
+        setIsOn(value);
+        if (value === false) {
+            errors.orderNumber = undefined
+            setValue('orderNumber', '');
+        }
+    }
+    
     return (
     <>
     <div className='input-switch'>
         <input
-            disabled={isOn}
+            autoFocus={autoFocus ? true : false}
+            disabled={!isOn}
             className={errors.orderNumber && 'input-error'}
             type='text'
-            placeholder='Numer zamówienia'
+            placeholder={isOn ? 'Numer zamówienia' : ''}
             defaultValue={defaultValue}
             {...register("orderNumber", {
                 maxLength: {
@@ -83,19 +94,19 @@ function OrderNumberInput({ register, errors, defaultValue }) {
                     message: 'Numer zamówienia może mieć maksymalnie 100 znaków'
                 },
                 required: {
-                    value: true,
+                    value: isOn ? true : false,
                     message: 'Numer zamówienia jest wymagany'
-                },
+                }
             })}
         />
-        <div onClick={()=>setIsOn(!isOn)}><ToggleSwitch value={isOn} /></div>
+        <ToggleSwitch setValue={updateSwitch} value={isOn} defaultChecked={true} />
     </div>
     {errors.orderNumber && <p className='input-error-text'>{errors.orderNumber.message}</p>}
     </>
     )
 }
 
-function DestinationInput({ errors, defaultValue, control }) {
+function DestinationInput({ errors, defaultValue, control, autoFocus }) {
     const customStyles = {
         valueContainer: provided => ({
             ...provided,
@@ -124,6 +135,7 @@ function DestinationInput({ errors, defaultValue, control }) {
             field: { onChange, onBlur, ref, value }
         }) => (
             <Select
+                autoFocus={autoFocus ? true : false}
                 onBlur={onBlur}
                 onChange={onChange}
                 inputRef={ref}
@@ -131,7 +143,7 @@ function DestinationInput({ errors, defaultValue, control }) {
                 placeholder='Miejsce'
                 className='select'
                 styles={errors.destination ? customStylesError : customStyles}
-                options={destinations.sewing}
+                options={destinations}
                 defaultValue={defaultValue}
                 theme={(theme) => ({
                     ...theme,

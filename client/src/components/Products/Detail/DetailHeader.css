@@ -16,7 +16,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    max-width: 50%;
 }
 
 .detail-description .symbol {
@@ -49,6 +48,7 @@
     font-size: 20px;
     margin: 0 0 20px 0;
     text-align: left;
+    max-width: 500px;
 }
 
 .detail-description .sale {

@@ -19,7 +19,7 @@ function PillowForm({ closePopup, okButtonText, onYes, productData }) {
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
-        <SizeInput register={register} errors={errors} defaultValue={productData.size} />
+        <SizeInput register={register} errors={errors} defaultValue={productData.size} autoFocus={true}/>
         <AmountPiecesInput register={register} errors={errors} defaultValue={productData.amount} />
         <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelf} type='pillows' />
         <FinishInput register={register} errors={errors} defaultValue={productData.finish} />

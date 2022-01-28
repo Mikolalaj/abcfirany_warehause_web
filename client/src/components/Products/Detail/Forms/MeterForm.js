@@ -18,7 +18,7 @@ function MeterForm({ closePopup, okButtonText, onYes, productData }) {
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
-        <WidthInput register={register} errors={errors} defaultValue={productData.width} />
+        <WidthInput register={register} errors={errors} defaultValue={productData.width} autoFocus={true}/>
         <AmountMeterInput register={register} errors={errors} defaultValue={productData.amount} />
         <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelving === '' ? '' : `${productData.shelving}-${productData.column}-${productData.shelf}`} />
         <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />

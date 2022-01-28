@@ -41,7 +41,8 @@
 
 .popup-form input:disabled {
     cursor: default;
-    background-color: #e9e9e9;
+    color: #dddddd;
+    background-color: #dddddd;
 }
 
 .popup-form .select {

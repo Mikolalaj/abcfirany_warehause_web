@@ -19,4 +19,14 @@ function CuttingPopup({ trigger, closePopup, onYes, okButtonText, labelText, cut
     )
 }
 
+CuttingPopup.defaultProps = {
+    cuttingData: {
+        cuttingAmount: '',
+        sewingAmount: '',
+        orderNumber: '',
+        destination: '',
+        comments: ''
+    }
+}
+
 export default CuttingPopup;

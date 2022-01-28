@@ -1,10 +1,10 @@
 
 
-function WidthInput({ register, errors, defaultValue }) {
+function WidthInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus
+        autoFocus={autoFocus ? true : false}
         className={errors.width && 'input-error'}
         type='number'
         placeholder='Szerokość'
@@ -33,7 +33,7 @@ function WidthInput({ register, errors, defaultValue }) {
     )
 }
 
-function AmountMeterInput({ register, errors, defaultValue }) {
+function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
 
     function twoDecimals(input) {
         input = input.toString()
@@ -46,6 +46,7 @@ function AmountMeterInput({ register, errors, defaultValue }) {
     return (
     <>
     <input
+        autoFocus={autoFocus ? true : false}
         className={errors.amount && 'input-error'}
         type='number'
         placeholder='Ilość metrów'
@@ -74,10 +75,11 @@ function AmountMeterInput({ register, errors, defaultValue }) {
     )
 }
 
-function AmountPiecesInput({ register, errors, defaultValue }) {
+function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
+        autoFocus={autoFocus ? true : false}
         className={errors.amount && 'input-error'}
         type='number'
         placeholder='Ilość sztuk'
@@ -106,7 +108,7 @@ function AmountPiecesInput({ register, errors, defaultValue }) {
     )
 }
 
-function ShelfCodeInput({ register, errors, defaultValue, type }) {
+function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
 
     const regex = type === 'pillows' ? /[a-zA-Z]\d{1,2}/ : /\d{1,2}[-]\d{1,2}[-]\d{1,2}/
     const format = type === 'pillows' ? 'A1' : '1-2-3'
@@ -114,6 +116,7 @@ function ShelfCodeInput({ register, errors, defaultValue, type }) {
     return (
     <>
     <input
+        autoFocus={autoFocus ? true : false}
         className={`shelf-code ${errors.shelfCode && 'input-error'}`}
         type='text'
         placeholder='Kod półki'
@@ -134,10 +137,11 @@ function ShelfCodeInput({ register, errors, defaultValue, type }) {
     )
 }
 
-function CommentsInput({ register, errors, defaultValue }) {
+function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
+        autoFocus={autoFocus ? true : false}
         className={errors.comments && 'input-error'}
         type='text'
         placeholder='Uwagi'
@@ -154,10 +158,11 @@ function CommentsInput({ register, errors, defaultValue }) {
     )
 }
 
-function FinishInput({ register, errors, defaultValue }) {
+function FinishInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
+        autoFocus={autoFocus ? true : false}
         className={errors.finish && 'input-error'}
         type='text'
         placeholder='Wykończenie'
@@ -178,11 +183,11 @@ function FinishInput({ register, errors, defaultValue }) {
     )
 }
 
-function SizeInput({ register, errors, defaultValue }) {
+function SizeInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus
+        autoFocus={autoFocus ? true : false}
         className={errors.size && 'input-error'}
         type='text'
         placeholder='Wymiary'
