@@ -1,12 +1,12 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var pool = require("../db");
+var pool = require('../db');
 const { v4: uuidv4 } = require('uuid');
 
-router.post("/add", async function(req, res, next) {
+router.post('/add', async function(req, res, next) {
     const { sub } = req.user;
     if (!sub) {
-        return res.status(401).json({ message: "Błąd autoryzacji" });
+        return res.status(401).json({ message: 'Błąd autoryzacji' });
     }
 
     const { cuttingAmount, sewingAmount, orderNumber, destination, comments } = req.body;

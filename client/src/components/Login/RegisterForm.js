@@ -41,21 +41,21 @@ function RegisterForm() {
         <input
             type='text'
             placeholder='Imie'
-            {...register("firstName", { required: true })}
+            {...register('firstName', { required: true })}
         />
         {errors.firstName && <p className='form-error'>Imię jest wymagane</p>}
 
         <input
             type='text'
             placeholder='Nazwisko'
-            {...register("lastName", { required: true })}
+            {...register('lastName', { required: true })}
         />
         {errors.lastName && <p className='form-error'>Nazwisko jest wymagane</p>}
 
         <input
             type='email'
             placeholder='Email'
-            {...register("email", {
+            {...register('email', {
                 required: true,
                 pattern: /\S+@\S+\.\S+/
             })}
@@ -67,7 +67,7 @@ function RegisterForm() {
         <input
             type='text'
             placeholder='Login'
-            {...register("username", { required: true })}
+            {...register('username', { required: true })}
         />
         {errors.username && <p className='form-error'>Login jest wymagany</p>}
         <p className='form-error'>{usernameText}</p>
@@ -75,7 +75,7 @@ function RegisterForm() {
         <input
             type='password'
             placeholder='Hasło'
-            {...register("password", {
+            {...register('password', {
                 required: true,
                 minLength: 8
             })}

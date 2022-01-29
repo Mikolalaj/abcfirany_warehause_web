@@ -2,14 +2,12 @@ import './Navbar.css';
 import { Link, useHistory } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { FetchContext } from '../../context/FetchContext';
+import AddCutting from '../Cutting/AddCutting';
 
-import CuttingPopup from '../Cutting/Popups/CuttingPopup';
-
-import { ImStatsBars, ImSearch } from "react-icons/im";
-import { FaPlusCircle, FaUserAlt } from 'react-icons/fa';
+import { ImStatsBars, ImSearch } from 'react-icons/im';
+import { FaPlusCircle, FaUserAlt, FaDog } from 'react-icons/fa';
 import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
-import { RiScissors2Fill } from "react-icons/ri";
+import { RiScissors2Fill } from 'react-icons/ri';
 import { HiHome } from 'react-icons/hi';
 
 function Navbar() {
@@ -25,14 +23,19 @@ function Navbar() {
             icon: <ImSearch />
         },
         {
-            name: 'Dodaj produkt',
-            link: '/add-product',
-            icon: <FaPlusCircle />
-        },
-        {
             name: 'Dodaj metry',
             onClick: () => {setCuttingPopup(true)},
             icon: <RiScissors2Fill />
+        },
+        {
+            name: 'Dodaj brak',
+            onClick: () => {setCuttingPopup(true)},
+            icon: <FaDog />
+        },
+        {
+            name: 'Dodaj produkt',
+            link: '/add-product',
+            icon: <FaPlusCircle />
         },
         {
             name: 'Ustawienia',
@@ -61,43 +64,21 @@ function Navbar() {
     }, []);
 
     const [cuttingPopup, setCuttingPopup] = useState(false);
-    const [cuttingErrorMessage, setCuttingErrorMessage] = useState('');
     const [selectedItem, setSelectedItem] = useState(null);
     const history = useHistory();
     const authContext = useContext(AuthContext);
-    const fetchContext = useContext(FetchContext);
 
     function onLogoutButtonClick() {
         authContext.logout();
         history.push('/login');
     }
 
-    async function addCutting(formData) {
-        try {
-            const { data } = await fetchContext.authAxios.post('/cutting/add', formData);
-            if (data[0]) {
-                setCuttingPopup(false);
-            }
-            else {
-                setCuttingErrorMessage('Wystąpił błąd podczas dodawania metrów');
-            }
-        } catch ({ response: { data: { message } } }) {
-            setCuttingErrorMessage(message)
-        }
-    }
+    
 
     return (
     <>
-        <CuttingPopup 
-            trigger={cuttingPopup}
-            closePopup={() => setCuttingPopup(false)}
-            onYes={addCutting}
-            okButtonText='Dodaj'
-            labelText='Dodaj metry'
-            errorMessage={cuttingErrorMessage}
-        />
-        
-        <nav className="sidebar">
+        <AddCutting trigger={cuttingPopup} closePopup={() => setCuttingPopup(false)} />
+        <nav className='sidebar'>
             {menuItems.map((item, index) => {
                 if (item.link === undefined) {
                     return (

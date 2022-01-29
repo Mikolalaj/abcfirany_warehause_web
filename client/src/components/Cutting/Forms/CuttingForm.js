@@ -16,8 +16,7 @@ function CuttingForm({ closePopup, okButtonText, onYes, cuttingData }) {
             delete formData.orderNumber
         }
         formData.destination = formData.destination.value;
-        console.log(formData)
-        // onYes(formData);
+        onYes(formData);
     }
 
     return (

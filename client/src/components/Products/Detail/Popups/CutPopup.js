@@ -23,11 +23,11 @@ function CutPopup({ trigger, closePopup, message, errorMessage, onYes, onNo }) {
                     />
                     <p>szt.</p>
                 </form>
-                <div className="popup-buttons">
-                    <div className="popup-no" onClick={onNo}>
+                <div className='popup-buttons'>
+                    <div className='popup-no' onClick={onNo}>
                         Anuluj
                     </div>
-                    <div className="popup-yes" onClick={()=>{onYes(amount)}}>
+                    <div className='popup-yes' onClick={()=>{onYes(amount)}}>
                         OK
                     </div>
                 </div>

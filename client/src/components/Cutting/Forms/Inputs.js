@@ -55,7 +55,7 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
         type='text'
         placeholder='Uwagi'
         defaultValue={defaultValue}
-        {...register("comments", {
+        {...register('comments', {
             maxLength: {
                 value: 100,
                 message: 'Uwagi mogą mieć maksymalnie 100 znaków'
@@ -88,7 +88,7 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus, setValue 
             type='text'
             placeholder={isOn ? 'Numer zamówienia' : ''}
             defaultValue={defaultValue}
-            {...register("orderNumber", {
+            {...register('orderNumber', {
                 maxLength: {
                     value: 100,
                     message: 'Numer zamówienia może mieć maksymalnie 100 znaków'
@@ -129,7 +129,7 @@ function DestinationInput({ errors, defaultValue, control, autoFocus }) {
     <>
     <Controller
         control={control}
-        name="destination"
+        name='destination'
         rules={{ required: {value: true, message: 'Ilość jest wymagana' }}}
         render={({
             field: { onChange, onBlur, ref, value }

@@ -1,6 +1,6 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var pool = require("../../db");
+var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
 
 const requireAdmin = (req, res, next) => {
@@ -11,7 +11,7 @@ const requireAdmin = (req, res, next) => {
     next();
 };
 
-router.get("/search", async function(req, res, next) {
+router.get('/search', async function(req, res, next) {
     const { searchSymbol } = req.query;
     const { rows } = await pool.query(`
     SELECT
@@ -26,7 +26,7 @@ router.get("/search", async function(req, res, next) {
     next();
 });
 
-router.get("/details/:productId", async function(req, res, next) {
+router.get('/details/:productId', async function(req, res, next) {
     productId = req.params.productId;
     const { rows } = await pool.query(`
     SELECT

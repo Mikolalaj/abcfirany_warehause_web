@@ -69,19 +69,19 @@ function DetailHeader() {
             errorMessage={deletePopupError}
         />
 
-        <div className="detail-header">
+        <div className='detail-header'>
             <img src={img} alt={symbol} />
-            <div className="detail-description">
-                <div className="symbol">
+            <div className='detail-description'>
+                <div className='symbol'>
                     <h1>{symbol}</h1>
-                    <MdEdit className="edit" onClick={()=>console.log('edit')}/>
+                    <MdEdit className='edit' onClick={()=>console.log('edit')}/>
                 </div>
-                {sale && <p className="sale"><IoMdPricetag/>Wyprzedaż</p>}
+                {sale && <p className='sale'><IoMdPricetag/>Wyprzedaż</p>}
                 <p>{comments}</p>
-                <div className="product-options">
-                    <div className="option" onClick={() => setAddPopup(true)}><MdAddCircle />Dodaj nowy produkt</div>
-                    <div className="option" onClick={openInShop}><MdFindInPage/>Wyszukaj na sklepie</div>
-                    <div className="option" onClick={() => setDeletePopup(true)}><MdDelete/>Usuń produkt</div>
+                <div className='product-options'>
+                    <div className='option' onClick={() => setAddPopup(true)}><MdAddCircle />Dodaj nowy produkt</div>
+                    <div className='option' onClick={openInShop}><MdFindInPage/>Wyszukaj na sklepie</div>
+                    <div className='option' onClick={() => setDeletePopup(true)}><MdDelete/>Usuń produkt</div>
                 </div>
             </div>
         </div>

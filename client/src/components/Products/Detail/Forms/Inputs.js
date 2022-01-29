@@ -9,7 +9,7 @@ function WidthInput({ register, errors, defaultValue, autoFocus }) {
         type='number'
         placeholder='Szerokość'
         defaultValue={defaultValue}
-        {...register("width", {
+        {...register('width', {
             valueAsNumber: true,
             required: {
                 value: true,
@@ -51,7 +51,7 @@ function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
         type='number'
         placeholder='Ilość metrów'
         defaultValue={defaultValue}
-        {...register("amount", {
+        {...register('amount', {
             valueAsNumber: true,
             required: {
                 value: true,
@@ -84,7 +84,7 @@ function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
         type='number'
         placeholder='Ilość sztuk'
         defaultValue={defaultValue}
-        {...register("amount", {
+        {...register('amount', {
             valueAsNumber: true,
             required: {
                 value: true,
@@ -121,7 +121,7 @@ function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
         type='text'
         placeholder='Kod półki'
         defaultValue={defaultValue}
-        {...register("shelfCode", {
+        {...register('shelfCode', {
             required: {
                 value: true,
                 message: 'Kod półki jest wymagany'
@@ -146,7 +146,7 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
         type='text'
         placeholder='Uwagi'
         defaultValue={defaultValue}
-        {...register("comments", {
+        {...register('comments', {
             maxLength: {
                 value: 100,
                 message: 'Uwagi mogą mieć maksymalnie 100 znaków'
@@ -167,7 +167,7 @@ function FinishInput({ register, errors, defaultValue, autoFocus }) {
         type='text'
         placeholder='Wykończenie'
         defaultValue={defaultValue}
-        {...register("finish", {
+        {...register('finish', {
             required: {
                 value: true,
                 message: 'Wykończenie jest wymagane'
@@ -192,7 +192,7 @@ function SizeInput({ register, errors, defaultValue, autoFocus }) {
         type='text'
         placeholder='Wymiary'
         defaultValue={defaultValue}
-        {...register("size", {
+        {...register('size', {
             required: {
                 value: true,
                 message: 'Wymiar jest wymagany'

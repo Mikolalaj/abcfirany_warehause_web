@@ -1,15 +1,15 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { FetchContext } from "../../../context/FetchContext"
-import { ProductContext } from "../../../context/ProductContext";
-import { MdOutlineArrowBackIos } from "react-icons/md"
-import Loading from "../../Common/Loading";
-import DetailHeader from "./DetailHeader";
+import { FetchContext } from '../../../context/FetchContext'
+import { ProductContext } from '../../../context/ProductContext';
+import { MdOutlineArrowBackIos } from 'react-icons/md'
+import Loading from '../../Common/Loading';
+import DetailHeader from './DetailHeader';
 
 import MeterListing from './Listings/MeterListing';
 import PremadeListing from './Listings/PremadeListing';
-import PillowListing from "./Listings/PillowListing";
-import TowelListing from "./Listings/TowelListing";
+import PillowListing from './Listings/PillowListing';
+import TowelListing from './Listings/TowelListing';
 
 import './Detail.css';
 

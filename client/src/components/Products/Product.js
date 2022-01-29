@@ -1,6 +1,6 @@
-import "./Product.css";
-import { useHistory } from "react-router-dom";
-import { IoMdPricetag } from "react-icons/io";
+import './Product.css';
+import { useHistory } from 'react-router-dom';
+import { IoMdPricetag } from 'react-icons/io';
 
 function Product(props) {
     const history = useHistory();
@@ -24,13 +24,13 @@ function Product(props) {
     
     return (
     <div onClick={handleProductClick} className={`product ${category}`} key={productId}>
-        <div className="image-wrapper">
-            <img className="image" src={img} alt={symbol} />
+        <div className='image-wrapper'>
+            <img className='image' src={img} alt={symbol} />
         </div>
-        <div className="description">
+        <div className='description'>
             <IoMdPricetag className={sale ? 'sale visible' : 'sale notvisible'}/>
-            <h1 className="symbol">{symbol}</h1>
-            <p className="comments">{comments}</p>
+            <h1 className='symbol'>{symbol}</h1>
+            <p className='comments'>{comments}</p>
             <p className={`category ${category}`}>{category_name(category)}</p>
         </div>
     </div>

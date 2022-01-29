@@ -1,11 +1,11 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var pool = require("../../db");
+var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
 
 // api/products/pillows/
 
-router.get("/search/:productId", async function(req, res, next) {
+router.get('/search/:productId', async function(req, res, next) {
     productId = req.params.productId;
     const { rows } = await pool.query(`
     SELECT
@@ -21,7 +21,7 @@ router.get("/search/:productId", async function(req, res, next) {
     next();
 });
 
-router.delete("/delete/one/:childProductId", async function(req, res) {
+router.delete('/delete/one/:childProductId', async function(req, res) {
     childProductId = req.params.childProductId;
     const response = await pool.query(`
     DELETE FROM pillows
@@ -29,7 +29,7 @@ router.delete("/delete/one/:childProductId", async function(req, res) {
     res.send(response);
 });
 
-router.delete("/delete/all/:productId", async function(req, res) {
+router.delete('/delete/all/:productId', async function(req, res) {
     const productId = req.params.productId;
     const response = await pool.query(`
     DELETE FROM pillows
@@ -37,7 +37,7 @@ router.delete("/delete/all/:productId", async function(req, res) {
     res.send(response);
 });
 
-router.put("/take", async function(req, res) {
+router.put('/take', async function(req, res) {
     const { childProductId, newAmount } = req.body;
     const response = await pool.query(`
     UPDATE
@@ -49,7 +49,7 @@ router.put("/take", async function(req, res) {
     res.send(response);
 });
 
-router.post("/add", async function(req, res, next) {
+router.post('/add', async function(req, res, next) {
     const { productId, shelf, size, amount, finish, comments } = req.body;
     const uuid = uuidv4();
     const { rows } = await pool.query(`
@@ -63,7 +63,7 @@ router.post("/add", async function(req, res, next) {
     next();
 });
 
-router.put("/update", async function(req, res) {
+router.put('/update', async function(req, res) {
     const { childProductId, shelf, size, amount, finish, comments } = req.body;
     const response = await pool.query(`
     UPDATE

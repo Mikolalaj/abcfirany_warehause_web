@@ -13,7 +13,7 @@ function SearchProducts() {
     return (
     <>
         <form onSubmit={(event)=>{history.push(`/search?symbol=${searchSymbol}`); event.preventDefault()}} className='search'>
-            <input type="text" placeholder='🔍 Wpisz symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
+            <input type='text' placeholder='🔍 Wpisz symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
             <button type='submit'>Szukaj</button>
         </form>
     </>

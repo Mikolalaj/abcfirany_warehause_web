@@ -1,7 +1,7 @@
 require('dotenv').config();
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var pool = require("../db");
+var pool = require('../db');
 const jwtDecode = require('jwt-decode');
 const { v4: uuidv4 } = require('uuid');
 const { createToken, hashPassword, verifyPassword } = require('../utils');
@@ -87,7 +87,7 @@ async function addUser({ user_id, firstName, lastName, email, username, password
     }
 }
 
-router.post("/signup", async function(req, res) {
+router.post('/signup', async function(req, res) {
     try {
         const { firstName, lastName, email, username, password } = req.body;
         const hashedPassword = await hashPassword(password);
@@ -169,7 +169,7 @@ async function checkUsernameEmailAvailability({username, email}) {
     }
 }
 
-router.get("/checkUsernameEmail/", function(req, res) {
+router.get('/checkUsernameEmail/', function(req, res) {
     userData = req.query;
     checkUsernameEmailAvailability(userData)
         .then(result => res.send(result));

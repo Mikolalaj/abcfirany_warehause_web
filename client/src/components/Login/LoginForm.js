@@ -29,14 +29,14 @@ function LoginForm() {
         <input
             type='text'
             placeholder='Login'
-            {...register("username", { required: true })}
+            {...register('username', { required: true })}
         />
         {errors.username && <p className='form-error'>Login jest wymagany</p>}
 
         <input
             type='password'
             placeholder='Hasło'
-            {...register("password", { required: true })}
+            {...register('password', { required: true })}
         />
         {errors.password && <p className='form-error'>Hasło jest wymagane</p>}
 

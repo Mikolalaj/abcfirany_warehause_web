@@ -1,4 +1,4 @@
-import Popup from "./Popup";
+import Popup from './Popup';
 import './YesNoPopup.css';
 
 function YesNoPopup({ trigger, closePopup, message, errorMessage, onYes }) {
@@ -7,11 +7,11 @@ function YesNoPopup({ trigger, closePopup, message, errorMessage, onYes }) {
             <div className='yes-no-popup' >
                 <h1>{message}</h1>
                 <p>{errorMessage}</p>
-                <div className="popup-buttons">
-                    <div className="popup-no" onClick={closePopup}>
+                <div className='popup-buttons'>
+                    <div className='popup-no' onClick={closePopup}>
                         Nie
                     </div>
-                    <div className="popup-yes" onClick={onYes}>
+                    <div className='popup-yes' onClick={onYes}>
                         Tak
                     </div>
                 </div>

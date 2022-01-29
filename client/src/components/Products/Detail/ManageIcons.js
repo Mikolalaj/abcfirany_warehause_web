@@ -1,14 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext, useState } from 'react';
 
-import { MdDelete, MdEdit } from "react-icons/md";
-import { RiScissors2Fill } from "react-icons/ri";
+import { MdDelete, MdEdit } from 'react-icons/md';
+import { RiScissors2Fill } from 'react-icons/ri';
 
-import { ProductContext } from "../../../context/ProductContext";
-import { FetchContext } from "../../../context/FetchContext";
+import { ProductContext } from '../../../context/ProductContext';
+import { FetchContext } from '../../../context/FetchContext';
 
-import YesNoPopup from "../../Common/Popup/YesNoPopup";
-import CutPopup from "./Popups/CutPopup";
-import ProductPopup from "./Popups/ProductPopup";
+import YesNoPopup from '../../Common/Popup/YesNoPopup';
+import CutPopup from './Popups/CutPopup';
+import ProductPopup from './Popups/ProductPopup';
 
 function ManageIcons({ childProduct }) {
     const { childProducts, setChildProducts, product } = useContext(ProductContext);
@@ -28,10 +28,10 @@ function ManageIcons({ childProduct }) {
                 setChildProducts(newProducts);
             }
             else {
-                setDeletePopupError("Coś poszło nie tak... 😒");
+                setDeletePopupError('Coś poszło nie tak... 😒');
             }
         } catch (error) {
-            setDeletePopupError("Coś poszło nie tak... 😒");
+            setDeletePopupError('Coś poszło nie tak... 😒');
             console.log(error);
         }
     }
@@ -41,15 +41,15 @@ function ManageIcons({ childProduct }) {
 
     async function cutProduct(amount) {
         if (amount === '') {
-            setCutPopupError("Podaj ilość!");
+            setCutPopupError('Podaj ilość!');
             return;
         }
         if (amount <= 0) {
-            setCutPopupError("Podaj dodatnią ilość!");
+            setCutPopupError('Podaj dodatnią ilość!');
             return;
         }
         if (amount > childProduct.amount) {
-            setCutPopupError("Nie ma takiej ilości produktu 🙁");
+            setCutPopupError('Nie ma takiej ilości produktu 🙁');
             return;
         }
         if (amount == childProduct.amount) {
@@ -63,10 +63,10 @@ function ManageIcons({ childProduct }) {
                     setChildProducts(newProducts);
                 }
                 else {
-                    setCutPopupError("Coś poszło nie tak podczas usuwania... 😒");
+                    setCutPopupError('Coś poszło nie tak podczas usuwania... 😒');
                 }
             } catch (error) {
-                setCutPopupError("Coś poszło nie tak podczas usuwania... 😒");
+                setCutPopupError('Coś poszło nie tak podczas usuwania... 😒');
                 console.log(error);
             }
         }
@@ -87,10 +87,10 @@ function ManageIcons({ childProduct }) {
                     setChildProducts(newProducts);
                 }
                 else {
-                    setCutPopupError("Coś poszło nie tak podczas edytowania... 😒");
+                    setCutPopupError('Coś poszło nie tak podczas edytowania... 😒');
                 }
             } catch (error) {
-                setCutPopupError("Coś poszło nie tak podczas edytowania... 😒");
+                setCutPopupError('Coś poszło nie tak podczas edytowania... 😒');
                 console.log(error);
             }
         }
@@ -119,10 +119,10 @@ function ManageIcons({ childProduct }) {
                 setChildProducts(newProducts);
             }
             else {
-                setEditPopupError("Coś poszło nie tak... 😒");
+                setEditPopupError('Coś poszło nie tak... 😒');
             }
         } catch (error) {
-            setEditPopupError("Coś poszło nie tak... 😒");
+            setEditPopupError('Coś poszło nie tak... 😒');
             console.log(error);
         }
     }
@@ -153,10 +153,10 @@ function ManageIcons({ childProduct }) {
             onYes={cutProduct}
             onNo={() => {setCutPopup(false); setCutPopupError('')}}
         />
-        <div className="icons" >
-            <RiScissors2Fill className="copy" onClick={()=>setCutPopup(true)}/>
-            <MdEdit className="edit" onClick={()=>setEditPopup(true)}/>
-            <MdDelete className="delete" onClick={()=>setDeletePopup(true)}/>
+        <div className='icons' >
+            <RiScissors2Fill className='copy' onClick={()=>setCutPopup(true)}/>
+            <MdEdit className='edit' onClick={()=>setEditPopup(true)}/>
+            <MdDelete className='delete' onClick={()=>setDeletePopup(true)}/>
         </div>
     </>
     )
