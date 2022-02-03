@@ -13,7 +13,7 @@ function AmountInput({ register, errors, defaultValue, registerName, placeholder
     }
 
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors[registerName] && 'input-error'}
@@ -40,13 +40,13 @@ function AmountInput({ register, errors, defaultValue, registerName, placeholder
         })}
     />
     {errors[registerName] && <p className='input-error-text'>{errors[registerName].message}</p>}
-    </>
+    </div>
     )
 }
 
 function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.comments && 'input-error'}
@@ -61,13 +61,13 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.comments && <p className='input-error-text'>{errors.comments.message}</p>}
-    </>
+    </div>
     )
 }
 
 function OrderNumberInput({ register, errors, defaultValue, autoFocus, setValue }) {
     return (
-    <>
+    <div>
     <InputSwitch errors={errors} setValue={setValue}>
         {isOn => {
             return <input
@@ -91,7 +91,7 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus, setValue 
         }}
     </InputSwitch>
     {errors.orderNumber && <p className='input-error-text'>{errors.orderNumber.message}</p>}
-    </>
+    </div>
     )
 }
 

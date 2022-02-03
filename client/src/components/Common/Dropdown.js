@@ -43,7 +43,7 @@ function Dropdown({ ifError, ...props }) {
 
 function ControlledDropdown({ errors, name, control, rules, ...props }) {
     return (
-    <>
+    <div>
     <Controller
         control={control}
         name={name}
@@ -62,7 +62,7 @@ function ControlledDropdown({ errors, name, control, rules, ...props }) {
         )}
     />
     {errors[name] && <p className='input-error-text'>{errors[name].message}</p>}
-    </>
+    </div>
     )
 }
 

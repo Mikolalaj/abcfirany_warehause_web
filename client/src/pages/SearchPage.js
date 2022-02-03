@@ -4,10 +4,7 @@ import ProductsList from '../components/Products/ProductsList';
 function SearchPage() {
     return (
     <>
-        <div>
-            <h1>Wyszukiwanie produktów</h1>
-            <SearchProducts />
-        </div>
+        <SearchProducts />
         <ProductsList />
     </>
     )

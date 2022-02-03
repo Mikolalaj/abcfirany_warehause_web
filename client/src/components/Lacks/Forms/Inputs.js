@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { FetchContext } from '../../../context/FetchContext';
 import { ControlledDropdown } from '../../Common/Dropdown';
 
@@ -14,7 +13,7 @@ function AmountInput({ register, errors, defaultValue, autoFocus }) {
     }
 
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.amount && 'input-error'}
@@ -41,13 +40,13 @@ function AmountInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
-    </>
+    </div>
     )
 }
 
 function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.comments && 'input-error'}
@@ -62,13 +61,13 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.comments && <p className='input-error-text'>{errors.comments.message}</p>}
-    </>
+    </div>
     )
 }
 
 function SizeInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.size && 'input-error'}
@@ -83,13 +82,13 @@ function SizeInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.size && <p className='input-error-text'>{errors.size.message}</p>}
-    </>
+    </div>
     )
 }
 
 function FeaturesInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.features && 'input-error'}
@@ -104,14 +103,14 @@ function FeaturesInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.features && <p className='input-error-text'>{errors.features.message}</p>}
-    </>
+    </div>
     )
 }
 
 function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
     
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.orderNumber && 'input-error'}
@@ -130,40 +129,40 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.orderNumber && <p className='input-error-text'>{errors.orderNumber.message}</p>}
-    </>
+    </div>
     )
 }
 
 function SymbolInput({ errors, defaultValue, control, autoFocus }) {
-    const symbols = [
-        { value: '1', label: 'Symbol 1' },
-        { value: '2', label: 'Symbol 2' },
-        { value: '3', label: 'Symbol 3' },
-        { value: '4', label: 'Symbol 4' }
-    ]    
+    const [symbols, setSymbols] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { authAxios } = useContext(FetchContext);
 
-    // useEffect(() => {
-    //     const { data } = authAxios.get('/api/products/symbols');
-    // }, [])
+    useEffect(async () => {
+        setIsLoading(true);
+        const { data } = await authAxios.get('/products/symbols');
+        setSymbols(data);
+        setIsLoading(false);
+    }, [])
 
     return (
     <ControlledDropdown
-        errors = {errors}
-        name = 'symbol'
-        control = {control}
-        rules = {{
+        errors={errors}
+        name='symbol'
+        control={control}
+        rules={{
             required: {
                 value: true,
                 message: 'Symbol jest wymagany'
             }
         }}
-        defaultValue = {defaultValue}
-        autoFocus = {autoFocus}
-        placeholder = 'Symbol'
-        options = {symbols}
-        isSearchable = {true}
+        defaultValue={defaultValue}
+        autoFocus={autoFocus}
+        placeholder='Symbol'
+        options={symbols}
+        isSearchable={true}
+        isLoading={isLoading}
     />
     )
 }

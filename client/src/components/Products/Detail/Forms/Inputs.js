@@ -2,7 +2,7 @@
 
 function WidthInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.width && 'input-error'}
@@ -29,7 +29,7 @@ function WidthInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.width && <p className='input-error-text'>{errors.width.message}</p>}
-    </>
+    </div>
     )
 }
 
@@ -44,7 +44,7 @@ function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
     }
 
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.amount && 'input-error'}
@@ -71,13 +71,13 @@ function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
-    </>
+    </div>
     )
 }
 
 function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.amount && 'input-error'}
@@ -104,7 +104,7 @@ function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
-    </>
+    </div>
     )
 }
 
@@ -114,7 +114,7 @@ function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
     const format = type === 'pillows' ? 'A1' : '1-2-3'
 
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={`shelf-code ${errors.shelfCode && 'input-error'}`}
@@ -133,13 +133,13 @@ function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
         })}
     />
     {errors.shelfCode && <p className='input-error-text'>{errors.shelfCode.message}</p>}
-    </>
+    </div>
     )
 }
 
 function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.comments && 'input-error'}
@@ -154,13 +154,13 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.comments && <p className='input-error-text'>{errors.comments.message}</p>}
-    </>
+    </div>
     )
 }
 
 function FinishInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.finish && 'input-error'}
@@ -179,13 +179,13 @@ function FinishInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.finish && <p className='input-error-text'>{errors.finish.message}</p>}
-    </>
+    </div>
     )
 }
 
 function SizeInput({ register, errors, defaultValue, autoFocus }) {
     return (
-    <>
+    <div>
     <input
         autoFocus={autoFocus}
         className={errors.size && 'input-error'}
@@ -204,7 +204,7 @@ function SizeInput({ register, errors, defaultValue, autoFocus }) {
         })}
     />
     {errors.size && <p className='input-error-text'>{errors.size.message}</p>}
-    </>
+    </div>
     )
 }
 

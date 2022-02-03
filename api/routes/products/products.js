@@ -26,6 +26,11 @@ router.get('/search', async function(req, res, next) {
     next();
 });
 
+router.get('/symbols', async function(req, res, next) {
+    const { rows } = await pool.query('SELECT product_id as value, symbol as label FROM products');
+    res.send(rows);
+});
+
 router.get('/details/:productId', async function(req, res, next) {
     productId = req.params.productId;
     const { rows } = await pool.query(`

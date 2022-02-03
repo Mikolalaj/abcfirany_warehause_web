@@ -8,10 +8,7 @@ function ProductPage() {
 
     return (
     <>
-        <div>
-            <h1>Wyszukiwanie produktów</h1>
-            <SearchProducts />
-        </div>
+        <SearchProducts />
         <ProductProvider>
             <Detail category={category} productId={productId}/>
         </ProductProvider>
