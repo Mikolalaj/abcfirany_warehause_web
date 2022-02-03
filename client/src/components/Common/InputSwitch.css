@@ -1,0 +1,11 @@
+.input-switch {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+}
+
+.input-switch input {
+    margin-top: 0;
+}

@@ -1,5 +1,4 @@
 .popup-form {
-
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -7,29 +6,14 @@
     width: 100%;
     height: 100%;
     background-color: #fff;
+    gap: 15px;
+    margin-top: 10px;
 }
 
-.popup-form input, .input-switch {
+.popup-form input {
     font-size: 20px;
     padding: 7px;
-    margin-top: 15px;
     width: 100%;
-}
-
-.popup-form input:first-of-type {
-    margin-top: 5px;
-}
-
-.popup-form .input-switch {
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: stretch;
-    align-items: center;
-}
-
-.popup-form .input-switch input {
-    margin-top: 0;
 }
 
 .popup-form input[type='text']:focus, input[type='number']:focus{
@@ -47,7 +31,6 @@
 
 .popup-form .select {
     font-size: 20px;
-    margin-top: 15px;
 }
 
 .popup-form .input-error {
@@ -66,4 +49,33 @@
 
 .shelf-code {
     text-transform: uppercase;
+}
+
+.form-popup-wrapper .form-error {
+    font-size: 17px;
+    color: var(--red);
+    margin-top: 10px;
+    visibility: hidden;
+}
+
+.form-popup-wrapper .form-error:after {
+    content: '\200b';
+}
+
+.form-popup-wrapper .form-error.visible {
+    visibility: visible;
+}
+
+.form-popup-wrapper {
+    width: 400px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-popup-wrapper h2 {
+    font-size: 30px;
+    font-weight: 300;
+    margin: 0;
 }

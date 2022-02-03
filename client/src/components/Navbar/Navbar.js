@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import AddCutting from '../Cutting/AddCutting';
+import AddLacks from '../Lacks/AddLacks';
 
 import { ImStatsBars, ImSearch } from 'react-icons/im';
 import { FaPlusCircle, FaUserAlt, FaDog } from 'react-icons/fa';
@@ -29,7 +30,7 @@ function Navbar() {
         },
         {
             name: 'Dodaj brak',
-            onClick: () => {setCuttingPopup(true)},
+            onClick: () => {setLacksPopup(true)},
             icon: <FaDog />
         },
         {
@@ -64,6 +65,7 @@ function Navbar() {
     }, []);
 
     const [cuttingPopup, setCuttingPopup] = useState(false);
+    const [lacksPopup, setLacksPopup] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const history = useHistory();
     const authContext = useContext(AuthContext);
@@ -78,6 +80,7 @@ function Navbar() {
     return (
     <>
         <AddCutting trigger={cuttingPopup} closePopup={() => setCuttingPopup(false)} />
+        <AddLacks trigger={lacksPopup} closePopup={() => setLacksPopup(false)} />
         <nav className='sidebar'>
             {menuItems.map((item, index) => {
                 if (item.link === undefined) {

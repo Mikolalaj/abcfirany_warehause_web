@@ -42,7 +42,7 @@
 .popup-buttons {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 10px;
     gap: 30px;
 }
 

@@ -4,7 +4,7 @@ function WidthInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors.width && 'input-error'}
         type='number'
         placeholder='Szerokość'
@@ -46,7 +46,7 @@ function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors.amount && 'input-error'}
         type='number'
         placeholder='Ilość metrów'
@@ -79,7 +79,7 @@ function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors.amount && 'input-error'}
         type='number'
         placeholder='Ilość sztuk'
@@ -116,7 +116,7 @@ function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={`shelf-code ${errors.shelfCode && 'input-error'}`}
         type='text'
         placeholder='Kod półki'
@@ -141,7 +141,7 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors.comments && 'input-error'}
         type='text'
         placeholder='Uwagi'
@@ -162,7 +162,7 @@ function FinishInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors.finish && 'input-error'}
         type='text'
         placeholder='Wykończenie'
@@ -187,7 +187,7 @@ function SizeInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors.size && 'input-error'}
         type='text'
         placeholder='Wymiary'

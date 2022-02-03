@@ -1,7 +1,5 @@
-import { useState } from 'react';
-import Select from 'react-select'
-import ToggleSwitch from '../../Common/ToggleSwitch';
-import { Controller } from 'react-hook-form';
+import { ControlledDropdown } from '../../Common/Dropdown';
+import InputSwitch from '../../Common/InputSwitch';
 import { destinations } from '../../../dicts';
 
 function AmountInput({ register, errors, defaultValue, registerName, placeholder, autoFocus }) {
@@ -17,7 +15,7 @@ function AmountInput({ register, errors, defaultValue, registerName, placeholder
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors[registerName] && 'input-error'}
         type='number'
         placeholder={placeholder}
@@ -50,7 +48,7 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <>
     <input
-        autoFocus={autoFocus ? true : false}
+        autoFocus={autoFocus}
         className={errors.comments && 'input-error'}
         type='text'
         placeholder='Uwagi'
@@ -68,97 +66,53 @@ function CommentsInput({ register, errors, defaultValue, autoFocus }) {
 }
 
 function OrderNumberInput({ register, errors, defaultValue, autoFocus, setValue }) {
-    const [isOn, setIsOn] = useState(true);
-
-    function updateSwitch(value) {
-        setIsOn(value);
-        if (value === false) {
-            errors.orderNumber = undefined
-            setValue('orderNumber', '');
-        }
-    }
-    
     return (
     <>
-    <div className='input-switch'>
-        <input
-            autoFocus={autoFocus ? true : false}
-            disabled={!isOn}
-            className={errors.orderNumber && 'input-error'}
-            type='text'
-            placeholder={isOn ? 'Numer zamówienia' : ''}
-            defaultValue={defaultValue}
-            {...register('orderNumber', {
-                maxLength: {
-                    value: 100,
-                    message: 'Numer zamówienia może mieć maksymalnie 100 znaków'
-                },
-                required: {
-                    value: isOn ? true : false,
-                    message: 'Numer zamówienia jest wymagany'
-                }
-            })}
-        />
-        <ToggleSwitch setValue={updateSwitch} value={isOn} defaultChecked={true} />
-    </div>
+    <InputSwitch errors={errors} setValue={setValue}>
+        {isOn => {
+            return <input
+                autoFocus={autoFocus}
+                disabled={!isOn}
+                className={errors.orderNumber && 'input-error'}
+                type='text'
+                placeholder={isOn ? 'Numer zamówienia' : ''}
+                defaultValue={defaultValue}
+                {...register('orderNumber', {
+                    maxLength: {
+                        value: 100,
+                        message: 'Numer zamówienia może mieć maksymalnie 100 znaków'
+                    },
+                    required: {
+                        value: isOn ? true : false,
+                        message: 'Numer zamówienia jest wymagany'
+                    }
+                })}
+            />
+        }}
+    </InputSwitch>
     {errors.orderNumber && <p className='input-error-text'>{errors.orderNumber.message}</p>}
     </>
     )
 }
 
 function DestinationInput({ errors, defaultValue, control, autoFocus }) {
-    const customStyles = {
-        valueContainer: provided => ({
-            ...provided,
-            paddingLeft: 5,
-        })
-    }
-
-    const customStylesError = {
-        ...customStyles,
-        control: base => ({
-            ...base,
-            borderColor: '#df4a4a',
-            '&:hover': {
-                borderColor: '#df4a4a'
-            }
-        })
-    }
 
     return (
-    <>
-    <Controller
-        control={control}
-        name='destination'
-        rules={{ required: {value: true, message: 'Ilość jest wymagana' }}}
-        render={({
-            field: { onChange, onBlur, ref, value }
-        }) => (
-            <Select
-                autoFocus={autoFocus ? true : false}
-                onBlur={onBlur}
-                onChange={onChange}
-                inputRef={ref}
-                checked={value}
-                placeholder='Miejsce'
-                className='select'
-                styles={errors.destination ? customStylesError : customStyles}
-                options={destinations}
-                defaultValue={defaultValue}
-                theme={(theme) => ({
-                    ...theme,
-                    borderRadius: 5,
-                    colors: {
-                        ...theme.colors,
-                        primary25: '#f8cdfa',
-                        primary: '#ba54bf'  
-                    }
-                })}
-            />
-        )}
+    <ControlledDropdown
+        errors = {errors}
+        control = {control}
+        defaultValue = {defaultValue}
+        autoFocus = {autoFocus}
+        placeholder = 'Miejsce'
+        name = 'destination'
+        options = {destinations}
+        rules = {{
+            required: {
+                value: true,
+                message: 'Miejsce docelowe jest wymagane'
+            }
+        }}
     />
-    {errors.destination && <p className='input-error-text'>{errors.destination.message}</p>}
-    </>
     )
 }
 
