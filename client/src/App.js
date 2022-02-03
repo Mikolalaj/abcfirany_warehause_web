@@ -13,14 +13,15 @@ import {
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import { FetchProvider } from './context/FetchContext';
 import { useContext } from 'react';
-import Navbar from './components/Navbar/Navbar';
+import Sidebar from './components/Navbar/Sidebar';
+import Topbar from './components/Navbar/Topbar';
 
 function AuthenticatedRoute({ children, ...rest }) {
     const authContext = useContext(AuthContext);
     const { isAuthenticated } = authContext;
     return (
         <Route {...rest} render={() =>
-            isAuthenticated() ? <><Navbar /><div className='page-content'>{children}</div></> : <Redirect to='/login' />
+            isAuthenticated() ? <><Sidebar /><Topbar /><div className='page-content'>{children}</div></> : <Redirect to='/login' />
         }/>
     )
 }
@@ -30,7 +31,7 @@ function AdminRoute({ children, ...rest }) {
     const { isAdmin, isAuthenticated } = authContext; 
     return (
         <Route {...rest} render={() =>
-            isAdmin() ? <><Navbar /><div className='page-content'>{children}</div></> : isAuthenticated() ? <Redirect to='/' /> : <Redirect to='/login' />
+            isAdmin() ? <><Sidebar /><Topbar /><div className='page-content'>{children}</div></> : isAuthenticated() ? <Redirect to='/' /> : <Redirect to='/login' />
         }/>
     )
 }

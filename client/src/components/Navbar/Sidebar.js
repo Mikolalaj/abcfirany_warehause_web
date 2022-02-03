@@ -1,4 +1,4 @@
-import './Navbar.css';
+import './Sidebar.css';
 import { Link, useHistory } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -11,7 +11,7 @@ import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
 import { RiScissors2Fill } from 'react-icons/ri';
 import { HiHome } from 'react-icons/hi';
 
-function Navbar() {
+function Sidebar() {
     const menuItems = [
         {
             name: 'Strona główna',
@@ -120,4 +120,4 @@ function Navbar() {
     )
 }
 
-export default Navbar;
+export default Sidebar;

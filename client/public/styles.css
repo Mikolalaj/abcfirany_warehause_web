@@ -20,7 +20,8 @@
     --color-wheel-5: #3E1C40;
     --red: #df4a4a;
     --green: #449536;
-    --navbar-width: 85px;
+    --sidebar-width: 85px;
+    --topbar-height: 70px;
 }
   
 html {
@@ -43,8 +44,8 @@ body {
     flex-direction: column;
     align-items: stretch;
     padding: 0;
-    margin-top: 50px;
-    margin-left: calc(var(--navbar-width) + 40px);
+    margin-top: calc(var(--topbar-height) + 40px);
+    margin-left: calc(var(--sidebar-width) + 40px);
     margin-right: 40px;
     
 }
@@ -103,4 +104,9 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
