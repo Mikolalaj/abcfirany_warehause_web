@@ -6,21 +6,22 @@
     width: var(--sidebar-width);
     background-color: var(--primary);
     box-shadow:
-        0.3px 0px 0.3px -9px rgba(0, 0, 0, 0.021),
-        0.6px 0px 0.7px -9px rgba(0, 0, 0, 0.031),
-        1px 0px 1.1px -9px rgba(0, 0, 0, 0.039),
-        1.5px 0px 1.7px -9px rgba(0, 0, 0, 0.045),
-        2.1px 0px 2.4px -9px rgba(0, 0, 0, 0.05),
-        3px 0px 3.4px -9px rgba(0, 0, 0, 0.056),
-        4.3px 0px 4.8px -9px rgba(0, 0, 0, 0.062),
-        6.2px 0px 6.9px -9px rgba(0, 0, 0, 0.069),
-        9.6px 0px 10.7px -9px rgba(0, 0, 0, 0.079),
-        17px 0px 19px -9px rgba(0, 0, 0, 0.1);
+        0.2px 0px 0.2px rgba(0, 0, 0, 0.008),
+        0.3px 0px 0.5px rgba(0, 0, 0, 0.012),
+        0.6px 0px 1px rgba(0, 0, 0, 0.015),
+        0.9px 0px 1.7px rgba(0, 0, 0, 0.018),
+        1.3px 0px 2.6px rgba(0, 0, 0, 0.02),
+        1.8px 0px 3.9px rgba(0, 0, 0, 0.022),
+        2.5px 0px 5.5px rgba(0, 0, 0, 0.025),
+        3.7px 0px 7.3px rgba(0, 0, 0, 0.028),
+        5.6px 0px 8.6px rgba(0, 0, 0, 0.032),
+        10px 0px 9px rgba(0, 0, 0, 0.04);
     color: white;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    z-index: 1;
 }
 
 .menu-item {
