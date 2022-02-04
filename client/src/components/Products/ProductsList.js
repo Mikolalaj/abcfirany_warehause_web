@@ -20,14 +20,16 @@ function ProductsList() {
 
     useEffect(() => {
         async function fetchData() {
+            setIfEmpty(false);
+            setSearchResult([]);
             try {
                 const { data } = await authAxios.get('products/search', {
                     params: {
                         searchSymbol: searchSymbol
                     }
                 });
+                setSearchResult(data);
                 if (data.length) {
-                    setSearchResult(data);
                     setIfEmpty(false);
                 }
                 else {
