@@ -10,20 +10,25 @@
     margin-top: 10px;
 }
 
-.popup-form input {
+.popup-form input, textarea {
     font-size: 20px;
     padding: 7px;
     width: 100%;
 }
 
-.popup-form input[type='text']:focus, input[type='number']:focus{
+.popup-form textarea {
+    height: 95px;
+    resize: none;
+}
+
+.popup-form input[type='text']:focus, input[type='number']:focus, textarea:focus{
     outline-offset: -1px;
     outline-style: solid;
     outline-color: var(--color-wheel-2);
     outline-width: 2px;
 }
 
-.popup-form input:disabled {
+.popup-form input:disabled, textarea:disabled {
     cursor: default;
     color: #dddddd;
     background-color: #dddddd;

@@ -11,6 +11,16 @@
     height: 250px;
 }
 
+.detail-header .options {
+    margin: 10px 10px auto auto;
+    font-size: 40px;
+}
+
+.detail-header .options svg {
+    padding: 0 5px;
+    cursor: pointer;
+}
+
 .detail-description {
     display: flex;
     flex-direction: column;

@@ -1,4 +1,6 @@
-
+import { useState } from 'react'
+import { ToggleSwitchRegister } from '../../../Common/ToggleSwitch'
+import axios from 'axios'
 
 function WidthInput({ register, errors, defaultValue, autoFocus }) {
     return (
@@ -140,7 +142,7 @@ function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
 function CommentsInput({ register, errors, defaultValue, autoFocus }) {
     return (
     <div>
-    <input
+    <textarea
         autoFocus={autoFocus}
         className={errors.comments && 'input-error'}
         type='text'
@@ -208,6 +210,97 @@ function SizeInput({ register, errors, defaultValue, autoFocus }) {
     )
 }
 
+function SymbolInput({ register, errors, defaultValue, autoFocus }) {
+    return (
+    <div>
+    <input
+        autoFocus={autoFocus}
+        className={errors.symbol && 'input-error'}
+        type='text'
+        placeholder='Symbol'
+        defaultValue={defaultValue}
+        {...register('symbol', {
+            required: {
+                value: true,
+                message: 'Symbol jest wymagany'
+            },
+            maxLength: {
+                value: 100,
+                message: 'Symbol może mieć maksymalnie 100 znaków'
+            }
+        })}
+    />
+    {errors.symbol && <p className='input-error-text'>{errors.symbol.message}</p>}
+    </div>
+    )
+}
+
+function ImageInput({ register, errors, defaultValue, autoFocus, getValues }) {
+    const [image, setImage] = useState(defaultValue)
+
+    // async function imageExists(image_url) {
+    //     try {
+    //         const response = await fetch(image_url, { method: 'HEAD' })
+    //         return response.status === 200
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    function handleImageChange() {
+        let newImageUrl = getValues('image')
+
+        if (newImageUrl === '') {
+            setImage('https://abcfirany.pl/images/no_image.jpg')
+            return
+        }
+        setImage(newImageUrl)
+        // if (imageExists(newImageUrl)) {
+        //     setImage(newImageUrl)
+        // }
+        // else {
+        //     setImage('https://abcfirany.pl/images/no_image.jpg')
+        // }
+    }
+
+    return (
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} className='image-input'>
+        <img style={{maxWidth: '150px', marginBottom: '10px'}} src={image} />
+        <input
+            autoFocus={autoFocus}
+            className={errors.image && 'input-error'}
+            type='text'
+            placeholder='URL zdjęcia'
+            defaultValue={defaultValue}
+            {...register('image', {
+                onBlur: () => handleImageChange(),
+                maxLength: {
+                    value: 250,
+                    message: 'Adres URL zdjęcia może mieć maksymalnie 250 znaków'
+                }
+            })}
+        />
+        {errors.image && <p className='input-error-text'>{errors.image.message}</p>}
+    </div>
+    )
+}
+
+function SaleInput({ register, defaultValue }) {
+    const [isOn, setIsOn] = useState(true);
+
+    return (
+    <div style={{display: 'flex', alignItems: 'center'}}>
+        <ToggleSwitchRegister
+            setValue={setIsOn}
+            value={isOn}
+            defaultChecked={defaultValue}
+            register={register('sale')}
+        />
+        Wyprzedaż
+    </div>
+    )
+}
+
 export {
     WidthInput,
     AmountMeterInput,
@@ -215,5 +308,8 @@ export {
     ShelfCodeInput,
     CommentsInput,
     FinishInput,
-    SizeInput
+    SizeInput,
+    SymbolInput,
+    ImageInput,
+    SaleInput
 };

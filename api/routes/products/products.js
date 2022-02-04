@@ -45,4 +45,19 @@ router.get('/details/:productId', async function(req, res, next) {
     next();
 });
 
+router.put('/update', async function(req, res) {
+    const { productId, symbol, image, sale, comments } = req.body;
+    const response = await pool.query(`
+    UPDATE
+        products
+    SET
+        symbol = '${symbol}',
+        img = '${image}',
+        sale = '${sale}',
+        comments = '${comments}'
+    WHERE
+        product_id = '${productId}'`);
+    res.send(response);
+});
+
 module.exports = router;

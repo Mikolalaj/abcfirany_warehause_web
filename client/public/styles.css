@@ -80,7 +80,7 @@ p {
     text-align: center;
 }
 
-input {
+input, textarea {
     font-size: inherit;
     border-width: 1px;
     border-color: #CCCCCC;
@@ -90,7 +90,7 @@ input {
     border-radius: 5px;
 }
 
-input:focus {
+input:focus, textarea:focus {
     outline:none;
 }
 

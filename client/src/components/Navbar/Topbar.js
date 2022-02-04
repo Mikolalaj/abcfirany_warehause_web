@@ -9,8 +9,8 @@ function Topbar() {
     <nav className='topbar'>
         <Link to='/dashboard'>
             <div className='icon-text'>
-                <GiCardboardBox />
                 <h1>Magazyn abcfirany</h1>
+                <GiCardboardBox />
             </div>
         </Link>
         <SearchProducts />
