@@ -43,10 +43,11 @@ function Detail({ category, productId }) {
             try {
                 const { data } = await fetchContext.authAxios.get(`/products/details/${productId}`);
                 setProduct({
-                    symbol: data[0].symbol,
-                    comments: data[0].comments,
-                    sale: data[0].sale,
-                    img: data[0].img,
+                    symbol: data.symbol,
+                    comments: data.comments,
+                    sale: data.sale,
+                    img: data.img,
+                    features: data.features,
                     productId: productId,
                     category: category,
                 })

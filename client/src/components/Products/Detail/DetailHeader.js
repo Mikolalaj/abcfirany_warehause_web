@@ -12,7 +12,7 @@ import './DetailHeader.css'
 function DetailHeader() {
     const { authAxios } = useContext(FetchContext);
     const { childProducts, setChildProducts, product, setProduct } = useContext(ProductContext);
-    const { category, productId, img, sale, comments, symbol } = product;
+    const { category, productId, img, sale, comments, symbol, features } = product;
     
     const [editPopup, setEditPopup] = useState(false);
     const [editPopupError, setEditPopupError] = useState('');
@@ -123,6 +123,7 @@ function DetailHeader() {
                 </div>
                 {sale && <p className='sale'><IoMdPricetag/>Wyprzedaż</p>}
                 <p>{comments}</p>
+                <div className='features'>{features.map((feature, index) => <div key={index} className="feature">{feature}</div>)}</div>
                 <div className='product-options'>
                     <div className='option' onClick={() => setAddPopup(true)}><MdAddCircle />Dodaj nowy produkt</div>
                     <div className='option' onClick={openInShop}><MdFindInPage/>Wyszukaj na sklepie</div>

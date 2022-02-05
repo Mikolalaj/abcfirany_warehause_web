@@ -10,7 +10,8 @@ function ProductProvider({ children }) {
         category: '',
         comments: '',
         sale: '',
-        img: ''
+        img: '',
+        features: []
     });
 
     return (

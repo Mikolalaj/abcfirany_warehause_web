@@ -33,7 +33,7 @@ router.get('/symbols', async function(req, res, next) {
 
 router.get('/details/:productId', async function(req, res, next) {
     productId = req.params.productId;
-    const { rows } = await pool.query(`
+    const { rows: data } = await pool.query(`
     SELECT
         symbol,
         comments,
@@ -41,7 +41,22 @@ router.get('/details/:productId', async function(req, res, next) {
         img
     FROM products
     WHERE product_id = '${productId}'`);
-    req.body = rows;
+
+    let productData = data[0];
+
+    const { rows: features } = await pool.query(`
+    SELECT
+        name
+    FROM features
+    JOIN products_features ON products_features.feature_id = features.feature_id
+    WHERE product_id = '${productId}'`);
+
+    productData = {
+        ...productData,
+        features: features.map(feature => feature.name)
+    }
+
+    req.body = productData;
     next();
 });
 
