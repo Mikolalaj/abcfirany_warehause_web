@@ -8,12 +8,47 @@
     flex-grow: 10;
     padding: 9px;
     font-size: 20px;
-    border-width: 1px 0 1px 1px;
+    border-width: 1px 0 1px 0;
     border-color: #CCCCCC;
     background-color: #FFFFFF;
     color: #000000;
     border-style: solid;
+    border-radius: 0;
+}
+
+.search .search-icon {
+    background-color: #FFFFFF;
+    border-color: #CCCCCC;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.search .search-icon.left {
     border-radius: 5px 0 0 5px;
+    border-width: 1px 0 1px 1px;
+    padding-left: 10px;
+}
+
+.search .search-icon.right {
+    border-radius: 0;
+    border-width: 1px 0 1px 0;
+    padding-right: 10px;
+}
+
+.search .search-icon.right svg {
+    visibility: hidden;
+}
+
+.search .search-icon.right.visible svg {
+    visibility: visible;
+    cursor: pointer;
+}
+
+.search .search-icon svg {
+    font-size: 25px;
+    color: #CCCCCC;
 }
 
 /* .search input:focus {
