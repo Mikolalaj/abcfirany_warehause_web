@@ -86,27 +86,6 @@ function SizeInput({ register, errors, defaultValue, autoFocus }) {
     )
 }
 
-function FeaturesInput({ register, errors, defaultValue, autoFocus }) {
-    return (
-    <div>
-    <input
-        autoFocus={autoFocus}
-        className={errors.features && 'input-error'}
-        type='text'
-        placeholder='Cechy'
-        defaultValue={defaultValue}
-        {...register('features', {
-            maxLength: {
-                value: 100,
-                message: 'Cechy mogą mieć maksymalnie 100 znaków'
-            }
-        })}
-    />
-    {errors.features && <p className='input-error-text'>{errors.features.message}</p>}
-    </div>
-    )
-}
-
 function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
     
     return (
@@ -133,20 +112,45 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
     )
 }
 
-function SymbolInput({ errors, defaultValue, control, autoFocus }) {
+function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetField, autoFocus }) {
+    const [features, setFeatures] = useState([]);
+    const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
+    const [symbol, setSymbol] = useState(getValues('symbol')?.value);
     const [symbols, setSymbols] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingSymbols, setIsLoadingSymbols] = useState(false);
 
     const { authAxios } = useContext(FetchContext);
 
+    function modifyDataFeatures(data) {
+        return data.map(item => ({
+            value: item.feature_id,
+            label: item.name
+        }))
+    }
+
+    function modifyDataSymbols(data) {
+        return data.map(item => ({
+            value: item.product_id,
+            label: item.symbol
+        }))
+    }
+
     useEffect(async () => {
-        setIsLoading(true);
+        setIsLoadingFeatures(true);
+        const { data } = await authAxios.get(`/products/features/${symbol}`);
+        setFeatures(modifyDataFeatures(data));
+        setIsLoadingFeatures(false);
+    }, [symbol]);
+
+    useEffect(async () => {
+        setIsLoadingSymbols(true);
         const { data } = await authAxios.get('/products/symbols');
-        setSymbols(data);
-        setIsLoading(false);
+        setSymbols(modifyDataSymbols(data));
+        setIsLoadingSymbols(false);
     }, [])
 
     return (
+    <>
     <ControlledDropdown
         errors={errors}
         name='symbol'
@@ -155,24 +159,38 @@ function SymbolInput({ errors, defaultValue, control, autoFocus }) {
             required: {
                 value: true,
                 message: 'Symbol jest wymagany'
-            }
+            },
+            onChange: (e) => {resetField("features"); setSymbol(e.target.value.value)}
         }}
-        defaultValue={defaultValue}
         autoFocus={autoFocus}
         placeholder='Symbol'
         options={symbols}
         isSearchable={true}
-        isLoading={isLoading}
+        isLoading={isLoadingSymbols}
     />
+    <ControlledDropdown
+        errors={errors}
+        name='features'
+        control={control}
+        rules={{
+            required: {
+                value: true,
+                message: 'Cecha jest wymagana'
+            }
+        }}
+        placeholder='Cechy'
+        options={features}
+        isSearchable={true}
+        isLoading={isLoadingFeatures}
+    />
+    </>
     )
 }
-
 
 export {
     AmountInput,
     CommentsInput,
     OrderNumberInput,
-    SymbolInput,
-    SizeInput,
-    FeaturesInput
+    SymbolFeaturesInput,
+    SizeInput
 };

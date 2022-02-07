@@ -27,7 +27,39 @@ router.get('/search', async function(req, res, next) {
 });
 
 router.get('/symbols', async function(req, res, next) {
-    const { rows } = await pool.query('SELECT product_id as value, symbol as label FROM products');
+    const { rows } = await pool.query(`
+    SELECT
+        product_id,
+        symbol
+    FROM
+        products`);
+    res.send(rows);
+});
+
+router.get('/features', async function(req, res, next) {
+    const { rows } = await pool.query(`
+    SELECT
+        name,
+        feature_id
+    FROM
+        features`);
+    res.send(rows);
+});
+
+router.get('/features/:productId', async function(req, res, next) {
+    productId = req.params.productId;
+    if (productId === 'undefined') {
+        res.send([])
+        return
+    }
+    const { rows } = await pool.query(`
+    SELECT
+        F.name,
+        F.feature_id
+    FROM
+        features F
+        JOIN products_features PF ON F.feature_id = PF.feature_id
+    WHERE PF.product_id = '${productId}'`);
     res.send(rows);
 });
 

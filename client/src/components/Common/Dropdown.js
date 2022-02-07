@@ -48,14 +48,15 @@ function ControlledDropdown({ errors, name, control, rules, ...props }) {
         control={control}
         name={name}
         rules={rules}
+        defaultValue={null}
         render={({
             field: { onChange, onBlur, ref, value }
         }) => (
             <Dropdown
-                onBlur={onBlur}
+                value={value}
                 onChange={onChange}
+                onBlur={onBlur}
                 inputRef={ref}
-                checked={value}
                 ifError={errors[name]}
                 {...props}
             />

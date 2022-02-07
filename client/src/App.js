@@ -55,6 +55,9 @@ function Routes() {
         <AuthenticatedRoute path='/product/:category/:productId'>
             <ProductPage />
         </AuthenticatedRoute>
+        <AuthenticatedRoute path='/' exact>
+            <Redirect to={'/dashboard'} />
+        </AuthenticatedRoute>
         <AuthenticatedRoute path='/dashboard'>
             <Dashboard />
         </AuthenticatedRoute>
