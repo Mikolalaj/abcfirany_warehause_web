@@ -174,7 +174,7 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
         control={control}
         rules={{
             required: {
-                value: true,
+                value: features.length === 0 ? false : true,
                 message: 'Cecha jest wymagana'
             }
         }}
