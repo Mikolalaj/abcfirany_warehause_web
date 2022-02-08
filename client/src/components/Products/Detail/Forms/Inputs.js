@@ -238,15 +238,14 @@ function SymbolInput({ register, errors, defaultValue, autoFocus }) {
 
 function ImageInput({ register, errors, defaultValue, autoFocus, getValues }) {
     const [image, setImage] = useState(defaultValue)
+    const [imageError, setImageError] = useState(false)
 
-    // async function imageExists(image_url) {
-    //     try {
-    //         const response = await fetch(image_url, { method: 'HEAD' })
-    //         return response.status === 200
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    function imageExists(url, callback) {
+        var img = new Image();
+        img.onload = function() { callback(true); };
+        img.onerror = function() { callback(false); };
+        img.src = url;
+    }
 
     function handleImageChange() {
         let newImageUrl = getValues('image')
@@ -255,18 +254,21 @@ function ImageInput({ register, errors, defaultValue, autoFocus, getValues }) {
             setImage('https://abcfirany.pl/images/no_image.jpg')
             return
         }
-        setImage(newImageUrl)
-        // if (imageExists(newImageUrl)) {
-        //     setImage(newImageUrl)
-        // }
-        // else {
-        //     setImage('https://abcfirany.pl/images/no_image.jpg')
-        // }
+        imageExists(newImageUrl, function(exists) {
+            if (exists) {
+                setImage(newImageUrl)
+            }
+            else {
+                setImageError(true)
+                setImage('https://abcfirany.pl/images/no_image.jpg')
+            }
+        });
     }
 
     return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} className='image-input'>
         <img style={{maxWidth: '150px', marginBottom: '10px'}} src={image} />
+        {imageError && <p className='input-error-text'>Pod tym adresem nie ma zdjęcia</p>}
         <input
             autoFocus={autoFocus}
             className={errors.image && 'input-error'}
