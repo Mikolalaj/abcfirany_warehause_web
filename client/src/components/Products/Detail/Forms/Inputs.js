@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ToggleSwitchRegister } from '../../../Common/ToggleSwitch'
-import axios from 'axios'
+import { ControlledDropdown } from '../../../Common/Dropdown'
+import { pillows } from '../../../../dicts'
 
 function WidthInput({ register, errors, defaultValue, autoFocus }) {
     return (
@@ -301,6 +302,43 @@ function SaleInput({ register, defaultValue }) {
     )
 }
 
+function FinishSizeInput({ errors, defaultValue, control, resetField, autoFocus }) {
+    const [sizes, setSizes] = useState([]);
+    
+    return (
+    <>
+    <ControlledDropdown
+        errors={errors}
+        name='finish'
+        control={control}
+        rules={{
+            required: {
+                value: true,
+                message: 'Wykończenie jest wymagane'
+            },
+            onChange: (e) => {resetField("size"); setSizes(pillows[e.target.value.value])}
+        }}
+        autoFocus={autoFocus}
+        placeholder='Wykończenie'
+        options={Object.keys(pillows).map(key => ({value: key, label: key}))}
+    />
+    <ControlledDropdown
+        errors={errors}
+        name='size'
+        control={control}
+        rules={{
+            required: {
+                value: true,
+                message: 'Wymiar jest wymagany'
+            }
+        }}
+        placeholder='Wymiar'
+        options={sizes}
+    />
+    </>
+    )
+}
+
 export {
     WidthInput,
     AmountMeterInput,
@@ -311,5 +349,6 @@ export {
     SizeInput,
     SymbolInput,
     ImageInput,
-    SaleInput
+    SaleInput,
+    FinishSizeInput
 };
