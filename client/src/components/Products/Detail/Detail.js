@@ -5,6 +5,7 @@ import { ProductContext } from '../../../context/ProductContext';
 import { MdOutlineArrowBackIos } from 'react-icons/md'
 import Loading from '../../Common/Loading';
 import DetailHeader from './DetailHeader';
+import ProductsEnum from '../ProductsEnum';
 
 import MeterListing from './Listings/MeterListing';
 import PremadeListing from './Listings/PremadeListing';
@@ -24,13 +25,13 @@ function Detail({ category, productId }) {
 
     function getListing() {
         switch (category) {
-            case 'premade':
+            case ProductsEnum.premade:
                 return <PremadeListing />;
-            case 'meter':
+            case ProductsEnum.meter:
                 return <MeterListing />;
-            case 'pillows':
+            case ProductsEnum.pillow:
                 return <PillowListing />;
-            case 'towels':
+            case ProductsEnum.towel:
                 return <TowelListing />;
             default:
                 return null;

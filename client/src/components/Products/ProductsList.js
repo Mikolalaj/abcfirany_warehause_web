@@ -3,6 +3,7 @@ import { useContext, useMemo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FetchContext } from '../../context/FetchContext';
 import Loading from '../Common/Loading';
+import ProductsEnum from './ProductsEnum';
 import './ProductsList.css';
 
 function useQuery() {
@@ -49,17 +50,16 @@ function ProductsList() {
         }
     }, [query.get('symbol')]);
 
-
     return (
     <>
     {ifLoading && <Loading />}
     {ifEmpty && <div className='no-results'>Brak wyników</div>}
     <div className='products'>
         {searchResult.map(product => <div key={product.productId}>
-            {product.meterCount > 0 && <Product key={product.productId + '1'} {...product} category='meter' />}
-            {product.premadeCount > 0 && <Product key={product.productId + '2'} {...product} category='premade' />}
-            {product.pillowsCount > 0 && <Product key={product.productId + '3'} {...product} category='pillows' />}
-            {product.towelsCount > 0 && <Product key={product.productId + '4'} {...product} category='towels' />}
+            {product.meterCount > 0 && <Product key={product.productId + '1'} {...product} category={ProductsEnum.meter} />}
+            {product.premadeCount > 0 && <Product key={product.productId + '2'} {...product} category={ProductsEnum.premade} />}
+            {product.pillowsCount > 0 && <Product key={product.productId + '3'} {...product} category={ProductsEnum.pillow} />}
+            {product.towelsCount > 0 && <Product key={product.productId + '4'} {...product} category={ProductsEnum.towel} />}
         </div>)}
     </div>
     </>

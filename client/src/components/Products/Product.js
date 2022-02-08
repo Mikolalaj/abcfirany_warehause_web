@@ -1,4 +1,5 @@
 import './Product.css';
+import ProductsEnum from './ProductsEnum';
 import { useHistory } from 'react-router-dom';
 import { IoMdPricetag } from 'react-icons/io';
 
@@ -7,13 +8,13 @@ function Product(props) {
     const { symbol, productId, comments, sale, img, category } = props;
 
     function category_name(category) {
-        if (category === 'pillows') {
+        if (category === ProductsEnum.pillow) {
             return 'Poszewki'
-        } else if (category === 'premade') {
+        } else if (category === ProductsEnum.premade) {
             return 'Gotowe'
-        } else if (category === 'meter') {
+        } else if (category === ProductsEnum.meter) {
             return 'Metraż'
-        } else if (category === 'towels') {
+        } else if (category === ProductsEnum.towel) {
             return 'Ręczniki'
         }
     }

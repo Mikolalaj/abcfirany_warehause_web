@@ -5,6 +5,7 @@ import PillowForm from '../Forms/PillowForm';
 import TowelForm from '../Forms/TowelForm';
 import { useContext } from 'react';
 import { ProductContext } from '../../../../context/ProductContext';
+import ProductsEnum from '../../ProductsEnum';
 import './ProductPopup.css';
 
 function ProductPopup({ trigger, closePopup, onYes, okButtonText, labelText, productData, errorMessage }) {
@@ -23,10 +24,10 @@ function ProductPopup({ trigger, closePopup, onYes, okButtonText, labelText, pro
                 <h2>{labelText}</h2>
                 <h1>{symbol}</h1>
                 <h3 className={`form-error ${errorMessage !== '' && 'visible'}`}>{errorMessage}</h3>
-                {category === 'premade' && <PremadeForm {...formProps} />}
-                {category === 'meter' && <MeterForm {...formProps} />}
-                {category === 'pillows' && <PillowForm {...formProps} />}
-                {category === 'towels' && <TowelForm {...formProps} />}
+                {category === ProductsEnum.premade && <PremadeForm {...formProps} />}
+                {category === ProductsEnum.meter && <MeterForm {...formProps} />}
+                {category === ProductsEnum.pillow && <PillowForm {...formProps} />}
+                {category === ProductsEnum.towel && <TowelForm {...formProps} />}
             </div>
         </Popup>
     )
