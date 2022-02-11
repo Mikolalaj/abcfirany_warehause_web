@@ -237,7 +237,7 @@ function SymbolInput({ register, errors, defaultValue, autoFocus }) {
 }
 
 function ImageInput({ register, errors, defaultValue, autoFocus, getValues }) {
-    const [image, setImage] = useState(defaultValue)
+    const [image, setImage] = useState(defaultValue ? defaultValue : 'https://abcfirany.pl/images/no_image.jpg')
     const [imageError, setImageError] = useState(false)
 
     function imageExists(url, callback) {

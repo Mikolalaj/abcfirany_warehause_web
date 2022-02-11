@@ -1,0 +1,35 @@
+.button {
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 5px 15px;
+    cursor: pointer;
+    border: none;
+    min-width: 90px;
+    text-align: center;
+}
+
+.button:active {
+    position: relative;
+    top: 1px;
+}
+
+.button.primary {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+.button.primary:hover {
+    background-color: #834286;
+}
+
+.button.cancel {
+    background-color: #ffffff00;
+    color: var(--primary);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--primary);
+}
+
+.button.cancel:hover {
+    background-color: var(--primary);
+    color: #ffffff;
+}

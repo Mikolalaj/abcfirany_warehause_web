@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import SearchPage from './pages/SearchPage';
 import ProductPage from './pages/ProductPage';
+import AddProductPage from './pages/AddProductPage';
 
 import {
     BrowserRouter as Router,
@@ -49,17 +50,20 @@ function Routes() {
         <AdminRoute path='/admin'>
             <Admin />
         </AdminRoute>
+        <AuthenticatedRoute path='/' exact>
+            <Redirect to={'/dashboard'} />
+        </AuthenticatedRoute>
         <AuthenticatedRoute path='/search'>
             <SearchPage />
         </AuthenticatedRoute>
         <AuthenticatedRoute path='/product/:category/:productId'>
             <ProductPage />
         </AuthenticatedRoute>
-        <AuthenticatedRoute path='/' exact>
-            <Redirect to={'/dashboard'} />
-        </AuthenticatedRoute>
         <AuthenticatedRoute path='/dashboard'>
             <Dashboard />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute path='/add-product'>
+            <AddProductPage />
         </AuthenticatedRoute>
     </Switch>
     )
