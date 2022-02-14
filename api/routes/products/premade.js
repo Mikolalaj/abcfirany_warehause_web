@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
+import { ifNull } from '../../utils'
 
 // api/products/premade/
 
@@ -9,49 +10,50 @@ router.get('/search/:productId', async function(req, res, next) {
     productId = req.params.productId;
     const { rows } = await pool.query(`
     SELECT
-        premade_id as id,
-        shelving,
-        column_number as column,
-        shelf,
+        product_child_id,
+        shelf_code,
         size,
         amount,
         finish,
-        comments
-    FROM premade
-    WHERE product_id = '${productId}'`);
+        comments,
+        F.name as feature
+    FROM products_child
+    LEFT JOIN features F ON F.feature_id = products_child.feature_id
+    WHERE product_id = '${productId}'
+    AND category = 'premade'
+    ORDER BY size, amount`);
     req.body = rows;
     next();
 });
 
 router.post('/add', async function(req, res, next) {
-    const { productId, shelving, column, shelf, size, amount, finish, comments } = req.body;
-    const uuid = uuidv4();
+    const { productId, shelfCode, size, amount, finish, comments, featureId } = req.body;
+    const productChildId = uuidv4();
     const { rows } = await pool.query(`
-    INSERT INTO premade
-        (product_id, shelving, column_number, shelf, size, amount, finish, comments, premade_id)
+    INSERT INTO products_child
+        (product_child_id, product_id, shelf_code, size, amount, finish, comments, feature_id, category)
     VALUES
-        ('${productId}', '${shelving}', '${column}', '${shelf}', '${size}', '${amount}', '${finish}', '${comments}', '${uuid}')
+        ('${productChildId}', '${productId}', '${shelfCode}', '${size}', '${amount}', '${finish}', '${comments}', ${ifNull(featureId)}, 'premade')
     RETURNING
-        premade_id`);
+        product_child_id`);
     req.body = rows;
     next();
 });
 
 router.put('/update', async function(req, res) {
-    const { childProductId, shelving, column, shelf, size, amount, finish, comments } = req.body;
+    const { productChildId, shelfCode, size, amount, finish, comments, featureId } = req.body;
     const response = await pool.query(`
     UPDATE
-        premade
+        products_child
     SET
-        shelving = '${shelving}',
-        column_number = '${column}',
-        shelf = '${shelf}',
+        shelf_code = '${shelfCode}',
         size = '${size}',
         amount = ${amount},
         finish = '${finish}',
-        comments = '${comments}'
+        comments = '${comments}',
+        feature_id = ${ifNull(featureId)}
     WHERE
-        premade_id = '${childProductId}'`);
+        product_child_id = '${productChildId}'`);
     res.send(response);
 });
 

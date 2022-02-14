@@ -13,7 +13,14 @@ function camelize(object) {
         return newObject;
     }
     return object;
-} 
+}
+
+function ifNull(value) {
+    if (value === null || value === undefined) {
+        return 'NULL';
+    }
+    return `'${value}'`;
+}
 
 const hashPassword = password => {
     return new Promise((resolve, reject) => {
@@ -56,5 +63,6 @@ module.exports = {
     createToken,
     hashPassword,
     verifyPassword,
-    camelize
+    camelize,
+    ifNull
 };

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
+import { ifNull } from '../../utils'
 
 // api/products/towels/
 
@@ -9,47 +10,48 @@ router.get('/search/:productId', async function(req, res, next) {
     productId = req.params.productId;
     const { rows } = await pool.query(`
     SELECT
-        towel_id as id,
-        shelving,
-        column_number as column,
-        shelf,
+        product_child_id,
+        shelf_code,
         size,
         amount,
         comments
-    FROM towels
-    WHERE product_id = '${productId}'`);
+        F.name as feature
+    FROM products_child
+    LEFT JOIN features F ON F.feature_id = products_child.feature_id
+    WHERE product_id = '${productId}'
+    AND category = 'towel'
+    ORDER BY width, amount`);
     req.body = rows;
     next();
 });
 
 router.post('/add', async function(req, res, next) {
-    const { productId, shelving, column, shelf, size, amount, comments } = req.body;
-    const uuid = uuidv4();
+    const { productId, shelfCode, size, amount, comments, featureId } = req.body;
+    const productChildId = uuidv4();
     const { rows } = await pool.query(`
     INSERT INTO towels
-        (product_id, shelving, column_number, shelf, size, amount, comments, towel_id)
+        (product_child_id, product_id, shelf_code, size, amount, comments, feature_id, category)
     VALUES
-        ('${productId}', '${shelving}', '${column}', '${shelf}', '${size}', '${amount}', '${comments}', '${uuid}')
+        ('${productChildId}', '${productId}', '${shelfCode}', '${size}', '${amount}', '${comments}', '${ifNull(featureId)}', 'towel')
     RETURNING
-        towel_id`);
+        product_child_id`);
     req.body = rows;
     next();
 });
 
 router.put('/update', async function(req, res) {
-    const { childProductId, shelving, column, shelf, size, amount, comments } = req.body;
+    const { productChildId, shelfCode, size, amount, comments, featureId } = req.body;
     const response = await pool.query(`
     UPDATE
-        towels
+        products_child
     SET
-        shelving = '${shelving}',
-        column_number = '${column}',
-        shelf = '${shelf}',
+        shelf_code = '${shelfCode}',
         size = '${size}',
         amount = ${amount},
-        comments = '${comments}'
+        comments = '${comments}',
+        feature_id = ${ifNull(featureId)}
     WHERE
-        towel_id = '${childProductId}'`);
+        product_child_id = '${productChildId}'`);
     res.send(response);
 });
 

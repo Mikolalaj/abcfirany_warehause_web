@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
+import { ifNull } from '../../utils'
 
 // api/products/pillows/
 
@@ -9,45 +10,50 @@ router.get('/search/:productId', async function(req, res, next) {
     productId = req.params.productId;
     const { rows } = await pool.query(`
     SELECT
-        pillow_id as id,
-        shelf,
+        product_child_id,
+        shelf_code,
         size,
         amount,
         finish,
-        comments
-    FROM pillows
-    WHERE product_id = '${productId}'`);
+        comments,
+        F.name as feature
+    FROM products_child
+    LEFT JOIN features F ON F.feature_id = products_child.feature_id
+    WHERE product_id = '${productId}'
+    AND category = 'pillow'
+    ORDER BY size, amount`);
     req.body = rows;
     next();
 });
 
 router.post('/add', async function(req, res, next) {
-    const { productId, shelf, size, amount, finish, comments } = req.body;
-    const uuid = uuidv4();
+    const { productId, shelfCode, size, amount, finish, comments, featureId } = req.body;
+    const productChildId = uuidv4();
     const { rows } = await pool.query(`
-    INSERT INTO pillows
-        (product_id, shelf, size, amount, finish, comments, pillow_id)
+    INSERT INTO products_child
+        (product_child_id, product_id, shelf_code, size, amount, finish, comments, feature_id, category)
     VALUES
-        ('${productId}', '${shelf.toUpperCase()}', '${size}', '${amount}', '${finish}', '${comments}', '${uuid}')
+        ('${productChildId}', '${productId}', '${shelfCode.toUpperCase()}', '${size}', '${amount}', '${finish}', '${comments}', '${ifNull(featureId)}', 'pillow')
     RETURNING
-        pillow_id`);
+    product_child_id`);
     req.body = rows;
     next();
 });
 
 router.put('/update', async function(req, res) {
-    const { childProductId, shelf, size, amount, finish, comments } = req.body;
+    const { productChildId, shelfCode, size, amount, finish, comments, featureId } = req.body;
     const response = await pool.query(`
     UPDATE
-        pillows
+        products_child
     SET
-        shelf = '${shelf.toUpperCase()}',
+        shelf_code = '${shelfCode.toUpperCase()}',
         size = '${size}',
         amount = '${amount}',
         finish = '${finish}',
-        comments = '${comments}'
+        comments = '${comments}',
+        feature_id = ${ifNull(featureId)}
     WHERE
-        pillow_id = '${childProductId}'`);
+        product_child_id = '${productChildId}'`);
     res.send(response);
 });
 

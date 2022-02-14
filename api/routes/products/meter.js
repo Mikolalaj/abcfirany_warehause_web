@@ -2,15 +2,9 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
+import { ifNull } from '../../utils'
 
 // api/products/meter/
-
-function ifNull(value) {
-    if (value === null || value === undefined) {
-        return 'NULL';
-    }
-    return `'${value}'`;
-}
 
 router.get('/search/:productId', async function(req, res, next) {
     productId = req.params.productId;
