@@ -21,34 +21,6 @@ router.get('/search/:productId', async function(req, res, next) {
     next();
 });
 
-router.delete('/delete/one/:childProductId', async function(req, res) {
-    childProductId = req.params.childProductId;
-    const response = await pool.query(`
-    DELETE FROM pillows
-    WHERE pillow_id = '${childProductId}'`);
-    res.send(response);
-});
-
-router.delete('/delete/all/:productId', async function(req, res) {
-    const productId = req.params.productId;
-    const response = await pool.query(`
-    DELETE FROM pillows
-    WHERE product_id = '${productId}'`);
-    res.send(response);
-});
-
-router.put('/take', async function(req, res) {
-    const { childProductId, newAmount } = req.body;
-    const response = await pool.query(`
-    UPDATE
-        pillows
-    SET
-        amount = ${newAmount}
-    WHERE
-        pillow_id = '${childProductId}'`);
-    res.send(response);
-});
-
 router.post('/add', async function(req, res, next) {
     const { productId, shelf, size, amount, finish, comments } = req.body;
     const uuid = uuidv4();

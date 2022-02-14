@@ -51,8 +51,18 @@ function DetailHeader() {
     async function addProduct(formData) {
         console.log(formData)
         try {
-            const { data } = await authAxios.post(`/products/${category}/add`, {...formData, productId: productId});
-            setChildProducts([...childProducts, {...formData, id: data[0].premadeId}]);
+            let featureId, feature = null;
+            if (formData.feature === undefined) {
+                featureId = null;
+                feature = ''
+            }
+            else {
+                featureId = formData.feature.value;
+                feature = formData.feature.label;
+            }
+            const requestData = {...formData, featureId, productId: productId}
+            const { data } = await authAxios.post(`/products/${category}/add`, requestData);
+            setChildProducts([...childProducts, {...formData, feature, productChildId: data[0].productChildId}]);
             setAddPopup(false);
         }
         catch (error) {

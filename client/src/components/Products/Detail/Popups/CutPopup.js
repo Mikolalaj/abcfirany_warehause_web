@@ -2,7 +2,7 @@ import Popup from '../../../Common/Popup/Popup';
 import { useState } from 'react';
 import './CutPopup.css';
 
-function CutPopup({ trigger, closePopup, message, errorMessage, onYes, onNo }) {
+function CutPopup({ trigger, closePopup, message, errorMessage, onYes }) {
     const [amount, setAmount] = useState('');
 
     function updateAmount(event) {
@@ -10,21 +10,21 @@ function CutPopup({ trigger, closePopup, message, errorMessage, onYes, onNo }) {
     }
 
     return (
-        <Popup trigger={trigger} closePopup={closePopup}>
+        <Popup trigger={trigger} closePopup={()=>{closePopup(); setAmount('')}}>
             <div className='cut-popup' >
                 <h1>{message}</h1>
                 <p className='error'>{errorMessage}</p>
-                <form onSubmit={()=>{onYes(amount)}}>
+                <form onSubmit={(e)=>{e.preventDefault(); onYes(amount)}}>
                     <input
                         autoFocus
                         type='text'
                         onChange={updateAmount}
-                        amount={amount}
+                        value={amount}
                     />
                     <p>szt.</p>
                 </form>
                 <div className='popup-buttons'>
-                    <div className='popup-no' onClick={onNo}>
+                    <div className='popup-no' onClick={()=>{closePopup(); setAmount('')}}>
                         Anuluj
                     </div>
                     <div className='popup-yes' onClick={()=>{onYes(amount)}}>

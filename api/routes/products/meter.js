@@ -5,79 +5,59 @@ const { v4: uuidv4 } = require('uuid');
 
 // api/products/meter/
 
+function ifNull(value) {
+    if (value === null || value === undefined) {
+        return 'NULL';
+    }
+    return `'${value}'`;
+}
+
 router.get('/search/:productId', async function(req, res, next) {
     productId = req.params.productId;
     const { rows } = await pool.query(`
     SELECT
-        meter_id as id,
-        shelving,
-        column_number as column,
-        shelf,
+        product_child_id,
+        shelf_code,
         width,
         amount,
-        comments
-    FROM meter
-    WHERE product_id = '${productId}'`);
+        comments,
+        F.name as feature
+    FROM products_child
+    LEFT JOIN features F ON F.feature_id = products_child.feature_id
+    WHERE product_id = '${productId}'
+    AND category = 'meter'
+    ORDER BY width, amount`);
     req.body = rows;
     next();
 });
 
-router.delete('/delete/one/:childProductId', async function(req, res) {
-    childProductId = req.params.childProductId;
-    const response = await pool.query(`
-    DELETE FROM meter
-    WHERE meter_id = '${childProductId}'`);
-    res.send(response);
-});
-
-router.delete('/delete/all/:productId', async function(req, res) {
-    const productId = req.params.productId;
-    const response = await pool.query(`
-    DELETE FROM meter
-    WHERE product_id = '${productId}'`);
-    res.send(response);
-});
-
-router.put('/take', async function(req, res) {
-    const { childProductId, newAmount } = req.body;
-    const response = await pool.query(`
-    UPDATE
-        meter
-    SET
-        amount = ${newAmount}
-    WHERE
-        meter_id = '${childProductId}'`);
-    res.send(response);
-});
-
 router.post('/add', async function(req, res, next) {
-    const { productId, shelving, column, shelf, width, amount, comments } = req.body;
-    const uuid = uuidv4();
+    const { productId, shelfCode, width, amount, comments, featureId } = req.body;
+    const productChildId = uuidv4();
     const { rows } = await pool.query(`
-    INSERT INTO meter
-        (product_id, shelving, column_number, shelf, width, amount, comments, meter_id)
+    INSERT INTO products_child
+        (product_child_id, product_id, shelf_code, width, amount, comments, feature_id, category)
     VALUES
-        ('${productId}', '${shelving}', '${column}', '${shelf}', '${width}', '${amount}', '${comments}', '${uuid}')
+        ('${productChildId}', '${productId}', '${shelfCode}', '${width}', '${amount}', '${comments}', ${ifNull(featureId)}, 'meter')
     RETURNING
-        meter_id`);
+        product_child_id`);
     req.body = rows;
     next();
 });
 
 router.put('/update', async function(req, res) {
-    const { childProductId, shelving, column, shelf, width, amount, comments } = req.body;
+    const { productChildId, shelfCode, width, amount, comments, featureId } = req.body;
     const response = await pool.query(`
     UPDATE
-        meter
+        products_child
     SET
-        shelving = '${shelving}',
-        column_number = '${column}',
-        shelf = '${shelf}',
+        shelf_code = '${shelfCode}',
         width = '${width}',
         amount = ${amount},
-        comments = '${comments}'
+        comments = '${comments}',
+        feature_id = ${ifNull(featureId)}
     WHERE
-        meter_id = '${childProductId}'`);
+        product_child_id = '${productChildId}'`);
     res.send(response);
 });
 

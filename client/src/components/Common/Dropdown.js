@@ -41,7 +41,7 @@ function Dropdown({ ifError, ...props }) {
     )
 }
 
-function ControlledDropdown({ errors, name, control, rules, ...props }) {
+function ControlledDropdown({ errors, name, control, rules, defaultValue, ...props }) {
     return (
     <div>
     <Controller
@@ -66,7 +66,6 @@ function ControlledDropdown({ errors, name, control, rules, ...props }) {
     </div>
     )
 }
-
 
 export {
     Dropdown,

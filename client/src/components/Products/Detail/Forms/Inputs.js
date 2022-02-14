@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import { FetchContext } from '../../../../context/FetchContext'
 import { ToggleSwitchRegister } from '../../../Common/ToggleSwitch'
 import { ControlledDropdown } from '../../../Common/Dropdown'
 import { pillows } from '../../../../dicts'
@@ -341,6 +342,46 @@ function FinishSizeInput({ errors, defaultValue, control, resetField, autoFocus 
     )
 }
 
+function FeatureInput({ productId, errors, defaultValue, control, setValue, autoFocus }) {
+    const [features, setFeatures] = useState([]);
+    const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
+    
+    const { authAxios } = useContext(FetchContext);
+
+    function modifyDataFeatures(data) {
+        return data.map(item => ({
+            value: item.feature_id,
+            label: item.name
+        }))
+    }
+
+    useEffect(async () => {
+        setIsLoadingFeatures(true);
+        const { data } = await authAxios.get(`/products/features/${productId}`);
+        let modifiedData = modifyDataFeatures(data);
+        setFeatures(modifiedData);
+        setIsLoadingFeatures(false);
+        var result = modifiedData.filter(obj => {
+            return obj.label === defaultValue
+        });
+        setValue('feature', result[0]);
+    }, [productId]);
+
+    return (
+    <ControlledDropdown
+        errors={errors}
+        name='feature'
+        control={control}
+        placeholder='Cecha'
+        options={features}
+        isSearchable={true}
+        isLoading={isLoadingFeatures}
+        autoFocus={autoFocus}
+        isClearable={true}
+    />
+    )
+}
+
 export {
     WidthInput,
     AmountMeterInput,
@@ -352,5 +393,6 @@ export {
     SymbolInput,
     ImageInput,
     SaleInput,
-    FinishSizeInput
+    FinishSizeInput,
+    FeatureInput
 };

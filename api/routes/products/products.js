@@ -16,10 +16,10 @@ router.get('/search', async function(req, res, next) {
     const { rows } = await pool.query(`
     SELECT
         *,
-        (SELECT COUNT(product_id) FROM meter WHERE meter.product_id = products.product_id) AS meter_count,
-        (SELECT COUNT(product_id) FROM premade WHERE premade.product_id = products.product_id) AS premade_count,
-        (SELECT COUNT(product_id) FROM pillows WHERE pillows.product_id = products.product_id) AS pillows_count,
-        (SELECT COUNT(product_id) FROM towels WHERE towels.product_id = products.product_id) AS towels_count
+        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'meter') AS meter_count,
+        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'premade') AS premade_count,
+        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'pillow') AS pillows_count,
+        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'meter') AS towels_count
     FROM products
     WHERE symbol LIKE '${searchSymbol}%'`);
     req.body = rows;
@@ -104,6 +104,34 @@ router.put('/update', async function(req, res) {
         comments = '${comments}'
     WHERE
         product_id = '${productId}'`);
+    res.send(response);
+});
+
+router.delete('/delete/one/:childProductId', async function(req, res) {
+    childProductId = req.params.childProductId;
+    const response = await pool.query(`
+    DELETE FROM products_child
+    WHERE product_child_id = '${childProductId}'`);
+    res.send(response);
+});
+
+router.delete('/delete/all/:productId', async function(req, res) {
+    const productId = req.params.productId;
+    const response = await pool.query(`
+    DELETE FROM products_child
+    WHERE product_id = '${productId}'`);
+    res.send(response);
+});
+
+router.put('/take', async function(req, res) {
+    const { childProductId, newAmount } = req.body;
+    const response = await pool.query(`
+    UPDATE
+        products_child
+    SET
+        amount = ${newAmount}
+    WHERE
+        product_child_id = '${childProductId}'`);
     res.send(response);
 });
 
