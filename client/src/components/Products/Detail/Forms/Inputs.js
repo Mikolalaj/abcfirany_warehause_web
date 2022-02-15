@@ -114,7 +114,7 @@ function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
 
 function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
 
-    const regex = type === 'pillows' ? /[a-zA-Z]\d{1,2}/ : /\d{1,2}[-]\d{1,2}[-]\d{1,2}/
+    const regex = type === 'pillows' ? /^[a-zA-Z]\d{1,2}$/ : /^\d{1,2}[-]\d{1,2}[-]\d{1,2}$/
     const format = type === 'pillows' ? 'A1' : '1-2-3'
 
     return (
