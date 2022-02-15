@@ -49,10 +49,9 @@ function DetailHeader() {
     }
 
     async function addProduct(formData) {
-        console.log(formData)
         try {
             let featureId, feature = null;
-            if (formData.feature === undefined) {
+            if (formData.feature === null || formData.feature === undefined) {
                 featureId = null;
                 feature = ''
             }

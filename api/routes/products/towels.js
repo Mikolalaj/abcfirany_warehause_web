@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
-import { ifNull } from '../../utils'
+const { ifNull } = require('../../utils')
 
 // api/products/towels/
 
@@ -14,13 +14,13 @@ router.get('/search/:productId', async function(req, res, next) {
         shelf_code,
         size,
         amount,
-        comments
+        comments,
         F.name as feature
     FROM products_child
     LEFT JOIN features F ON F.feature_id = products_child.feature_id
     WHERE product_id = '${productId}'
     AND category = 'towel'
-    ORDER BY width, amount`);
+    ORDER BY size, amount`);
     req.body = rows;
     next();
 });

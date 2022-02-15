@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
-import { ifNull } from '../../utils'
+const { ifNull } = require('../../utils')
 
 // api/products/meter/
 

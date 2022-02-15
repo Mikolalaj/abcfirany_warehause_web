@@ -52,7 +52,7 @@ function ManageIcons({ childProduct }) {
             setCutPopupError('Nie ma takiej ilości produktu 🙁');
             return;
         }
-        if (amount == childProduct.amount) {
+        if (parseFloat(amount) === parseFloat(childProduct.amount)) {
             try {
                 const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/one/${childProduct.productChildId}`);
                 if (rowCount) {
@@ -102,7 +102,7 @@ function ManageIcons({ childProduct }) {
     async function editProduct(formData) {
         try {
             let featureId, feature = null;
-            if (formData.feature === null) {
+            if (formData.feature === null || formData.feature === undefined) {
                 featureId = null;
                 feature = ''
             }

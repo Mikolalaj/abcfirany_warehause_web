@@ -14,7 +14,7 @@ function CutPopup({ trigger, closePopup, message, errorMessage, onYes }) {
             <div className='cut-popup' >
                 <h1>{message}</h1>
                 <p className='error'>{errorMessage}</p>
-                <form onSubmit={(e)=>{e.preventDefault(); onYes(amount)}}>
+                <form onSubmit={(e)=>{e.preventDefault(); onYes(amount); setAmount('')}}>
                     <input
                         autoFocus
                         type='text'
@@ -27,7 +27,7 @@ function CutPopup({ trigger, closePopup, message, errorMessage, onYes }) {
                     <div className='popup-no' onClick={()=>{closePopup(); setAmount('')}}>
                         Anuluj
                     </div>
-                    <div className='popup-yes' onClick={()=>{onYes(amount)}}>
+                    <div className='popup-yes' onClick={()=>{onYes(amount); setAmount('')}}>
                         OK
                     </div>
                 </div>

@@ -13,15 +13,18 @@ function PremadeListing() {
                 <div className='header'>Wymiar</div>
             </Grid>
             <Grid item xs={1}>
-                <div className='header'>Ilość (szt.)</div>
+                <div className='header'>Ilość</div>
             </Grid>
             <Grid item xs={1}>
                 <div className='header'>Półka</div>
             </Grid>
+            <Grid item xs={1}>
+                <div className='header'>Cecha</div>
+            </Grid>
             <Grid item xs={3}>
                 <div className='header'>Wykończenie</div>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={4}>
                 <div className='header'>Uwagi</div>
             </Grid>
             <Grid item xs={1}>
@@ -29,20 +32,23 @@ function PremadeListing() {
         </Grid>
         <div className='data-rows'>
         {childProducts.map((childProduct, index) => (
-            <Grid key={childProduct.id} className={`row ${index%2===0 ? 'even' : 'odd'}`} container spacing={1}>
+            <Grid key={index} className={`row ${index%2===0 ? 'even' : 'odd'}`} container spacing={1}>
                 <Grid item xs={1}>
                     <div className='data'>{childProduct.size}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <div className='data'>{childProduct.amount}</div>
+                    <div className='data'>{Math.floor(childProduct.amount)}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <div className='data'>{childProduct.shelving}-{childProduct.column}-{childProduct.shelf}</div>
+                    <div className='data'>{childProduct.shelfCode}</div>
+                </Grid>
+                <Grid item xs={1}>
+                    <div className='data'>{childProduct.feature}</div>
                 </Grid>
                 <Grid item xs={3}>
                     <div className='data'>{childProduct.finish}</div>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     <div className='data'>{childProduct.comments}</div>
                 </Grid>
                 <Grid item xs={1}>

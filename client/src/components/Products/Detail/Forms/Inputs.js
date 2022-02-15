@@ -87,7 +87,7 @@ function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
         className={errors.amount && 'input-error'}
         type='number'
         placeholder='Ilość sztuk'
-        defaultValue={defaultValue}
+        defaultValue={defaultValue ? parseInt(defaultValue) : defaultValue}
         {...register('amount', {
             valueAsNumber: true,
             required: {
@@ -268,7 +268,7 @@ function ImageInput({ register, errors, defaultValue, autoFocus, getValues }) {
 
     return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} className='image-input'>
-        <img style={{maxWidth: '150px', marginBottom: '10px'}} src={image} />
+        <img style={{maxWidth: '150px', marginBottom: '10px'}} src={image} alt='product' />
         {imageError && <p className='input-error-text'>Pod tym adresem nie ma zdjęcia</p>}
         <input
             autoFocus={autoFocus}
@@ -355,17 +355,21 @@ function FeatureInput({ productId, errors, defaultValue, control, setValue, auto
         }))
     }
 
-    useEffect(async () => {
+    useEffect(() => {
+        async function fetchFeatures() {
+            const { data } = await authAxios.get(`/products/features/${productId}`);
+            let modifiedData = modifyDataFeatures(data);
+            setFeatures(modifiedData);
+            setIsLoadingFeatures(false);
+            var result = modifiedData.filter(obj => {
+                return obj.label === defaultValue
+            });
+            setValue('feature', result[0]);
+        }
         setIsLoadingFeatures(true);
-        const { data } = await authAxios.get(`/products/features/${productId}`);
-        let modifiedData = modifyDataFeatures(data);
-        setFeatures(modifiedData);
-        setIsLoadingFeatures(false);
-        var result = modifiedData.filter(obj => {
-            return obj.label === defaultValue
-        });
-        setValue('feature', result[0]);
-    }, [productId]);
+        fetchFeatures();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productId])
 
     return (
     <ControlledDropdown

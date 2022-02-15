@@ -13,7 +13,7 @@ function MeterListing() {
                 <div className='header'>Szer. (cm)</div>
             </Grid>
             <Grid item xs={1}>
-                <div className='header'>Ilość (m)</div>
+                <div className='header'>Ilość</div>
             </Grid>
             <Grid item xs={1}>
                 <div className='header'>Półka</div>

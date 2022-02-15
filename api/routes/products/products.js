@@ -19,7 +19,7 @@ router.get('/search', async function(req, res, next) {
         (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'meter') AS meter_count,
         (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'premade') AS premade_count,
         (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'pillow') AS pillows_count,
-        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'meter') AS towels_count
+        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'towel') AS towels_count
     FROM products
     WHERE symbol LIKE '${searchSymbol}%'`);
     req.body = rows;
