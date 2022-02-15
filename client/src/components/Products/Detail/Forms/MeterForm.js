@@ -13,15 +13,15 @@ import FormPopup from '../../../Common/Popup/FormPopup';
 
 function MeterForm({ closePopup, okButtonText, onYes, productData }) {
     const { product: { productId } } = useContext(ProductContext);
-    const {register, handleSubmit, control, setValue, formState: { errors }} = useForm();
+    const {handleSubmit, ...useFormRest} = useForm();
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onYes)}>
-        <WidthInput register={register} errors={errors} defaultValue={productData.width} autoFocus={true}/>
-        <AmountMeterInput register={register} errors={errors} defaultValue={productData.amount} />
-        <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelfCode} />
-        <FeatureInput control={control} setValue={setValue} errors={errors} productId={productId} defaultValue={productData.feature} />
-        <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />
+        <WidthInput useForm={useFormRest} defaultValue={productData.width} autoFocus={true}/>
+        <AmountMeterInput useForm={useFormRest} defaultValue={productData.amount} />
+        <ShelfCodeInput useForm={useFormRest} defaultValue={productData.shelfCode} />
+        <FeatureInput useForm={useFormRest} productId={productId} defaultValue={productData.feature} />
+        <CommentsInput useForm={useFormRest} defaultValue={productData.comments} />
     </FormPopup>
     )
 }

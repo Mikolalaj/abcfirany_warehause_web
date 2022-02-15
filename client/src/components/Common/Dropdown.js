@@ -48,7 +48,7 @@ function ControlledDropdown({ errors, name, control, rules, defaultValue, ...pro
         control={control}
         name={name}
         rules={rules}
-        defaultValue={null}
+        defaultValue={defaultValue ? defaultValue : null}
         render={({
             field: { onChange, onBlur, ref, value }
         }) => (

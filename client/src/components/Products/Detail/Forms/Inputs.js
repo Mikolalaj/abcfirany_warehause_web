@@ -3,17 +3,19 @@ import { FetchContext } from '../../../../context/FetchContext'
 import { ToggleSwitchRegister } from '../../../Common/ToggleSwitch'
 import { ControlledDropdown } from '../../../Common/Dropdown'
 import { pillows } from '../../../../dicts'
+import RegisteredInput from '../../../Common/RegisteredInput'
+import RegisteredTextarea from '../../../Common/RegisteredTextarea'
 
-function WidthInput({ register, errors, defaultValue, autoFocus }) {
+function WidthInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
+    <RegisteredInput 
+        useForm={useForm}
+        name='width'
         autoFocus={autoFocus}
-        className={errors.width && 'input-error'}
-        type='number'
+        inputType='number'
         placeholder='Szerokość'
         defaultValue={defaultValue}
-        {...register('width', {
+        options={{
             valueAsNumber: true,
             required: {
                 value: true,
@@ -30,14 +32,12 @@ function WidthInput({ register, errors, defaultValue, autoFocus }) {
             validate: {
                 integer: v => parseFloat(v) === parseInt(v) || 'Szerokość musi być liczbą całkowitą w cm'
             }
-        })}
+        }}
     />
-    {errors.width && <p className='input-error-text'>{errors.width.message}</p>}
-    </div>
     )
 }
 
-function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
+function AmountMeterInput({ useForm, defaultValue, autoFocus }) {
 
     function twoDecimals(input) {
         input = input.toString()
@@ -48,14 +48,14 @@ function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
     }
 
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
+        name='amount'
         autoFocus={autoFocus}
-        className={errors.amount && 'input-error'}
-        type='number'
+        inputType='number'
         placeholder='Ilość metrów'
         defaultValue={defaultValue}
-        {...register('amount', {
+        options={{
             valueAsNumber: true,
             required: {
                 value: true,
@@ -72,23 +72,21 @@ function AmountMeterInput({ register, errors, defaultValue, autoFocus }) {
             validate: {
                 twoDecimals: v => twoDecimals(v)
             }
-        })}
+        }}
     />
-    {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
-    </div>
     )
 }
 
-function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
+function AmountPiecesInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
+        name='amount'
         autoFocus={autoFocus}
-        className={errors.amount && 'input-error'}
-        type='number'
+        inputType='number'
         placeholder='Ilość sztuk'
-        defaultValue={defaultValue ? parseInt(defaultValue) : defaultValue}
-        {...register('amount', {
+        defaultValue={defaultValue ? parseInt(defaultValue) : ''}
+        options={{
             valueAsNumber: true,
             required: {
                 value: true,
@@ -105,27 +103,24 @@ function AmountPiecesInput({ register, errors, defaultValue, autoFocus }) {
             validate: {
                 integer: v => parseFloat(v) === parseInt(v) || 'Ilość sztuk musi być liczbą całkowitą'
             }
-        })}
+        }}
     />
-    {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
-    </div>
     )
 }
 
-function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
-
+function ShelfCodeInput({ useForm, defaultValue, autoFocus, type }) {
     const regex = type === 'pillows' ? /^[a-zA-Z]\d{1,2}$/ : /^\d{1,2}[-]\d{1,2}[-]\d{1,2}$/
     const format = type === 'pillows' ? 'A1' : '1-2-3'
 
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
+        name='shelfCode'
         autoFocus={autoFocus}
-        className={`shelf-code ${errors.shelfCode && 'input-error'}`}
-        type='text'
+        inputType='text'
         placeholder='Kod półki'
         defaultValue={defaultValue}
-        {...register('shelfCode', {
+        options={{
             required: {
                 value: true,
                 message: 'Kod półki jest wymagany'
@@ -134,44 +129,39 @@ function ShelfCodeInput({ register, errors, defaultValue, autoFocus, type }) {
                 value: regex,
                 message: `Kod półki musi być w formacie ${format}`
             }
-        })}
+        }}
     />
-    {errors.shelfCode && <p className='input-error-text'>{errors.shelfCode.message}</p>}
-    </div>
     )
 }
 
-function CommentsInput({ register, errors, defaultValue, autoFocus }) {
+function CommentsInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <textarea
+    <RegisteredTextarea
+        useForm={useForm}
+        name='comments'
         autoFocus={autoFocus}
-        className={errors.comments && 'input-error'}
-        type='text'
         placeholder='Uwagi'
         defaultValue={defaultValue}
-        {...register('comments', {
+        options={{
             maxLength: {
                 value: 100,
                 message: 'Uwagi mogą mieć maksymalnie 100 znaków'
             }
-        })}
+        }}
     />
-    {errors.comments && <p className='input-error-text'>{errors.comments.message}</p>}
-    </div>
     )
 }
 
-function FinishInput({ register, errors, defaultValue, autoFocus }) {
+function FinishInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
+        name='finish'
         autoFocus={autoFocus}
-        className={errors.finish && 'input-error'}
-        type='text'
+        inputType='text'
         placeholder='Wykończenie'
         defaultValue={defaultValue}
-        {...register('finish', {
+        options={{
             required: {
                 value: true,
                 message: 'Wykończenie jest wymagane'
@@ -180,23 +170,21 @@ function FinishInput({ register, errors, defaultValue, autoFocus }) {
                 value: 100,
                 message: 'Wykończenie może mieć maksymalnie 100 znaków'
             }
-        })}
+        }}
     />
-    {errors.finish && <p className='input-error-text'>{errors.finish.message}</p>}
-    </div>
     )
 }
 
-function SizeInput({ register, errors, defaultValue, autoFocus }) {
+function SizeInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
         autoFocus={autoFocus}
-        className={errors.size && 'input-error'}
-        type='text'
-        placeholder='Wymiary'
         defaultValue={defaultValue}
-        {...register('size', {
+        name='size'
+        inputType='text'
+        placeholder='Wymiary'
+        options={{
             required: {
                 value: true,
                 message: 'Wymiar jest wymagany'
@@ -205,23 +193,21 @@ function SizeInput({ register, errors, defaultValue, autoFocus }) {
                 value: 10,
                 message: 'Wymiar może mieć maksymalnie 10 znaków'
             }
-        })}
+        }}
     />
-    {errors.size && <p className='input-error-text'>{errors.size.message}</p>}
-    </div>
     )
 }
 
-function SymbolInput({ register, errors, defaultValue, autoFocus }) {
+function SymbolInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
         autoFocus={autoFocus}
-        className={errors.symbol && 'input-error'}
-        type='text'
-        placeholder='Symbol'
         defaultValue={defaultValue}
-        {...register('symbol', {
+        name='symbol'
+        inputType='text'
+        placeholder='Symbol'
+        options={{
             required: {
                 value: true,
                 message: 'Symbol jest wymagany'
@@ -230,10 +216,8 @@ function SymbolInput({ register, errors, defaultValue, autoFocus }) {
                 value: 100,
                 message: 'Symbol może mieć maksymalnie 100 znaków'
             }
-        })}
+        }}
     />
-    {errors.symbol && <p className='input-error-text'>{errors.symbol.message}</p>}
-    </div>
     )
 }
 
@@ -305,9 +289,12 @@ function SaleInput({ register, defaultValue }) {
     )
 }
 
-function FinishSizeInput({ errors, defaultValue, control, resetField, autoFocus }) {
+function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
+    const { control, resetField, formState: { errors } } = useForm;
     const [sizes, setSizes] = useState([]);
-    
+    const defaultFinish = {label: defaultValue.finish, value: defaultValue.finish}
+    const defaultSize = {label: defaultValue.size, value: defaultValue.size}
+
     return (
     <>
     <ControlledDropdown
@@ -324,6 +311,8 @@ function FinishSizeInput({ errors, defaultValue, control, resetField, autoFocus 
         autoFocus={autoFocus}
         placeholder='Wykończenie'
         options={Object.keys(pillows).map(key => ({value: key, label: key}))}
+        defaultValue={defaultFinish}
+        isSearchable={false}
     />
     <ControlledDropdown
         errors={errors}
@@ -337,12 +326,15 @@ function FinishSizeInput({ errors, defaultValue, control, resetField, autoFocus 
         }}
         placeholder='Wymiar'
         options={sizes}
+        defaultValue={defaultSize}
+        isSearchable={false}
     />
     </>
     )
 }
 
-function FeatureInput({ productId, errors, defaultValue, control, setValue, autoFocus }) {
+function FeatureInput({ productId, useForm, defaultValue, autoFocus }) {
+    const { control, setValue, formState: { errors } } = useForm;
     const [features, setFeatures] = useState([]);
     const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
     

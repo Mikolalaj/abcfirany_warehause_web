@@ -12,11 +12,11 @@ function PillowListing() {
             <Grid item xs={1}>
                 <div className='header'>Wymiar</div>
             </Grid>
-            <Grid item xs={1}>
-                <div className='header'>Ilość</div>
+            <Grid item xs={2}>
+                <div className='header'>Wykończenie</div>
             </Grid>
             <Grid item xs={1}>
-                <div className='header'>Wykończenie</div>
+                <div className='header'>Ilość</div>
             </Grid>
             <Grid item xs={1}>
                 <div className='header'>Półka</div>
@@ -24,7 +24,7 @@ function PillowListing() {
             <Grid item xs={1}>
                 <div className='header'>Cecha</div>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
                 <div className='header'>Uwagi</div>
             </Grid>
             <Grid item xs={1}>
@@ -36,11 +36,11 @@ function PillowListing() {
                 <Grid item xs={1}>
                     <div className='data'>{childProduct.size}</div>
                 </Grid>
-                <Grid item xs={1}>
-                    <div className='data'>{Math.floor(childProduct.amount)}</div>
+                <Grid item xs={2}>
+                    <div className='data'>{childProduct.finish}</div>
                 </Grid>
                 <Grid item xs={1}>
-                    <div className='data'>{childProduct.finish}</div>
+                    <div className='data'>{Math.floor(childProduct.amount)}</div>
                 </Grid>
                 <Grid item xs={1}>
                     <div className='data'>{childProduct.shelfCode}</div>
@@ -48,7 +48,7 @@ function PillowListing() {
                 <Grid item xs={1}>
                     <div className='data'>{childProduct.feature}</div>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                     <div className='data'>{childProduct.comments}</div>
                 </Grid>
                 <Grid item xs={1}>

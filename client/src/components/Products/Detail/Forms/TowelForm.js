@@ -13,15 +13,15 @@ import FormPopup from '../../../Common/Popup/FormPopup';
 
 function TowelForm({ closePopup, okButtonText, onYes, productData }) {
     const { product: { productId } } = useContext(ProductContext);
-    const {register, handleSubmit, control, setValue, formState: { errors }} = useForm();
+    const {handleSubmit, ...useFormRest} = useForm();
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onYes)}>
-        <SizeInput register={register} errors={errors} defaultValue={productData.size} autoFocus={true}/>
-        <AmountPiecesInput register={register} errors={errors} defaultValue={productData.amount} />
-        <ShelfCodeInput register={register} errors={errors} defaultValue={productData.shelfCode} />
-        <FeatureInput control={control} setValue={setValue} errors={errors} productId={productId} defaultValue={productData.feature} />
-        <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />
+        <SizeInput useForm={useFormRest} defaultValue={productData.size} autoFocus={true}/>
+        <AmountPiecesInput useForm={useFormRest} defaultValue={productData.amount} />
+        <ShelfCodeInput useForm={useFormRest} defaultValue={productData.shelfCode} />
+        <FeatureInput useForm={useFormRest} productId={productId} defaultValue={productData.feature} />
+        <CommentsInput useForm={useFormRest} defaultValue={productData.comments} />
     </FormPopup>
     )
 }

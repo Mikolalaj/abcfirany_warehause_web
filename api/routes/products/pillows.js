@@ -33,7 +33,7 @@ router.post('/add', async function(req, res, next) {
     INSERT INTO products_child
         (product_child_id, product_id, shelf_code, size, amount, finish, comments, feature_id, category)
     VALUES
-        ('${productChildId}', '${productId}', '${shelfCode.toUpperCase()}', '${size}', '${amount}', '${finish}', '${comments}', '${ifNull(featureId)}', 'pillow')
+        ('${productChildId}', '${productId}', '${shelfCode.toUpperCase()}', '${size}', '${amount}', '${finish}', '${comments}', ${ifNull(featureId)}, 'pillow')
     RETURNING
     product_child_id`);
     req.body = rows;
