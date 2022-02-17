@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { FetchContext } from '../../../../context/FetchContext'
 import { ToggleSwitchRegister } from '../../../Common/ToggleSwitch'
-import { ControlledDropdown } from '../../../Common/Dropdown'
+import { ControlledDropdown, ControlledCreateDropdown } from '../../../Common/Dropdown'
 import { pillows } from '../../../../dicts'
 import RegisteredInput from '../../../Common/RegisteredInput'
 import RegisteredTextarea from '../../../Common/RegisteredTextarea'
@@ -221,7 +221,8 @@ function SymbolInput({ useForm, defaultValue, autoFocus }) {
     )
 }
 
-function ImageInput({ register, errors, defaultValue, autoFocus, getValues }) {
+function ImageInput({ useForm, defaultValue, autoFocus }) {
+    const { register, getValues, formState: { errors } } = useForm;
     const [image, setImage] = useState(defaultValue ? defaultValue : 'https://abcfirany.pl/images/no_image.jpg')
     const [imageError, setImageError] = useState(false)
 
@@ -273,7 +274,7 @@ function ImageInput({ register, errors, defaultValue, autoFocus, getValues }) {
     )
 }
 
-function SaleInput({ register, defaultValue }) {
+function SaleInput({ useForm, defaultValue }) {
     const [isOn, setIsOn] = useState(true);
 
     return (
@@ -282,7 +283,7 @@ function SaleInput({ register, defaultValue }) {
             setValue={setIsOn}
             value={isOn}
             defaultChecked={defaultValue}
-            register={register('sale')}
+            register={useForm.register('sale')}
         />
         Wyprzedaż
     </div>
@@ -378,6 +379,52 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus }) {
     )
 }
 
+function FeaturesInput({ useForm, defaultValue, autoFocus }) {
+    const { control, setValue, formState: { errors } } = useForm;
+    const [features, setFeatures] = useState([]);
+    const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
+
+    const { authAxios } = useContext(FetchContext);
+
+    function modifyDataFeatures(data) {
+        return data.map(item => ({
+            value: item.feature_id,
+            label: item.name
+        }))
+    }
+
+    useEffect(() => {
+        async function fetchFeatures() {
+            const { data } = await authAxios.get('/products/features');
+            let modifiedData = modifyDataFeatures(data);
+            setFeatures(modifiedData);
+            setIsLoadingFeatures(false);
+            var result = modifiedData.filter(obj => {
+                return defaultValue.includes(obj.label)
+            });
+            setValue('features', result);
+        }
+        setIsLoadingFeatures(true);
+        fetchFeatures();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+    
+    return (
+    <ControlledCreateDropdown
+        errors={errors}
+        name='features'
+        control={control}
+        placeholder='Cechy'
+        options={features}
+        isSearchable={true}
+        isLoading={isLoadingFeatures}
+        autoFocus={autoFocus}
+        isClearable={true}
+        isMulti={true}
+    />
+    )
+}
+
 export {
     WidthInput,
     AmountMeterInput,
@@ -390,5 +437,6 @@ export {
     ImageInput,
     SaleInput,
     FinishSizeInput,
-    FeatureInput
+    FeatureInput,
+    FeaturesInput
 };

@@ -46,6 +46,49 @@ router.get('/features', async function(req, res, next) {
     res.send(rows);
 });
 
+router.post('/features', async function(req, res, next) {
+    const { name, productId } = req.body;
+    const featureId = uuidv4();
+
+    try {
+        const res = await pool.query(`
+        INSERT INTO features
+            (feature_id, name)
+        VALUES
+            ('${featureId}', '${name}')`);
+        if (res.rowCount === 0) {
+            return res
+                .status(500)
+                .json({ message: 'Nie udało się dodać nowej cechy.' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res
+            .status(400)
+            .json({ message: 'Nie udało się dodać nowej cechy.' });
+    }
+
+    try {
+        const res = await pool.query(`
+        INSERT INTO products_features
+            (product_id, feature_id)
+        VALUES
+            ('${productId}', '${featureId}')`);
+        if (res.rowCount === 0) {
+            return res
+                .status(500)
+                .json({ message: 'Nie udało się połączyć cechy z produktem.' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res
+            .status(400)
+            .json({ message: 'Nie udało się połączyć cechy z produktem.' });
+    }
+    
+    return res.json({ featureId })
+});
+
 router.get('/features/:productId', async function(req, res, next) {
     productId = req.params.productId;
     if (productId === 'undefined') {
@@ -93,7 +136,120 @@ router.get('/details/:productId', async function(req, res, next) {
 });
 
 router.put('/update', async function(req, res) {
-    const { productId, symbol, image, sale, comments } = req.body;
+    const { productId, symbol, image, sale, comments, newFeatures, oldFeatures } = req.body;
+
+    let addFeatures = newFeatures.filter(feature => feature.__isNew__ === true);
+    addFeatures.forEach(feature => feature.value = uuidv4());
+    let connectFeatures = newFeatures.filter(feature => feature.__isNew__ === undefined && oldFeatures.includes(feature.label) === false);
+    connectFeatures.forEach((feature, index) => connectFeatures[index] = feature.value);
+
+    let deleteFeatures = oldFeatures;
+    for (let i = 0; i < newFeatures.length; i++) {
+        if ( deleteFeatures.includes(newFeatures[i].label)) { 
+            deleteFeatures.splice(deleteFeatures.indexOf(newFeatures[i].label), 1); 
+        }
+    }
+    
+    // connect existing features to product
+    console.log('connect: ', connectFeatures);
+
+    if (connectFeatures.length > 0) {
+        try {
+            const res = await pool.query(`
+            INSERT INTO products_features
+                (product_id, feature_id)
+            VALUES
+                ${connectFeatures.map(feature => `('${productId}', '${feature}')`).join(',')}`);
+            if (res.rowCount === 0) {
+                return res
+                    .status(500)
+                    .json({ message: 'Nie udało się dodać istniejących cech.' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(400)
+                .json({ message: 'Nie udało się dodać istniejących cech.' });
+        }
+    }
+
+    // delete existing features from product
+    console.log('delete: ', deleteFeatures);
+
+    if (deleteFeatures.length > 0) {
+        try {
+            const res = await pool.query(`
+            DELETE FROM
+                products_features
+            WHERE
+                product_id = '${productId}' AND
+                feature_id IN
+                    (
+                        SELECT feature_id FROM features WHERE name IN (${deleteFeatures.map(feature => `'${feature}'`).join(',')})
+                    )
+            `);
+            if (res.rowCount === 0) {
+                return res
+                    .status(500)
+                    .json({ message: 'Nie udało się usunąć istniejących cech.' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(400)
+                .json({ message: 'Nie udało się usunąć istniejących cech.' });
+        }
+    }
+
+    // add new features to product    
+    console.log('add: ', addFeatures);
+
+    if (addFeatures.length > 0) {
+        try {
+            const res = await pool.query(`
+                INSERT INTO features
+                (feature_id, name)
+            VALUES
+                ${addFeatures.map(feature => `('${feature.value}', '${feature.label}')`).join(',')}`);
+            if (res.rowCount === 0) {
+                return res
+                    .status(500)
+                    .json({ message: 'Nie udało się dodać nowej cechy.' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(400)
+                .json({ message: 'Nie udało się dodać nowej cechy.' });
+        }
+
+        try {
+            const res = await pool.query(`
+            INSERT INTO products_features
+                (product_id, feature_id)
+            VALUES
+                ${addFeatures.map(feature => `('${productId}', '${feature.value}')`).join(',')}`);
+            if (res.rowCount === 0) {
+                return res
+                    .status(500)
+                    .json({ message: 'Nie udało się połączyć cechy z produktem.' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(400)
+                .json({ message: 'Nie udało się połączyć cechy z produktem.' });
+        }
+    }
+
+    let updatedFeatures = newFeatures.filter(feature => feature.__isNew__ === undefined);
+    updatedFeatures = updatedFeatures.concat(addFeatures);
+    for (let i = 0; i < updatedFeatures.length; i++) {
+        updatedFeatures[i] = updatedFeatures[i].label;
+    }
+    console.log('updated: ', updatedFeatures);
+
+    // edit product
     const response = await pool.query(`
     UPDATE
         products
@@ -103,8 +259,17 @@ router.put('/update', async function(req, res) {
         sale = '${sale}',
         comments = '${comments}'
     WHERE
-        product_id = '${productId}'`);
-    res.send(response);
+        product_id = '${productId}'
+    RETURNING
+        symbol, img, sale, comments`);
+    
+    let updatedProduct = response.rows[0];
+    updatedProduct = {
+        ...updatedProduct,
+        features: updatedFeatures
+    }
+
+    res.send(updatedProduct);
 });
 
 router.delete('/delete/one/:childProductId', async function(req, res) {

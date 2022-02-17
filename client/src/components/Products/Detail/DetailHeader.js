@@ -23,20 +23,23 @@ function DetailHeader() {
 
     async function editProduct(formData) {
         try {
-            const { data: { rowCount } } = await authAxios.put('/products/update', {
+            const { data } = await authAxios.put('/products/update', {
                 productId,
                 symbol: formData.symbol,
                 image: formData.image,
                 sale: formData.sale,
-                comments: formData.comments
+                comments: formData.comments,
+                newFeatures: formData.features,
+                oldFeatures: features
             });
-            if (rowCount) {
+            if (data) {
                 setProduct({
                     ...product,
-                    symbol: formData.symbol,
-                    img: formData.image,
-                    sale: formData.sale,
-                    comments: formData.comments
+                    symbol: data.symbol,
+                    image: data.img,
+                    sale: data.sale,
+                    comments: data.comments,
+                    features: data.features
                 })
                 setEditPopup(false);
             } else {
@@ -102,7 +105,8 @@ function DetailHeader() {
                 symbol: symbol,
                 image: img,
                 sale: sale,
-                comments: comments
+                comments: comments,
+                features: features
             }}
             errorMessage={editPopupError}
         />

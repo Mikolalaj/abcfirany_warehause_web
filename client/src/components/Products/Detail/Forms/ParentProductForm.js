@@ -4,19 +4,21 @@ import {
     SymbolInput,
     CommentsInput,
     ImageInput,
-    SaleInput
+    SaleInput,
+    FeaturesInput
 } from './Inputs';
 import FormPopup from '../../../Common/Popup/FormPopup';
 
 function ParentProductForm({ closePopup, onYes, productData }) {
-    const {register, handleSubmit, getValues, formState: { errors }} = useForm();
+    const {handleSubmit, ...useFormRest} = useForm();
 
     return (
     <FormPopup closePopup={closePopup} okButtonText='Edytuj' onYes={handleSubmit(onYes)}>
-        <SymbolInput register={register} errors={errors} defaultValue={productData.symbol} autoFocus={true}/>
-        <ImageInput register={register} getValues={getValues} errors={errors} defaultValue={productData.image} />
-        <SaleInput register={register} defaultValue={productData.sale} />
-        <CommentsInput register={register} errors={errors} defaultValue={productData.comments} />
+        <SymbolInput useForm={useFormRest} defaultValue={productData.symbol} autoFocus={true}/>
+        <ImageInput useForm={useFormRest} defaultValue={productData.image} />
+        <SaleInput useForm={useFormRest} defaultValue={productData.sale} />
+        <FeaturesInput useForm={useFormRest} defaultValue={productData.features} />
+        <CommentsInput useForm={useFormRest} defaultValue={productData.comments} />
     </FormPopup>
     )
 }
