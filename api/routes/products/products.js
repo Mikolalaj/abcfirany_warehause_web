@@ -151,7 +151,7 @@ router.put('/update', async function(req, res) {
     }
     
     // connect existing features to product
-    console.log('connect: ', connectFeatures);
+    // console.log('connect: ', connectFeatures);
 
     if (connectFeatures.length > 0) {
         try {
@@ -174,7 +174,7 @@ router.put('/update', async function(req, res) {
     }
 
     // delete existing features from product
-    console.log('delete: ', deleteFeatures);
+    // console.log('delete: ', deleteFeatures);
 
     if (deleteFeatures.length > 0) {
         try {
@@ -202,7 +202,7 @@ router.put('/update', async function(req, res) {
     }
 
     // add new features to product    
-    console.log('add: ', addFeatures);
+    // console.log('add: ', addFeatures);
 
     if (addFeatures.length > 0) {
         try {
@@ -247,7 +247,7 @@ router.put('/update', async function(req, res) {
     for (let i = 0; i < updatedFeatures.length; i++) {
         updatedFeatures[i] = updatedFeatures[i].label;
     }
-    console.log('updated: ', updatedFeatures);
+    // console.log('updated: ', updatedFeatures);
 
     // edit product
     const response = await pool.query(`
