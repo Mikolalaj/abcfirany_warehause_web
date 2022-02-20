@@ -26,4 +26,19 @@ function MeterForm({ closePopup, okButtonText, onYes, productData }) {
     )
 }
 
+function MeterFormPure({ productId }) {
+    const {handleSubmit, ...useFormRest} = useForm();
+
+    return (
+    <>
+        <WidthInput useForm={useFormRest} autoFocus={true}/>
+        <AmountMeterInput useForm={useFormRest} />
+        <ShelfCodeInput useForm={useFormRest} />
+        <FeatureInput useForm={useFormRest} productId={productId} />
+        <CommentsInput useForm={useFormRest} />
+    </>
+    )
+}
+
 export default MeterForm;
+export { MeterFormPure };

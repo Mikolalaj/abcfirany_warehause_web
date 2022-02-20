@@ -26,4 +26,19 @@ function TowelForm({ closePopup, okButtonText, onYes, productData }) {
     )
 }
 
+function TowelFormPure({ productId }) {
+    const {handleSubmit, ...useFormRest} = useForm();
+
+    return (
+    <>
+        <SizeInput useForm={useFormRest} autoFocus={true}/>
+        <AmountPiecesInput useForm={useFormRest} />
+        <ShelfCodeInput useForm={useFormRest} />
+        <FeatureInput useForm={useFormRest} productId={productId} />
+        <CommentsInput useForm={useFormRest} />
+    </>
+    )
+}
+
 export default TowelForm;
+export { TowelFormPure };

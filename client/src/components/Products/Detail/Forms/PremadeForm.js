@@ -28,4 +28,20 @@ function PremadeForm({ closePopup, okButtonText, onYes, productData }) {
     )
 }
 
+function PremadeFormPure({ productId }) {
+    const {handleSubmit, ...useFormRest} = useForm();
+
+    return (
+    <>
+        <SizeInput useForm={useFormRest} autoFocus={true}/>
+        <AmountPiecesInput useForm={useFormRest} />
+        <ShelfCodeInput useForm={useFormRest} />
+        <FinishInput useForm={useFormRest} />
+        <FeatureInput useForm={useFormRest} productId={productId} />
+        <CommentsInput useForm={useFormRest} />
+    </>
+    )
+}
+
 export default PremadeForm;
+export { PremadeFormPure };

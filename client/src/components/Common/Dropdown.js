@@ -136,6 +136,8 @@ function ControlledCreateDropdown({ errors, name, control, rules, defaultValue, 
 
 
 export {
+    Dropdown,
     ControlledDropdown,
+    CreateDropdown,
     ControlledCreateDropdown
 };

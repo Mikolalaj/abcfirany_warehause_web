@@ -293,8 +293,8 @@ function SaleInput({ useForm, defaultValue }) {
 function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
     const { control, resetField, formState: { errors } } = useForm;
     const [sizes, setSizes] = useState([]);
-    const defaultFinish = {label: defaultValue.finish, value: defaultValue.finish}
-    const defaultSize = {label: defaultValue.size, value: defaultValue.size}
+    const defaultFinish = {label: defaultValue?.finish, value: defaultValue?.finish}
+    const defaultSize = {label: defaultValue?.size, value: defaultValue?.size}
 
     return (
     <>
@@ -312,7 +312,7 @@ function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
         autoFocus={autoFocus}
         placeholder='Wykończenie'
         options={Object.keys(pillows).map(key => ({value: key, label: key}))}
-        defaultValue={defaultFinish}
+        defaultValue={defaultValue ? defaultFinish : null}
         isSearchable={false}
     />
     <ControlledDropdown
@@ -327,7 +327,7 @@ function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
         }}
         placeholder='Wymiar'
         options={sizes}
-        defaultValue={defaultSize}
+        defaultValue={defaultValue ? defaultSize : null}
         isSearchable={false}
     />
     </>

@@ -31,4 +31,19 @@ function PillowForm({ closePopup, okButtonText, onYes, productData }) {
     )
 }
 
+function PillowFormPure({ productId }) {
+    const {handleSubmit, ...useFormRest} = useForm();
+
+    return (
+    <>
+        <FinishSizeInput useForm={useFormRest} autoFocus={true}/>
+        <AmountPiecesInput useForm={useFormRest} />
+        <ShelfCodeInput useForm={useFormRest} type='pillows' />
+        <FeatureInput useForm={useFormRest} productId={productId} />
+        <CommentsInput useForm={useFormRest} />
+    </>
+    )
+}
+
 export default PillowForm;
+export { PillowFormPure };
