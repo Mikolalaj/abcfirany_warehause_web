@@ -7,21 +7,8 @@
 }
 
 .add-product-page h1 {
-    font-size: 40px;
+    font-size: 45px;
     margin: 30px 0 50px 0;
-}
-
-.add-product-page .choose-category-parent {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: stretch;
-    gap: 20px;
-}
-
-.add-product-page .choose-category {
-    width: 100%;
 }
 
 .add-product-page input, .add-product-page textarea {
@@ -32,14 +19,4 @@
 .add-product-page textarea {
     resize: none;
     height: 78px;
-}
-
-.add-product-page button {
-    width: 100%;
-    padding: 7px;
-    font-size: 20px;
-    border: none;
-    background-color: #00bcd4;
-    color: #fff;
-    cursor: pointer;
 }

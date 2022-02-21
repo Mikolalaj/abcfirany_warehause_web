@@ -1,51 +1,8 @@
 .popup-form {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
     width: 100%;
     height: 100%;
     background-color: #fff;
-    gap: 15px;
     margin-top: 10px;
-}
-
-.popup-form input, .popup-form textarea {
-    font-size: 20px;
-    padding: 7px;
-    width: 100%;
-}
-
-.popup-form textarea {
-    height: 95px;
-    resize: none;
-}
-
-.popup-form input[type='text']:focus, input[type='number']:focus, textarea:focus{
-    outline-offset: -1px;
-    outline-style: solid;
-    outline-color: var(--color-wheel-2);
-    outline-width: 2px;
-}
-
-.popup-form input:disabled, textarea:disabled {
-    cursor: default;
-    color: #dddddd;
-    background-color: #dddddd;
-}
-
-.popup-form .select {
-    font-size: 20px;
-}
-
-.popup-form .input-error {
-    border-color: var(--red);
-}
-
-.popup-form .input-error-text {
-    color: var(--red);
-    font-size: 17px;
-    margin: 5px 0 0 0;
 }
 
 .shelf-code::placeholder {

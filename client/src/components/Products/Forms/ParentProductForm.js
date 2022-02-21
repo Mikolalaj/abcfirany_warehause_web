@@ -7,7 +7,7 @@ import {
     SaleInput,
     FeaturesInput
 } from './Inputs';
-import FormPopup from '../../../Common/Popup/FormPopup';
+import FormPopup from '../../Common/Popup/FormPopup';
 
 function ParentProductForm({ closePopup, onYes, productData }) {
     const {handleSubmit, ...useFormRest} = useForm();

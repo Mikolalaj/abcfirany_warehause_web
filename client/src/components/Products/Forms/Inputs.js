@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from 'react'
-import { FetchContext } from '../../../../context/FetchContext'
-import { ToggleSwitchRegister } from '../../../Common/ToggleSwitch'
-import { ControlledDropdown, ControlledCreateDropdown } from '../../../Common/Dropdown'
-import { pillows } from '../../../../dicts'
-import RegisteredInput from '../../../Common/RegisteredInput'
-import RegisteredTextarea from '../../../Common/RegisteredTextarea'
+import { FetchContext } from '../../../context/FetchContext'
+import { ToggleSwitchRegister } from '../../Common/ToggleSwitch'
+import { ControlledDropdown, ControlledCreateDropdown } from '../../Common/Dropdown'
+import { pillows } from '../../../dicts'
+import RegisteredInput from '../../Common/RegisteredInput'
+import RegisteredTextarea from '../../Common/RegisteredTextarea'
 
 function WidthInput({ useForm, defaultValue, autoFocus }) {
     return (
@@ -134,11 +134,11 @@ function ShelfCodeInput({ useForm, defaultValue, autoFocus, type }) {
     )
 }
 
-function CommentsInput({ useForm, defaultValue, autoFocus }) {
+function CommentsInput({ useForm, defaultValue, autoFocus, name }) {
     return (
     <RegisteredTextarea
         useForm={useForm}
-        name='comments'
+        name={name}
         autoFocus={autoFocus}
         placeholder='Uwagi'
         defaultValue={defaultValue}
@@ -150,6 +150,10 @@ function CommentsInput({ useForm, defaultValue, autoFocus }) {
         }}
     />
     )
+}
+
+CommentsInput.defaultProps = {
+    name: 'comments'
 }
 
 function FinishInput({ useForm, defaultValue, autoFocus }) {
@@ -334,7 +338,7 @@ function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
     )
 }
 
-function FeatureInput({ productId, useForm, defaultValue, autoFocus }) {
+function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) {
     const { control, setValue, formState: { errors } } = useForm;
     const [features, setFeatures] = useState([]);
     const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
@@ -370,7 +374,7 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus }) {
         name='feature'
         control={control}
         placeholder='Cecha'
-        options={features}
+        options={options ? options : features}
         isSearchable={true}
         isLoading={isLoadingFeatures}
         autoFocus={autoFocus}
@@ -379,7 +383,7 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus }) {
     )
 }
 
-function FeaturesInput({ useForm, defaultValue, autoFocus }) {
+function FeaturesInput({ useForm, defaultValue, autoFocus, ...props }) {
     const { control, setValue, formState: { errors } } = useForm;
     const [features, setFeatures] = useState([]);
     const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
@@ -399,10 +403,12 @@ function FeaturesInput({ useForm, defaultValue, autoFocus }) {
             let modifiedData = modifyDataFeatures(data);
             setFeatures(modifiedData);
             setIsLoadingFeatures(false);
-            var result = modifiedData.filter(obj => {
-                return defaultValue.includes(obj.label)
-            });
-            setValue('features', result);
+            if (defaultValue) {
+                var result = modifiedData.filter(obj => {
+                    return defaultValue.includes(obj.label)
+                });
+                setValue('features', result);
+            }
         }
         setIsLoadingFeatures(true);
         fetchFeatures();
@@ -421,6 +427,49 @@ function FeaturesInput({ useForm, defaultValue, autoFocus }) {
         autoFocus={autoFocus}
         isClearable={true}
         isMulti={true}
+        {...props}
+    />
+    )
+}
+
+function SymbolDropdownInput({ useForm, defaultValue, autoFocus }) {
+    const { control, formState: { errors } } = useForm;
+
+    const [symbols, setSymbols] = useState([]);
+    const [isLoadingSymbols, setIsLoadingSymbols] = useState(false);
+
+    const { authAxios } = useContext(FetchContext);
+
+    function modifyDataSymbols(data) {
+        return data.map(item => ({
+            value: item.product_id,
+            label: item.symbol
+        }))
+    }
+
+    useEffect(async () => {
+        setIsLoadingSymbols(true);
+        const { data } = await authAxios.get('/products/symbols');
+        setSymbols(modifyDataSymbols(data));
+        setIsLoadingSymbols(false);
+    }, [])
+
+    return (
+    <ControlledDropdown
+        errors={errors}
+        name='symbol'
+        control={control}
+        rules={{
+            required: {
+                value: true,
+                message: 'Symbol jest wymagany'
+            }
+        }}
+        autoFocus={autoFocus}
+        placeholder='Symbol'
+        options={symbols}
+        isSearchable={true}
+        isLoading={isLoadingSymbols}
     />
     )
 }
@@ -438,5 +487,6 @@ export {
     SaleInput,
     FinishSizeInput,
     FeatureInput,
-    FeaturesInput
+    FeaturesInput,
+    SymbolDropdownInput
 };

@@ -44,7 +44,7 @@ function Dropdown({ ifError, ...props }) {
 
 function ControlledDropdown({ errors, name, control, rules, defaultValue, ...props }) {
     return (
-    <div>
+    <div className='select'>
     <Controller
         control={control}
         name={name}

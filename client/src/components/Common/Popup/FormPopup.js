@@ -1,9 +1,12 @@
 import './FormPopup.css';
+import '../../Common/Forms/Forms.css';
 
 function FormPopup({ children, closePopup, okButtonText, onYes }) {
     return (
     <form className='popup-form' autoComplete='off'>
-        {children}
+        <div className='form-inputs'>
+            {children}
+        </div>
         <div className='popup-buttons'>
             <div className='popup-no' onClick={closePopup}>
                 Anuluj

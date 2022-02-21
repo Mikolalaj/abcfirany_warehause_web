@@ -1,8 +1,8 @@
 import Popup from '../../../Common/Popup/Popup';
-import PremadeForm from '../Forms/PremadeForm';
-import MeterForm from '../Forms/MeterForm';
-import PillowForm from '../Forms/PillowForm';
-import TowelForm from '../Forms/TowelForm';
+import PremadeForm from '../../Forms/PremadeForm';
+import MeterForm from '../../Forms/MeterForm';
+import PillowForm from '../../Forms/PillowForm';
+import TowelForm from '../../Forms/TowelForm';
 import { useContext } from 'react';
 import { ProductContext } from '../../../../context/ProductContext';
 import ProductsEnum from '../../ProductsEnum';

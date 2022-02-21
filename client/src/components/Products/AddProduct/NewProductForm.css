@@ -19,8 +19,13 @@
 }
 
 .parent-product-form .image-forms img {
-    max-width: 190px;
+    width: 190px;
+    height: 190px;
+    object-fit: cover;
     margin: 0 20px 20px 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cccccc;
 }
 
 .parent-product-form .image-forms .forms {
@@ -39,4 +44,24 @@
     justify-content: center;
     gap: 20px;
     width: 560px;
+}
+
+.parent-product-form .switch-form {
+    text-align: center;
+    text-decoration: underline 1px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.choose-category {
+    width: 100%;
+}
+
+.choose-category-parent {
+    margin: 30px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: stretch;
+    gap: 20px;
 }
