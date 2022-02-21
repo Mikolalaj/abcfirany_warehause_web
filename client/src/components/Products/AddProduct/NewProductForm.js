@@ -18,7 +18,7 @@ import './NewProductForm.css'
 
 
 function NewProductForm({ useFormRest }) {
-    const { formState: { errors } } = useFormRest;
+    const { formState: { errors }, setValue, getValues, control, unregister, register } = useFormRest;
 
     const [image, setImage] = useState('https://abcfirany.pl/images/no_image.jpg')
     const [imageError, setImageError] = useState(false)
@@ -36,7 +36,7 @@ function NewProductForm({ useFormRest }) {
     }
 
     function handleImageChange() {
-        let newImageUrl = useFormRest.getValues('image')
+        let newImageUrl = getValues('image')
 
         if (newImageUrl === '') {
             setImage('https://abcfirany.pl/images/no_image.jpg')
@@ -54,6 +54,15 @@ function NewProductForm({ useFormRest }) {
         });
     }
 
+    function unregisterChildProductForm() {
+        unregister(['width', 'size', 'amount', 'shelfCode', 'feature', 'comments', 'finish'])
+    }
+
+    function unregisterParentProductForm() {
+        unregister(['symbol', 'features', 'sale', 'parentComments', 'image'])
+        setImage('https://abcfirany.pl/images/no_image.jpg')
+    }
+
     return (
     <>
         <div className='parent-product-form'>
@@ -63,7 +72,7 @@ function NewProductForm({ useFormRest }) {
                     <img src={image} alt='parent product' />
                     <div className='forms'>
                         <SymbolInput useForm={useFormRest}/>
-                        <FeaturesInput useForm={useFormRest} rules={{onChange: (e) => {setFeatureOptions(e.target.value); useFormRest.setValue('feature', null)}}}/>
+                        <FeaturesInput useForm={useFormRest} rules={{onChange: (e) => {setFeatureOptions(e.target.value); setValue('feature', null)}}}/>
                         <SaleInput useForm={useFormRest} />
                     </div>
                 </div>
@@ -74,7 +83,7 @@ function NewProductForm({ useFormRest }) {
                         className={errors.image && 'input-error'}
                         type='text'
                         placeholder='URL zdjęcia'
-                        {...useFormRest.register('image', {
+                        {...register('image', {
                             onBlur: () => handleImageChange(),
                             maxLength: {
                                 value: 250,
@@ -92,22 +101,22 @@ function NewProductForm({ useFormRest }) {
                 <SymbolDropdownInput useForm={useFormRest} />
             </div>
             }
-            <div className='switch-form' onClick={() => setFormStatus(!formStatus)}>
+            <div className='switch-form' onClick={() => {setFormStatus(!formStatus); unregisterParentProductForm()}}>
                 {formStatus ? 'Użyj istniejącego produktu' : 'Stwórz nowy produkt'}
             </div>
         </div>
         <div className='choose-category-parent'>
             Kategoria: 
             <ControlledDropdown
-                errors={useFormRest.formState.errors}
-                control={useFormRest.control}
+                errors={errors}
+                control={control}
                 name='category'
                 rules={{
                     required: {
                         value: true,
                         message: 'Wybierz kategorię produktu'
                     },
-                    onChange: e => {setCategory(e.target.value.value); useFormRest.reset()}
+                    onChange: e => {setCategory(e.target.value.value); unregisterChildProductForm()}
                 }}
                 className='choose-category'
                 options={[
