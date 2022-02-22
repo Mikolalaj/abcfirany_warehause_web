@@ -1,7 +1,6 @@
 .parent-product-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: stretch;
 }
 
@@ -37,7 +36,7 @@
     width: 350px;
 }
 
-.parent-product-form .rest-forms {
+.parent-product-form .rest-forms, .child-product-form {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -49,16 +48,28 @@
 .parent-product-form .switch-form {
     text-align: center;
     text-decoration: underline 1px;
-    margin-top: 10px;
+    margin: 10px 0;
     cursor: pointer;
+}
+
+.parent-product-form .switch-form.right {
+    margin: 0 10px 0 auto;
+}
+
+.labeled-dropdown .select {
+    min-width: 180px;
+}
+
+.labeled-dropdown .label {
+    min-width: 85px;
 }
 
 .choose-category {
     width: 100%;
 }
 
-.choose-category-parent {
-    margin: 30px 0;
+.labeled-dropdown {
+    margin-top: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;

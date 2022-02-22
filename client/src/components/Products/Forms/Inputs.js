@@ -130,6 +130,7 @@ function ShelfCodeInput({ useForm, defaultValue, autoFocus, type }) {
                 message: `Kod półki musi być w formacie ${format}`
             }
         }}
+        className='shelf-code'
     />
     )
 }
@@ -297,7 +298,7 @@ function SaleInput({ useForm, defaultValue }) {
 function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
     const { control, resetField, formState: { errors } } = useForm;
     const [sizes, setSizes] = useState([]);
-    
+
     const defaultFinish = {label: defaultValue?.finish, value: defaultValue?.finish}
     const defaultSize = {label: defaultValue?.size, value: defaultValue?.size}
 
@@ -342,8 +343,8 @@ function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
 function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) {
     const { control, setValue, formState: { errors } } = useForm;
     const [features, setFeatures] = useState([]);
+    const [isRequired, setIsRequired] = useState(false);
     const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
-    
     const { authAxios } = useContext(FetchContext);
 
     function modifyDataFeatures(data) {
@@ -352,6 +353,17 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
             label: item.name
         }))
     }
+
+    useEffect(() => {
+        if (options) {
+            if (options.length === 0) { setIsRequired(false) }
+            else { setIsRequired(true) }
+        }
+        else {
+            if (features.length === 0) { setIsRequired(false)}
+            else { setIsRequired(true) }
+        }
+    }, [options, features])
 
     useEffect(() => {
         async function fetchFeatures() {
@@ -364,8 +376,10 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
             });
             setValue('feature', result[0]);
         }
-        setIsLoadingFeatures(true);
-        fetchFeatures();
+        if (options === undefined) {
+            setIsLoadingFeatures(true);
+            fetchFeatures();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productId])
 
@@ -380,6 +394,12 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
         isLoading={isLoadingFeatures}
         autoFocus={autoFocus}
         isClearable={true}
+        rules={{
+            required: {
+                value: isRequired,
+                message: 'Cecha jest wymagana'
+            }
+        }}
     />
     )
 }
@@ -433,7 +453,7 @@ function FeaturesInput({ useForm, defaultValue, autoFocus, ...props }) {
     )
 }
 
-function SymbolDropdownInput({ useForm, defaultValue, autoFocus }) {
+function SymbolDropdownInput({ useForm, defaultValue, autoFocus, rules, ...props }) {
     const { control, formState: { errors } } = useForm;
 
     const [symbols, setSymbols] = useState([]);
@@ -455,22 +475,26 @@ function SymbolDropdownInput({ useForm, defaultValue, autoFocus }) {
         setIsLoadingSymbols(false);
     }, [])
 
+    const newRules = {
+        required: {
+            value: true,
+            message: 'Symbol jest wymagany'
+        },
+        ...rules
+    }
+
     return (
     <ControlledDropdown
         errors={errors}
         name='symbol'
         control={control}
-        rules={{
-            required: {
-                value: true,
-                message: 'Symbol jest wymagany'
-            }
-        }}
+        rules={newRules}
         autoFocus={autoFocus}
         placeholder='Symbol'
         options={symbols}
         isSearchable={true}
         isLoading={isLoadingSymbols}
+        {...props}
     />
     )
 }

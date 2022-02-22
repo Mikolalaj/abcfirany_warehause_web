@@ -6,8 +6,40 @@ import './AddProductPage.css';
 function AddProductPage() {
     const { handleSubmit, ...useFormRest } = useForm();    
     function addProduct(formData) {
-        let { category, ...formDataRest } = formData;
-        formData = { ...formDataRest, category: category.value };
+        let { category, feature, symbol, finish, size, ...formDataRest } = formData;
+        formData = {
+            ...formDataRest,
+            category: category.value,
+            feature: feature?.value
+        }
+
+        if (symbol.value) {
+            formData = {
+                ...formData,
+                productId: symbol.value
+            }
+        }
+        else {
+            formData = {
+                ...formData,
+                symbol
+            }
+        }
+
+        if (finish) {
+            formData = {
+                ...formData,
+                finish: finish.value
+            }
+        }
+
+        if (size) {
+            formData = {
+                ...formData,
+                size: size.value
+            }
+        }
+
         console.log(formData)
     }
 
