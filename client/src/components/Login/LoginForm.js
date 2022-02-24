@@ -25,7 +25,7 @@ function LoginForm() {
     
     return (
     <form className='login-form' onSubmit={handleSubmit(onClickLogin)}>
-        <h3>Zaloguj się</h3>
+        <h1>Zaloguj się</h1>
         <input
             type='text'
             placeholder='Login'
