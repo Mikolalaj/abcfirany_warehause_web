@@ -1,6 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var pool = require('../../db');
+var {
+    connectFeatures,
+    addFeatures,
+    disconnectFeatures
+} = require('./features');
+const { ifNull } = require('../../utils')
 const { v4: uuidv4 } = require('uuid');
 
 const requireAdmin = (req, res, next) => {
@@ -138,112 +144,35 @@ router.get('/details/:productId', async function(req, res, next) {
 router.put('/update', async function(req, res) {
     const { productId, symbol, image, sale, comments, newFeatures, oldFeatures } = req.body;
 
-    let addFeatures = newFeatures.filter(feature => feature.__isNew__ === true);
-    addFeatures.forEach(feature => feature.value = uuidv4());
-    let connectFeatures = newFeatures.filter(feature => feature.__isNew__ === undefined && oldFeatures.includes(feature.label) === false);
-    connectFeatures.forEach((feature, index) => connectFeatures[index] = feature.value);
+    let addFeaturesList = newFeatures.filter(feature => feature.__isNew__ === true);
+    addFeaturesList.forEach(feature => feature.value = uuidv4());
+    let connectFeaturesList = newFeatures.filter(feature => feature.__isNew__ === undefined && oldFeatures.includes(feature.label) === false);
+    connectFeaturesList.forEach((feature, index) => connectFeaturesList[index] = feature.value);
 
-    let deleteFeatures = oldFeatures;
+    let deleteFeaturesList = oldFeatures;
     for (let i = 0; i < newFeatures.length; i++) {
-        if ( deleteFeatures.includes(newFeatures[i].label)) { 
-            deleteFeatures.splice(deleteFeatures.indexOf(newFeatures[i].label), 1); 
+        if ( deleteFeaturesList.includes(newFeatures[i].label)) { 
+            deleteFeaturesList.splice(deleteFeaturesList.indexOf(newFeatures[i].label), 1); 
         }
     }
     
     // connect existing features to product
-    // console.log('connect: ', connectFeatures);
+    // console.log('connect: ', connectFeaturesList);
 
-    if (connectFeatures.length > 0) {
-        try {
-            const res = await pool.query(`
-            INSERT INTO products_features
-                (product_id, feature_id)
-            VALUES
-                ${connectFeatures.map(feature => `('${productId}', '${feature}')`).join(',')}`);
-            if (res.rowCount === 0) {
-                return res
-                    .status(500)
-                    .json({ message: 'Nie udało się dodać istniejących cech.' });
-            }
-        } catch (error) {
-            console.log(error);
-            return res
-                .status(400)
-                .json({ message: 'Nie udało się dodać istniejących cech.' });
-        }
-    }
+    connectFeatures(connectFeaturesList, productId);
 
     // delete existing features from product
-    // console.log('delete: ', deleteFeatures);
+    // console.log('delete: ', deleteFeaturesList);
 
-    if (deleteFeatures.length > 0) {
-        try {
-            const res = await pool.query(`
-            DELETE FROM
-                products_features
-            WHERE
-                product_id = '${productId}' AND
-                feature_id IN
-                    (
-                        SELECT feature_id FROM features WHERE name IN (${deleteFeatures.map(feature => `'${feature}'`).join(',')})
-                    )
-            `);
-            if (res.rowCount === 0) {
-                return res
-                    .status(500)
-                    .json({ message: 'Nie udało się usunąć istniejących cech.' });
-            }
-        } catch (error) {
-            console.log(error);
-            return res
-                .status(400)
-                .json({ message: 'Nie udało się usunąć istniejących cech.' });
-        }
-    }
+    disconnectFeatures(deleteFeaturesList, productId);
 
     // add new features to product    
-    // console.log('add: ', addFeatures);
+    // console.log('add: ', addFeaturesList);
 
-    if (addFeatures.length > 0) {
-        try {
-            const res = await pool.query(`
-                INSERT INTO features
-                (feature_id, name)
-            VALUES
-                ${addFeatures.map(feature => `('${feature.value}', '${feature.label}')`).join(',')}`);
-            if (res.rowCount === 0) {
-                return res
-                    .status(500)
-                    .json({ message: 'Nie udało się dodać nowej cechy.' });
-            }
-        } catch (error) {
-            console.log(error);
-            return res
-                .status(400)
-                .json({ message: 'Nie udało się dodać nowej cechy.' });
-        }
-
-        try {
-            const res = await pool.query(`
-            INSERT INTO products_features
-                (product_id, feature_id)
-            VALUES
-                ${addFeatures.map(feature => `('${productId}', '${feature.value}')`).join(',')}`);
-            if (res.rowCount === 0) {
-                return res
-                    .status(500)
-                    .json({ message: 'Nie udało się połączyć cechy z produktem.' });
-            }
-        } catch (error) {
-            console.log(error);
-            return res
-                .status(400)
-                .json({ message: 'Nie udało się połączyć cechy z produktem.' });
-        }
-    }
+    addFeatures(addFeaturesList, productId);
 
     let updatedFeatures = newFeatures.filter(feature => feature.__isNew__ === undefined);
-    updatedFeatures = updatedFeatures.concat(addFeatures);
+    updatedFeatures = updatedFeatures.concat(addFeaturesList);
     for (let i = 0; i < updatedFeatures.length; i++) {
         updatedFeatures[i] = updatedFeatures[i].label;
     }
@@ -270,6 +199,75 @@ router.put('/update', async function(req, res) {
     }
 
     res.send(updatedProduct);
+});
+
+router.post('/add', async function(req, res) {
+    let { productId, symbol, features, sale, image, parentComments, category,
+        width, size, amount, shelfCode, feature, finish, comments } = req.body;
+        
+    try {
+        // add new parent product
+        if ( productId === undefined ) {
+            try {
+                let response = await pool.query(`
+                INSERT INTO products
+                    (product_id, symbol, img, sale, comments)
+                VALUES
+                    ('${uuidv4()}', '${symbol}', '${image}', '${sale}', '${parentComments}')
+                RETURNING
+                    product_id`);
+                productId = response.rows[0].product_id;
+            } catch (error) {
+                console.log(error)
+                let errorMessage;
+                if (error.code === '23505') {
+                    errorMessage = 'Podany symbol już istnieje.';
+                } else {
+                    errorMessage = `Wystąpił błąd podczas dodawania produktu rodzica. (${error.code})`;
+                }
+                return res
+                    .status(400)
+                    .json({ message: errorMessage });
+            }
+            let addFeaturesList = features.filter(feature => feature.__isNew__ === true);
+            addFeaturesList.forEach(feature => feature.value = uuidv4());
+            addFeaturesList.forEach(addFeature => {
+                if (addFeature.label === feature) {
+                    feature = addFeature.value
+                }
+            });
+            let connectFeaturesList = features.filter(feature => feature.__isNew__ === undefined);
+            connectFeaturesList.forEach((feature, index) => connectFeaturesList[index] = feature.value);
+
+            console.log('add: ', addFeaturesList);
+            console.log('connect: ', connectFeaturesList);
+            console.log('feature: ', feature);
+            addFeatures(addFeaturesList, productId);
+            connectFeatures(connectFeaturesList, productId);
+        }
+        // add new child product to existing parent product
+        try {
+            await pool.query(`
+            INSERT INTO products_child
+                (product_child_id, product_id, shelf_code, width, size, amount, finish, comments, category, feature_id)
+            VALUES
+                ('${uuidv4()}', '${productId}', '${shelfCode}', ${ifNull(width)}, ${ifNull(size)}, '${amount}', ${ifNull(finish)}, '${comments}', '${category}', '${feature}')
+            `);
+        } catch (error) {
+            console.log(error)
+            return res
+                .status(400)
+                .json({ message: `Wystąpił błąd podczas dodawania produktu dziecka (${error.code})` });
+        }
+
+        res.send(productId);
+
+    } catch (error) {
+        console.log(error)
+        return res
+            .status(400)
+            .json({ message: `Wystąpił nieoczekiwany błąd podczas dodawania produktu (${error.code})` });
+    }
 });
 
 router.delete('/delete/one/:childProductId', async function(req, res) {

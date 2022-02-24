@@ -1,5 +1,5 @@
 .add-product-page {
-    margin: 30px 0 50px 0;
+    margin: 20px 0 50px 0;
     font-size: 20px;
     display: flex;
     flex-direction: column;
@@ -9,7 +9,7 @@
 
 .add-product-page h1 {
     font-size: 45px;
-    margin-bottom: 50px;
+    margin-bottom: 15px;
 }
 
 .add-product-page input, .add-product-page textarea {
@@ -32,4 +32,14 @@
 
 .add-product-page .button {
     width: 150px;
+}
+
+.add-product-page .error-message {
+    color: var(--red);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.add-product-page .error-message:after {
+    content: '\200b';
 }
