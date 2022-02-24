@@ -467,12 +467,16 @@ function SymbolDropdownInput({ useForm, defaultValue, autoFocus, rules, ...props
             label: item.symbol
         }))
     }
-
-    useEffect(async () => {
+    
+    useEffect(() => {
+        async function fetchData() {
+            const { data } = await authAxios.get('/products/symbols');
+            setSymbols(modifyDataSymbols(data));
+        }
         setIsLoadingSymbols(true);
-        const { data } = await authAxios.get('/products/symbols');
-        setSymbols(modifyDataSymbols(data));
+        fetchData()
         setIsLoadingSymbols(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const newRules = {

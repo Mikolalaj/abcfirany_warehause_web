@@ -1,5 +1,5 @@
 import Select from 'react-select'
-import Creatable, { useCreatable } from 'react-select/creatable';
+import Creatable from 'react-select/creatable';
 import { Controller } from 'react-hook-form';
 
 function Dropdown({ ifError, ...props }) {

@@ -40,13 +40,17 @@ function NewProductForm({ useFormRest }) {
 
     const [productId, setProductId] = useState(null);
     
-    useEffect(async () => {
-        if (!formStatus) {
-            resetField('feature')
-            setFeatureOptions([])
+    useEffect(() => {
+        async function fetchData() {
             const { data } = await authAxios.get(`/products/features/${productId}`)
             setFeatureOptions(modifyDataFeatures(data))
         }
+        if (!formStatus) {
+            resetField('feature')
+            setFeatureOptions([])
+            fetchData()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productId])
     
 
