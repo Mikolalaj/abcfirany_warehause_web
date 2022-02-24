@@ -70,11 +70,11 @@
 }
 
 .detail-description .features .feature {
-    padding: 3px 4px;
+    padding: 4px 5px;
     background-color: var(--color-wheel-3);
     color: #ffffff;
     font-size: 16px;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .detail-description .sale {
