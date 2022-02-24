@@ -1,6 +1,7 @@
 
 import { useForm } from 'react-hook-form';
 import NewProductForm from '../components/Products/AddProduct/NewProductForm'
+import Button from '../components/Common/Button';
 import './AddProductPage.css';
 
 function AddProductPage() {
@@ -48,7 +49,10 @@ function AddProductPage() {
             <h1>Dodawanie nowego produktu</h1>
             <form onSubmit={handleSubmit(addProduct)} noValidate>
                 <NewProductForm useFormRest={useFormRest} />
-                <button type='submit'>Dodaj</button>
+                <div className='buttons'>
+                    <Button onClick={() => useFormRest.reset()} theme='cancel'>Wyczyść</Button>
+                    <Button onClick={handleSubmit(addProduct)} theme='primary'>Dodaj</Button>
+                </div>
             </form>
         </div>
     )

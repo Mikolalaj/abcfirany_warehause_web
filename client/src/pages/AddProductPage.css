@@ -1,4 +1,5 @@
 .add-product-page {
+    margin: 30px 0 50px 0;
     font-size: 20px;
     display: flex;
     flex-direction: column;
@@ -8,7 +9,7 @@
 
 .add-product-page h1 {
     font-size: 45px;
-    margin: 30px 0 50px 0;
+    margin-bottom: 50px;
 }
 
 .add-product-page input, .add-product-page textarea {
@@ -19,4 +20,16 @@
 .add-product-page textarea {
     resize: none;
     height: 78px;
+}
+
+.add-product-page .buttons {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+}
+
+.add-product-page .button {
+    width: 150px;
 }

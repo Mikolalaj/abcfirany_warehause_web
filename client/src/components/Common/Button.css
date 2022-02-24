@@ -6,11 +6,11 @@
     border: none;
     min-width: 90px;
     text-align: center;
+    transition: all 200ms;
 }
 
 .button:active {
-    position: relative;
-    top: 1px;
+    transform: scale(0.97);
 }
 
 .button.primary {
@@ -23,13 +23,13 @@
 
 .button.cancel {
     background-color: #ffffff00;
-    color: var(--primary);
+    color: #834286;
     border-style: solid;
     border-width: 1px;
-    border-color: var(--primary);
+    border-color: #834286;
 }
 
 .button.cancel:hover {
-    background-color: var(--primary);
+    background-color: #834286;
     color: #ffffff;
 }
