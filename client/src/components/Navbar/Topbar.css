@@ -19,6 +19,7 @@
         0px 3.7px 7.3px rgba(0, 0, 0, 0.028),
         0px 5.6px 8.6px rgba(0, 0, 0, 0.032),
         0px 10px 9px rgba(0, 0, 0, 0.04);
+    z-index: 1
 }
 
 .topbar h1 {
