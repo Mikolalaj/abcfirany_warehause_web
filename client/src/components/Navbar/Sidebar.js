@@ -4,7 +4,6 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import AddCutting from '../Cutting/AddCutting';
 import AddLacks from '../Lacks/AddLacks';
-
 import { ImStatsBars, ImSearch } from 'react-icons/im';
 import { FaPlusCircle, FaUserAlt, FaDog } from 'react-icons/fa';
 import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
@@ -12,7 +11,8 @@ import { RiScissors2Fill } from 'react-icons/ri';
 import { HiHome } from 'react-icons/hi';
 
 function Sidebar() {
-    const menuItems = [
+
+    const sidebarItems = [
         {
             name: 'Strona główna',
             link: '/dashboard',
@@ -25,7 +25,16 @@ function Sidebar() {
         },
         {
             name: 'Dodaj metry',
-            onClick: () => {setCuttingPopup(true)},
+            options: [
+                {
+                    name: 'Dodaj metry',
+                    onClick: () => {setCuttingPopup(true)}
+                },
+                {
+                    name: 'Zobacz metry',
+                    link: '/cutting'
+                }
+            ],
             icon: <RiScissors2Fill />
         },
         {
@@ -54,10 +63,10 @@ function Sidebar() {
             icon: <FaUserAlt />
         }
     ];
-
+    
     useEffect(() => {
-        for (let index = 0; index < menuItems.length; index++) {
-            if (menuItems[index].link === window.location.pathname) {
+        for (let index = 0; index < sidebarItems.length; index++) {
+            if (sidebarItems[index].link === window.location.pathname) {
                 setSelectedItem(index);
                 break;
             }
@@ -75,15 +84,39 @@ function Sidebar() {
         history.push('/login');
     }
 
-    
-
     return (
     <>
         <AddCutting trigger={cuttingPopup} closePopup={() => setCuttingPopup(false)} />
         <AddLacks trigger={lacksPopup} closePopup={() => setLacksPopup(false)} />
         <nav className='sidebar'>
-            {menuItems.map((item, index) => {
-                if (item.link === undefined) {
+            {sidebarItems.map((item, index) => {
+                if (item.options) {
+                    return (
+                        <div key={index} className={`menu-item ${index===selectedItem && 'selected'}`}>
+                            <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
+                            {item.icon}
+                            <div className='options'>
+                                {item.options.map(option => {
+                                    if (option.link === undefined) {
+                                        return (
+                                            <p className='item-tooltip-options' onClick={() => option.onClick()}>
+                                                {option.name}
+                                            </p>
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <p className='item-tooltip-options' onClick={() => {setSelectedItem(index); history.push(option.link)}}>
+                                                {option.name}
+                                            </p>
+                                        )
+                                    }
+                                })}
+                            </div>
+                        </div>
+                    )
+                }
+                else if (item.link === undefined) {
                     return (
                         <div key={index} className='menu-item' onClick={()=>item.onClick()}>
                             {item.icon}
@@ -94,18 +127,13 @@ function Sidebar() {
                     )
                 } else {
                     return (
-                        <Link
-                            key={index}
-                            className={`menu-item ${index===selectedItem && 'selected'}`}
-                            to={item.link}
-                            onClick={()=>setSelectedItem(index)}
-                        >
+                        <div key={index} className={`menu-item ${index===selectedItem && 'selected'}`} onClick={() => {setSelectedItem(index); history.push(item.link)}} >
                             <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
                             {item.icon}
                             <p className='item-tooltip'>
                                 {item.name}
                             </p>
-                        </Link>
+                        </div>
                     )
                 }
             })}

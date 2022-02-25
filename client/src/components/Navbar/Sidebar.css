@@ -42,6 +42,30 @@
     transition: ease-in 0.15s;
 }
 
+.menu-item .options {
+    position: absolute;
+    left: calc(var(--sidebar-width) + 10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    pointer-events: none;
+}
+
+.menu-item .options .item-tooltip-options {
+    font-size: 20px;
+    background-color: var(--primary);
+    color:white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: ease-in 0.15s;
+    white-space: nowrap;
+}
+
+
 .menu-item.selected {
     color: var(--primary);
     border-radius: 20px;
@@ -61,8 +85,26 @@
     border-radius: 20px;
 }
 
-.menu-item:hover .item-tooltip {
+.menu-item:hover .item-tooltip, .menu-item:hover .item-tooltip-options {
     opacity: 1;
+    pointer-events: auto;
+}
+
+.menu-item:hover .options {
+    pointer-events: auto;
+}
+
+.item-tooltip:hover, .item-tooltip-options:hover {
+    opacity: 1;
+}
+
+.item-tooltip::before, .item-tooltip-options::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 25px;
+    right: 100%;
 }
 
 .menu-item .select {

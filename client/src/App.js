@@ -2,6 +2,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import SearchPage from './pages/SearchPage';
+import CuttingPage from './pages/CuttingPage';
 import ProductPage from './pages/ProductPage';
 import AddProductPage from './pages/AddProductPage';
 
@@ -55,6 +56,9 @@ function Routes() {
         </AuthenticatedRoute>
         <AuthenticatedRoute path='/search'>
             <SearchPage />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute path='/cutting'>
+            <CuttingPage />
         </AuthenticatedRoute>
         <AuthenticatedRoute path='/product/:category/:productId'>
             <ProductPage />
