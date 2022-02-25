@@ -1,11 +1,10 @@
 import './Product.css';
 import ProductsEnum from './ProductsEnum';
 import { useHistory } from 'react-router-dom';
-import { IoMdPricetag } from 'react-icons/io';
 
 function Product(props) {
     const history = useHistory();
-    const { symbol, productId, comments, sale, img, category } = props;
+    const { symbol, productId, img, category } = props;
 
     function category_name(category) {
         if (category === ProductsEnum.pillow) {
@@ -29,9 +28,7 @@ function Product(props) {
             <img className='image' src={img} alt={symbol} />
         </div>
         <div className='description'>
-            <IoMdPricetag className={sale ? 'sale visible' : 'sale notvisible'}/>
             <h1 className='symbol'>{symbol}</h1>
-            <p className='comments'>{comments}</p>
             <p className={`category ${category}`}>{category_name(category)}</p>
         </div>
     </div>

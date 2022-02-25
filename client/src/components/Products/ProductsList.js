@@ -52,15 +52,26 @@ function ProductsList() {
 
     return (
     <>
-    {ifLoading && <Loading />}
-    {ifEmpty && <div className='no-results'>Brak wyników</div>}
+    {ifLoading ? <Loading /> :
+    <div className='results-info'>
+        {ifEmpty && `Brak wyników dla "${query.get('symbol')}"`}
+        {searchResult.length > 0 && `Wynik wyszukiwania dla "${query.get('symbol')}"`}
+    </div>}
     <div className='products'>
-        {searchResult.map(product => <div key={product.productId}>
-            {product.meterCount > 0 && <Product key={product.productId + '1'} {...product} category={ProductsEnum.meter} />}
-            {product.premadeCount > 0 && <Product key={product.productId + '2'} {...product} category={ProductsEnum.premade} />}
-            {product.pillowsCount > 0 && <Product key={product.productId + '3'} {...product} category={ProductsEnum.pillow} />}
-            {product.towelsCount > 0 && <Product key={product.productId + '4'} {...product} category={ProductsEnum.towel} />}
-        </div>)}
+        {searchResult.map(product => {
+            if (product.meterCount > 0) {
+                return <Product key={product.productId + '1'} {...product} category={ProductsEnum.meter} />
+            }
+            else if (product.pillowsCount > 0) {
+                return <Product key={product.productId + '2'} {...product} category={ProductsEnum.pillow} />
+            }
+            else if (product.premadeCount > 0) {
+                return <Product key={product.productId + '3'} {...product} category={ProductsEnum.premade} />
+            }
+            else if (product.towelsCount > 0) {
+                return <Product key={product.productId + '4'} {...product} category={ProductsEnum.towel} />
+            }
+        })}
     </div>
     </>
     )
