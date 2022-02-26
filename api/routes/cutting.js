@@ -25,4 +25,25 @@ router.post('/add', async function(req, res, next) {
     next();
 });
 
+router.get('/', async function(req, res, next) {
+    const { sub } = req.user;
+    if (!sub) {
+        return res.status(401).json({ message: 'Błąd autoryzacji' });
+    }
+
+    const { rows } = await pool.query(`
+    SELECT
+        to_char(add_date, 'DD.MM HH24:MI') as add_date,
+        order_number,
+        cutting_amount,
+        sewing_amount,
+        destination,
+        comments
+    FROM cutting
+    WHERE user_id = '${sub}'`);
+    
+    req.body = rows;
+    next();
+});
+
 module.exports = router;

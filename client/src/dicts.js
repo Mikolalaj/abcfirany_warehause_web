@@ -5,6 +5,13 @@ const destinations = [
     { value: 'lacks', label: 'Braki' }
 ]
 
+const destinationsDict = {
+    'sewing room': 'Szwalnia',
+    'shipment': 'Wysyłka',
+    'warehouse': 'Magazyn',
+    'lacks': 'Braki'
+}
+
 const pillows = {
     'Gotowe': [
         { value: '40x40', label: '40x40' },
@@ -21,4 +28,4 @@ const pillows = {
     ]
 }
 
-export { destinations, pillows }
+export { destinations, destinationsDict, pillows }
