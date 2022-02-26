@@ -1,9 +1,9 @@
 
-import { useEffect, useState, useContext } from 'react';
-import { FetchContext } from '../context/FetchContext';
+import { useState, useEffect } from 'react';
 import { destinationsDict } from '../dicts';
 import Listing from '../components/Common/Listing';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import useAPI from '../hooks/useAPI';
 
 function Cutting() {
 
@@ -45,17 +45,15 @@ function Cutting() {
     ]
 
     const [cuttingData, setCuttingData] = useState([]);
-    const { authAxios } = useContext(FetchContext);
+
+    const [state] = useAPI('get', '/cutting', []);
 
     useEffect(() => {
-        async function getCuttingData() {
-            let { data } = await authAxios.get('/cutting');
-            data.forEach((cutting, index) => {data[index] = { ...cutting, destination: destinationsDict[cutting.destination] }});
-            setCuttingData(data);
+        if (state.isSuccess) {
+            state.data.forEach((cutting, index) => {state.data[index] = { ...cutting, destination: destinationsDict[cutting.destination] }});
+            setCuttingData(state.data);
         }
-        getCuttingData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [state]);
 
     return (
         <div>
@@ -65,7 +63,7 @@ function Cutting() {
     )
 }
 
-function CuttingIcons({ data }) {
+function CuttingIcons({ cuttingData }) {
     return (
         <div className='icons'>
             <MdEdit className='edit' />

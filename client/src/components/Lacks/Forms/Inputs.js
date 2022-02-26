@@ -1,6 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { FetchContext } from '../../../context/FetchContext';
 import { ControlledDropdown } from '../../Common/Dropdown';
+import axios from 'axios';
 
 function AmountInput({ register, errors, defaultValue, autoFocus }) {
 
@@ -135,18 +136,48 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
         }))
     }
 
-    useEffect(async () => {
-        setIsLoadingFeatures(true);
-        const { data } = await authAxios.get(`/products/features/${symbol}`);
-        setFeatures(modifyDataFeatures(data));
-        setIsLoadingFeatures(false);
+    useEffect(() => {
+        const source = axios.CancelToken.source()
+
+        async function fetchFeatures() {
+            try {
+                const { data } = await authAxios.get(`/products/features/${symbol}`, { cancelToken: source.token })
+                setFeatures(modifyDataFeatures(data))
+                setIsLoadingFeatures(false)
+            } catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        }
+
+        setIsLoadingFeatures(true)
+        fetchFeatures()
+
+        return () => { source.cancel() };
     }, [symbol]);
 
-    useEffect(async () => {
-        setIsLoadingSymbols(true);
-        const { data } = await authAxios.get('/products/symbols');
-        setSymbols(modifyDataSymbols(data));
-        setIsLoadingSymbols(false);
+    useEffect(() => {
+        const source = axios.CancelToken.source()
+
+        async function fetchSymbols() {
+            try {
+                const { data } = await authAxios.get('/products/symbols', { cancelToken: source.token })
+                setSymbols(modifyDataSymbols(data))
+                setIsLoadingSymbols(false)
+            } catch (error) {
+                if (axios.isCancel(error)) { }
+                else {
+                    throw error
+                }
+            }
+            setIsLoadingSymbols(true)
+        }
+        
+        fetchSymbols()
+
+        return () => { source.cancel() };
     }, [])
 
     return (

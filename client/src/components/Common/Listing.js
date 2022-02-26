@@ -1,4 +1,5 @@
 import { Grid } from '@material-ui/core';
+import { cloneElement } from 'react';
 import './Listing.css'
 
 function Listing({ columns, data, icons }) {
@@ -22,7 +23,7 @@ function Listing({ columns, data, icons }) {
                         </Grid>)
                     )}
                     <Grid item xs={columns[columns.length-1].size}>
-                        {icons(childProduct = data[index])}
+                        {cloneElement(icons, {childProduct: data[index]})}
                     </Grid>
                 </Grid>
             ))}

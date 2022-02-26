@@ -5,6 +5,7 @@ import { ControlledDropdown, ControlledCreateDropdown } from '../../Common/Dropd
 import { pillows } from '../../../dicts'
 import RegisteredInput from '../../Common/RegisteredInput'
 import RegisteredTextarea from '../../Common/RegisteredTextarea'
+import useAPI from '../../../hooks/useAPI'
 
 function WidthInput({ useForm, defaultValue, autoFocus }) {
     return (
@@ -344,8 +345,25 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
     const { control, setValue, formState: { errors } } = useForm;
     const [features, setFeatures] = useState([]);
     const [isRequired, setIsRequired] = useState(false);
-    const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
-    const { authAxios } = useContext(FetchContext);
+
+    // useEffect(() => {
+    //     let didCancel = false;
+
+    //     if (!didCancel) {
+    //         if (options) {
+    //             if (options.length === 0) { setIsRequired(false) }
+    //             else { setIsRequired(true) }
+    //         }
+    //         else {
+    //             if (features.length === 0) { setIsRequired(false)}
+    //             else { setIsRequired(true) }
+    //         }
+    //     }
+
+    //     return () => {
+    //         didCancel = true;
+    //     };
+    // }, [options, features])
 
     function modifyDataFeatures(data) {
         return data.map(item => ({
@@ -354,34 +372,28 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
         }))
     }
 
-    useEffect(() => {
-        if (options) {
-            if (options.length === 0) { setIsRequired(false) }
-            else { setIsRequired(true) }
-        }
-        else {
-            if (features.length === 0) { setIsRequired(false)}
-            else { setIsRequired(true) }
-        }
-    }, [options, features])
+    const [state, setUrl] = useAPI('get', `/products/features/${productId}`, []);
+    setUrl(`/products/features/${productId}`)
 
-    useEffect(() => {
-        async function fetchFeatures() {
-            const { data } = await authAxios.get(`/products/features/${productId}`);
-            let modifiedData = modifyDataFeatures(data);
-            setFeatures(modifiedData);
-            setIsLoadingFeatures(false);
-            var result = modifiedData.filter(obj => {
-                return obj.label === defaultValue
-            });
-            setValue('feature', result[0]);
-        }
-        if (options === undefined) {
-            setIsLoadingFeatures(true);
-            fetchFeatures();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productId])
+    // useEffect(() => {
+    //     let didCancel = false;
+        
+    //     if (!didCancel) {
+    //         if (state.isSuccess) {
+    //             let modifiedData = modifyDataFeatures(state.data);
+    //             setFeatures(modifiedData);
+    //             var result = modifiedData.filter(obj => {
+    //                 return obj.label === defaultValue
+    //             });
+    //             setValue('feature', result[0]);
+    //         }
+    //     }
+
+    //     return () => {
+    //         didCancel = true;
+    //     };
+    // }, [state]);
+
 
     return (
     <ControlledDropdown
@@ -391,7 +403,7 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
         placeholder='Cecha'
         options={options ? options : features}
         isSearchable={true}
-        isLoading={isLoadingFeatures}
+        isLoading={state.isLoading}
         autoFocus={autoFocus}
         isClearable={true}
         rules={{
@@ -409,8 +421,6 @@ function FeaturesInput({ useForm, defaultValue, autoFocus, ...props }) {
     const [features, setFeatures] = useState([]);
     const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
 
-    const { authAxios } = useContext(FetchContext);
-
     function modifyDataFeatures(data) {
         return data.map(item => ({
             value: item.feature_id,
@@ -418,10 +428,11 @@ function FeaturesInput({ useForm, defaultValue, autoFocus, ...props }) {
         }))
     }
 
+    const [state] = useAPI('get', '/products/features', []);
+
     useEffect(() => {
-        async function fetchFeatures() {
-            const { data } = await authAxios.get('/products/features');
-            let modifiedData = modifyDataFeatures(data);
+        if (state.isSuccess) {
+            let modifiedData = modifyDataFeatures(state.data);
             setFeatures(modifiedData);
             setIsLoadingFeatures(false);
             if (defaultValue) {
@@ -431,10 +442,8 @@ function FeaturesInput({ useForm, defaultValue, autoFocus, ...props }) {
                 setValue('features', result);
             }
         }
-        setIsLoadingFeatures(true);
-        fetchFeatures();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [state]);
+
     
     return (
     <ControlledCreateDropdown

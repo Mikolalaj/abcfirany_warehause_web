@@ -75,7 +75,7 @@ function Detail({ category, productId }) {
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
         <DetailHeader />
-        <Listing columns={getColumns()} data={childProducts} icons={ManageIcons} />
+        <Listing columns={getColumns()} data={childProducts} icons={<ManageIcons />} />
     </div>
     );
 }

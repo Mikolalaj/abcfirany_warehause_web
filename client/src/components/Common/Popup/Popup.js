@@ -11,10 +11,16 @@ function Popup({ children, trigger, closePopup }) {
         }
         setStartClick(null);
     }
+
+    function handleOnKeyDown(event) {
+        if (event.key === 'Escape'){
+            closePopup();
+        }
+    }
     
     return (
         trigger ? (
-        <div className='popup' onClick={handleClickOutside} onMouseDown={event => setStartClick(event.target)}>
+        <div tabIndex={0} className='popup' onKeyDown={handleOnKeyDown} onClick={handleClickOutside} onMouseDown={event => setStartClick(event.target)}>
             <div className='popup-inner'>
                 <div className='popup-content'>
                     {children}
