@@ -1,5 +1,5 @@
 import './Sidebar.css';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import AddCutting from '../Cutting/AddCutting';
@@ -71,6 +71,7 @@ function Sidebar() {
                 break;
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [cuttingPopup, setCuttingPopup] = useState(false);
@@ -96,17 +97,17 @@ function Sidebar() {
                             <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
                             {item.icon}
                             <div className='options'>
-                                {item.options.map(option => {
+                                {item.options.map((option, index) => {
                                     if (option.link === undefined) {
                                         return (
-                                            <p className='item-tooltip-options' onClick={() => option.onClick()}>
+                                            <p key={index} className='item-tooltip-options' onClick={() => option.onClick()}>
                                                 {option.name}
                                             </p>
                                         )
                                     }
                                     else {
                                         return (
-                                            <p className='item-tooltip-options' onClick={() => {setSelectedItem(index); history.push(option.link)}}>
+                                            <p key={index} className='item-tooltip-options' onClick={() => {setSelectedItem(index); history.push(option.link)}}>
                                                 {option.name}
                                             </p>
                                         )

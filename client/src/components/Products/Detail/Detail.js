@@ -7,10 +7,9 @@ import Loading from '../../Common/Loading';
 import DetailHeader from './DetailHeader';
 import ProductsEnum from '../ProductsEnum';
 
-import MeterListing from './Listings/MeterListing';
-import PremadeListing from './Listings/PremadeListing';
-import PillowListing from './Listings/PillowListing';
-import TowelListing from './Listings/TowelListing';
+import ManageIcons from './ManageIcons';
+import Listing from '../../Common/Listing';
+import { MeterColumns, PillowColumns, PremadeColumns, TowelColumns } from './ListingColumns';
 
 import './Detail.css';
 
@@ -18,24 +17,16 @@ function Detail({ category, productId }) {
     let history = useHistory();
 
     const fetchContext = useContext(FetchContext);
-    const { setChildProducts, setProduct } = useContext(ProductContext);
+    const { childProducts, setChildProducts, setProduct } = useContext(ProductContext);
 
     const [isLoadingChild, setIsLoadingChild] = useState(true);
     const [isLoadingParent, setIsLoadingParent] = useState(true);
 
-    function getListing() {
-        switch (category) {
-            case ProductsEnum.premade:
-                return <PremadeListing />;
-            case ProductsEnum.meter:
-                return <MeterListing />;
-            case ProductsEnum.pillow:
-                return <PillowListing />;
-            case ProductsEnum.towel:
-                return <TowelListing />;
-            default:
-                return null;
-        }
+    function getColumns() {
+        if (category === ProductsEnum.premade) { return PremadeColumns }
+        if (category === ProductsEnum.pillow) { return PillowColumns }
+        if (category === ProductsEnum.meter) { return MeterColumns }
+        if (category === ProductsEnum.towel) { return TowelColumns }
     }
 
     // Parent product data
@@ -84,7 +75,7 @@ function Detail({ category, productId }) {
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
         <DetailHeader />
-        {getListing()}
+        <Listing columns={getColumns()} data={childProducts} icons={ManageIcons} />
     </div>
     );
 }

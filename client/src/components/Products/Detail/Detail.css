@@ -1,58 +1,7 @@
 
-.header {
-    font-weight: 600;
-    margin: 0;
-    text-align: left;
-}
-
-.data-rows {
-    margin-top: 10px;
-}
-
-.product-detail {
-    font-size: 20px;
-    margin: 0 50px;
-}
-
-.icons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.product-detail .icons {
-    cursor: pointer;
-    margin: 0 5px;
-}
-
-.product-detail .delete {
-    color: #e76370;
-}
-
-.product-detail .edit {
-    color: #5f76e7;
-}
-
-.product-detail .copy {
-    color: var(--green);
-}
-
 .product-detail .back {
     cursor: pointer;
     display: flex;
     align-items: center;
     margin-bottom: 30px;
-}
-
-.row {
-    padding: 5px 0;
-}
-
-.row.even {
-    background-color: #f5f5f5;
-}
-
-.row.odd {
-    background-color: #fff;
 }
