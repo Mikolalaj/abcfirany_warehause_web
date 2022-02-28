@@ -64,6 +64,10 @@
     font-size: 32px;
 }
 
+.login-box p {
+	font-size: 25px;
+}
+
 .form-error {
     color: #c96696;
     margin: 0px;
