@@ -390,7 +390,7 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
         return () => {
             didCancel = true;
         };
-    }, [state]);
+    }, [state, defaultValue, setValue]);
 
 
     return (
@@ -440,7 +440,7 @@ function FeaturesInput({ useForm, defaultValue, autoFocus, ...props }) {
                 setValue('features', result);
             }
         }
-    }, [state]);
+    }, [state, defaultValue, setValue]);
 
     
     return (
