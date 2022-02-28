@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { FetchContext } from '../../../context/FetchContext'
+import useAPI from '../../../hooks/useAPI';
 import { ProductContext } from '../../../context/ProductContext';
 import { MdOutlineArrowBackIos } from 'react-icons/md'
 import Loading from '../../Common/Loading';
@@ -16,11 +16,7 @@ import './Detail.css';
 function Detail({ category, productId }) {
     let history = useHistory();
 
-    const fetchContext = useContext(FetchContext);
     const { childProducts, setChildProducts, setProduct } = useContext(ProductContext);
-
-    const [isLoadingChild, setIsLoadingChild] = useState(true);
-    const [isLoadingParent, setIsLoadingParent] = useState(true);
 
     function getColumns() {
         if (category === ProductsEnum.premade) { return PremadeColumns }
@@ -30,46 +26,31 @@ function Detail({ category, productId }) {
     }
 
     // Parent product data
+    const [stateParent] = useAPI('get', `/products/details/${productId}`, {});
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const { data } = await fetchContext.authAxios.get(`/products/details/${productId}`);
-                setProduct({
-                    symbol: data.symbol,
-                    comments: data.comments,
-                    sale: data.sale,
-                    img: data.img,
-                    features: data.features,
-                    productId: productId,
-                    category: category,
-                })
-                setIsLoadingParent(false);
-            } catch ({ response: {data: {message}} }) {
-                console.log(message);
-            }
+        if (stateParent.isSuccess) {
+            setProduct({
+                symbol: stateParent.data.symbol,
+                comments: stateParent.data.comments,
+                sale: stateParent.data.sale,
+                img: stateParent.data.img,
+                features: stateParent.data.features,
+                productId,
+                category
+            })
         }
-        setIsLoadingParent(true);
-        fetchData();
-    }, [productId]);
+    }, [stateParent, setProduct, productId, category]);
 
     // Child product data
+    const [stateChild] = useAPI('get', `/products/${category.toLocaleLowerCase()}/search/${productId}`, []);
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const { data } = await fetchContext.authAxios.get(`/products/${category.toLocaleLowerCase()}/search/${productId}`);
-                setChildProducts(data);
-            } catch ({ response: {data: {message}} }) {
-                console.log(message);
-            }
-            setIsLoadingChild(false);
+        if (stateChild.isSuccess) {
+            setChildProducts(stateChild.data);
         }
-        setIsLoadingChild(true);
-        fetchData();
-
-    }, [productId, category]);
+    }, [stateChild, setChildProducts]);
 
     return (
-    (isLoadingChild || isLoadingParent) ? <Loading /> :
+    (stateChild.isLoading || stateParent.isLoading) ? <Loading /> :
     <div className='product-detail'>
         <div className='back' onClick={history.goBack}>
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
