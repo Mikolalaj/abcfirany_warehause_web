@@ -42,18 +42,24 @@ const useAPI = (method, initialUrl, initialData) => {
     });
 
     useEffect(() => {
-        let didCancel = false;
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
 
         async function getCsrfToken() {
-            if (!didCancel) {
-                const { data } = await axios.get('/api/csrf-token');
+            try {
+                const { data } = await axios.get('/api/csrf-token', { cancelToken: source.token });
                 setCsrfToken(data.csrfToken);
+            } catch (error) {
+                if (axios.isCancel(error)) { }
+                else {
+                    throw error;
+                }
             }
         }
         getCsrfToken();
 
         return () => {
-            didCancel = true;
+            source.cancel();
         };
 
     }, []);
