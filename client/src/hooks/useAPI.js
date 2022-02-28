@@ -16,21 +16,22 @@ function dataFetchReducer(state, action) {
                 isLoading: false,
                 isError: false,
                 isSuccess: true,
-                data: action.payload,
+                data: action.payload
             };
         case 'FETCH_FAILURE':
             return {
                 ...state,
                 isLoading: false,
                 isError: true,
-                isSuccess: false
+                isSuccess: false,
+                errorMessage: action.payload
             };
         default:
             throw new Error();
     }
 };
   
-const useAPI = (method, initialUrl, initialData) => {
+function useAPI (method, initialUrl, initialData) {
     const [csrfToken, setCsrfToken] = useState('');
     const [url, setUrl] = useState(initialUrl);
 
@@ -39,6 +40,7 @@ const useAPI = (method, initialUrl, initialData) => {
         isError: false,
         isSuccess: false,
         data: initialData,
+        errorMessage: ''
     });
 
     useEffect(() => {
@@ -84,7 +86,9 @@ const useAPI = (method, initialUrl, initialData) => {
                 }
             } catch (error) {
                 if (!didCancel) {
-                    dispatch({ type: 'FETCH_FAILURE' });
+                    console.log(error)
+                    console.log(error.response.data.message)
+                    dispatch({ type: 'FETCH_FAILURE', payload: error.response.data.message });
                 }
             }
         };
@@ -95,7 +99,7 @@ const useAPI = (method, initialUrl, initialData) => {
             didCancel = true;
         };
 
-    }, [url]);
+    }, [url, method, csrfToken]);
 
     return [state, setUrl];
 };
