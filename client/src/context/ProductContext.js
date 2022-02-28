@@ -3,7 +3,7 @@ import { useState, createContext } from 'react';
 const ProductContext = createContext();
 
 function ProductProvider({ children }) {
-    const [childProducts, setChildProducts] = useState({});
+    const [childProducts, setChildProducts] = useState([]);
     const [product, setProduct] = useState({
         productId: '',
         symbol: '',
