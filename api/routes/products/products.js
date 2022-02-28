@@ -97,7 +97,7 @@ router.post('/features', async function(req, res, next) {
 
 router.get('/features/:productId', async function(req, res, next) {
     productId = req.params.productId;
-    if (productId === 'undefined') {
+    if (productId === 'null') {
         res.send([])
         return
     }

@@ -1,7 +1,6 @@
-import { useEffect, useContext, useState } from 'react';
-import { FetchContext } from '../../../context/FetchContext';
+import { useEffect, useState } from 'react';
 import { ControlledDropdown } from '../../Common/Dropdown';
-import axios from 'axios';
+import useAPI from '../../../hooks/useAPI';
 
 function AmountInput({ register, errors, defaultValue, autoFocus }) {
 
@@ -115,12 +114,7 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
 
 function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetField, autoFocus }) {
     const [features, setFeatures] = useState([]);
-    const [isLoadingFeatures, setIsLoadingFeatures] = useState(false);
-    const [symbol, setSymbol] = useState(getValues('symbol')?.value);
     const [symbols, setSymbols] = useState([]);
-    const [isLoadingSymbols, setIsLoadingSymbols] = useState(false);
-
-    const { authAxios } = useContext(FetchContext);
 
     function modifyDataFeatures(data) {
         return data.map(item => ({
@@ -136,49 +130,21 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
         }))
     }
 
-    useEffect(() => {
-        const source = axios.CancelToken.source()
-
-        async function fetchFeatures() {
-            try {
-                const { data } = await authAxios.get(`/products/features/${symbol}`, { cancelToken: source.token })
-                setFeatures(modifyDataFeatures(data))
-                setIsLoadingFeatures(false)
-            } catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
-            }
-        }
-
-        setIsLoadingFeatures(true)
-        fetchFeatures()
-
-        return () => { source.cancel() };
-    }, [symbol]);
+    const [stateSymbols] = useAPI('get', '/products/symbols', []);
 
     useEffect(() => {
-        const source = axios.CancelToken.source()
-
-        async function fetchSymbols() {
-            try {
-                const { data } = await authAxios.get('/products/symbols', { cancelToken: source.token })
-                setSymbols(modifyDataSymbols(data))
-                setIsLoadingSymbols(false)
-            } catch (error) {
-                if (axios.isCancel(error)) { }
-                else {
-                    throw error
-                }
-            }
-            setIsLoadingSymbols(true)
+        if (stateSymbols.isSuccess) {
+            setSymbols(modifyDataSymbols(stateSymbols.data))
         }
-        
-        fetchSymbols()
+    }, [stateSymbols]);
+    
+    const [stateFeatures, setUrlFeatures] = useAPI('get', '/products/features/null', []);
 
-        return () => { source.cancel() };
-    }, [])
+    useEffect(() => {
+        if (stateFeatures.isSuccess) {
+            setFeatures(modifyDataFeatures(stateFeatures.data))
+        }
+    }, [stateFeatures]);
 
     return (
     <>
@@ -191,13 +157,13 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
                 value: true,
                 message: 'Symbol jest wymagany'
             },
-            onChange: (e) => {resetField("features"); setSymbol(e.target.value.value)}
+            onChange: (e) => {resetField("features"); setUrlFeatures(`/products/features/${e.target.value.value}`);}
         }}
         autoFocus={autoFocus}
         placeholder='Symbol'
         options={symbols}
         isSearchable={true}
-        isLoading={isLoadingSymbols}
+        isLoading={stateSymbols.isLoading}
     />
     <ControlledDropdown
         errors={errors}
@@ -212,7 +178,7 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
         placeholder='Cechy'
         options={features}
         isSearchable={true}
-        isLoading={isLoadingFeatures}
+        isLoading={stateFeatures.isLoading}
     />
     </>
     )
