@@ -1,5 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
-import { FetchContext } from '../../../context/FetchContext'
+import { useState, useEffect } from 'react'
 import { ToggleSwitchRegister } from '../../Common/ToggleSwitch'
 import { ControlledDropdown, ControlledCreateDropdown } from '../../Common/Dropdown'
 import { pillows } from '../../../dicts'
@@ -346,24 +345,24 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
     const [features, setFeatures] = useState([]);
     const [isRequired, setIsRequired] = useState(false);
 
-    // useEffect(() => {
-    //     let didCancel = false;
+    useEffect(() => {
+        let didCancel = false;
 
-    //     if (!didCancel) {
-    //         if (options) {
-    //             if (options.length === 0) { setIsRequired(false) }
-    //             else { setIsRequired(true) }
-    //         }
-    //         else {
-    //             if (features.length === 0) { setIsRequired(false)}
-    //             else { setIsRequired(true) }
-    //         }
-    //     }
+        if (!didCancel) {
+            if (options) {
+                if (options.length === 0) { setIsRequired(false) }
+                else { setIsRequired(true) }
+            }
+            else {
+                if (features.length === 0) { setIsRequired(false)}
+                else { setIsRequired(true) }
+            }
+        }
 
-    //     return () => {
-    //         didCancel = true;
-    //     };
-    // }, [options, features])
+        return () => {
+            didCancel = true;
+        };
+    }, [options, features])
 
     function modifyDataFeatures(data) {
         return data.map(item => ({
@@ -372,27 +371,26 @@ function FeatureInput({ productId, useForm, defaultValue, autoFocus, options }) 
         }))
     }
 
-    const [state, setUrl] = useAPI('get', `/products/features/${productId}`, []);
-    setUrl(`/products/features/${productId}`)
+    const [state] = useAPI('get', `/products/features/${productId}`, []);
 
-    // useEffect(() => {
-    //     let didCancel = false;
+    useEffect(() => {
+        let didCancel = false;
         
-    //     if (!didCancel) {
-    //         if (state.isSuccess) {
-    //             let modifiedData = modifyDataFeatures(state.data);
-    //             setFeatures(modifiedData);
-    //             var result = modifiedData.filter(obj => {
-    //                 return obj.label === defaultValue
-    //             });
-    //             setValue('feature', result[0]);
-    //         }
-    //     }
+        if (!didCancel) {
+            if (state.isSuccess) {
+                let modifiedData = modifyDataFeatures(state.data);
+                setFeatures(modifiedData);
+                var result = modifiedData.filter(obj => {
+                    return obj.label === defaultValue
+                });
+                setValue('feature', result[0]);
+            }
+        }
 
-    //     return () => {
-    //         didCancel = true;
-    //     };
-    // }, [state]);
+        return () => {
+            didCancel = true;
+        };
+    }, [state]);
 
 
     return (
@@ -466,9 +464,6 @@ function SymbolDropdownInput({ useForm, defaultValue, autoFocus, rules, ...props
     const { control, formState: { errors } } = useForm;
 
     const [symbols, setSymbols] = useState([]);
-    const [isLoadingSymbols, setIsLoadingSymbols] = useState(false);
-
-    const { authAxios } = useContext(FetchContext);
 
     function modifyDataSymbols(data) {
         return data.map(item => ({
@@ -476,17 +471,14 @@ function SymbolDropdownInput({ useForm, defaultValue, autoFocus, rules, ...props
             label: item.symbol
         }))
     }
-    
+
+    const [state] = useAPI('get', '/products/symbols', []);
+
     useEffect(() => {
-        async function fetchData() {
-            const { data } = await authAxios.get('/products/symbols');
-            setSymbols(modifyDataSymbols(data));
+        if (state.isSuccess) {
+            setSymbols(modifyDataSymbols(state.data));
         }
-        setIsLoadingSymbols(true);
-        fetchData()
-        setIsLoadingSymbols(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [state]);
 
     const newRules = {
         required: {
@@ -506,7 +498,7 @@ function SymbolDropdownInput({ useForm, defaultValue, autoFocus, rules, ...props
         placeholder='Symbol'
         options={symbols}
         isSearchable={true}
-        isLoading={isLoadingSymbols}
+        isLoading={state.isLoading}
         {...props}
     />
     )
