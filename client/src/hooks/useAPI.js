@@ -1,4 +1,6 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
   
 function dataFetchReducer(state, action) {
@@ -31,9 +33,14 @@ function dataFetchReducer(state, action) {
     }
 };
   
-function useAPI (method, initialUrl, initialData) {
+function useAPI(method, initialUrl, initialData, initialIsReady=true) {
     const [csrfToken, setCsrfToken] = useState('');
     const [url, setUrl] = useState(initialUrl);
+    const [requestData, setRequestData] = useState(null);
+    const [isReady, setIsReady] = useState(initialIsReady);
+
+    const { logout } = useContext(AuthContext);
+    const { push } = useHistory();
 
     const [state, dispatch] = useReducer(dataFetchReducer, {
         isLoading: false,
@@ -44,6 +51,7 @@ function useAPI (method, initialUrl, initialData) {
     });
 
     useEffect(() => {
+        // TODO: make this get csrf token only once
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
 
@@ -70,12 +78,14 @@ function useAPI (method, initialUrl, initialData) {
         let didCancel = false;
 
         async function fetchData() {
+
             dispatch({ type: 'FETCH_INIT' });
 
             try {
                 const result = await axios(url, {
                     method: method,
                     baseURL: process.env.REACT_APP_API_URL,
+                    data: requestData,
                     credentials: 'include',
                     withCredentials: true,
                     headers: { 'X-CSRF-TOKEN': csrfToken }
@@ -86,22 +96,28 @@ function useAPI (method, initialUrl, initialData) {
                 }
             } catch (error) {
                 if (!didCancel) {
+                    dispatch({ type: 'FETCH_FAILURE', payload: error.response.data.message });
                     console.log(error)
                     console.log(error.response.data.message)
-                    dispatch({ type: 'FETCH_FAILURE', payload: error.response.data.message });
+                    if (error.response.status === 401) {
+                        logout();
+                        push('/login');
+                    }
                 }
             }
         };
 
-        fetchData();
+        if (isReady) {
+            fetchData();
+        }
 
         return () => {
             didCancel = true;
         };
 
-    }, [url, method, csrfToken]);
+    }, [url, requestData, isReady]);
 
-    return [state, setUrl];
+    return [state, setUrl, setRequestData, setIsReady];
 };
 
 export default useAPI

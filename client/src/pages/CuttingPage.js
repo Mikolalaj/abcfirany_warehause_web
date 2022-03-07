@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { destinationsDict } from '../dicts';
 import Listing from '../components/Common/Listing';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import Loading from '../components/Common/Loading';
 import useAPI from '../hooks/useAPI';
 
 function Cutting() {
@@ -58,7 +59,9 @@ function Cutting() {
     return (
         <div>
             <h1>Dodane metry</h1>
-            <Listing data={cuttingData} columns={columns} icons={CuttingIcons} />
+            {state.isLoading ?
+            <Loading /> :
+            <Listing data={cuttingData} columns={columns} icons={<CuttingIcons />} />}
         </div>
     )
 }
@@ -72,4 +75,4 @@ function CuttingIcons({ cuttingData }) {
     )
 }
 
-export default Cutting;
+export default Cutting; 

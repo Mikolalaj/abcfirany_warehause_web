@@ -1,27 +1,24 @@
 var express = require('express');
 var router = express.Router();
 var pool = require('../db');
-const { v4: uuidv4 } = require('uuid');
+var { ifNull } = require('../utils');
 
-router.post('/add', async function(req, res, next) {
+router.post('/', async function(req, res, next) {
     const { sub } = req.user;
     if (!sub) {
         return res.status(401).json({ message: 'Błąd autoryzacji' });
     }
 
     const { cuttingAmount, sewingAmount, orderNumber, destination, comments } = req.body;
-    let orderNumberNull;
-    orderNumber === undefined ? orderNumberNull = 'NULL' : orderNumberNull = `'${orderNumber}'`;
     
-    const uuid = uuidv4();
     const { rows } = await pool.query(`
     INSERT INTO cutting
-        (cutting_amount, sewing_amount, order_number, destination, comments, cutting_id, user_id)
+        (cutting_amount, sewing_amount, order_number, destination, comments, user_id)
     VALUES
-        ('${cuttingAmount}', '${sewingAmount}', ${orderNumberNull}, '${destination}', '${comments}', '${uuid}', '${sub}')
+        ('${cuttingAmount}', '${sewingAmount}', ${ifNull(orderNumber)}, '${destination}', '${comments}', '${sub}')
     RETURNING
-        cutting_id`);
-    req.body = rows;
+        *`);
+    req.body = rows[0];
     next();
 });
 

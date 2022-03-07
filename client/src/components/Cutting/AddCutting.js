@@ -1,23 +1,23 @@
 import CuttingPopup from './Popups/CuttingPopup';
-import { FetchContext } from '../../context/FetchContext';
-import { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
+import useAPI from '../../hooks/useAPI';
 
 function AddCutting({ trigger, closePopup }) {
     const [cuttingErrorMessage, setCuttingErrorMessage] = useState('');
-    const { authAxios } = useContext(FetchContext);
+    const [state, , setRequestData, setIsReady] = useAPI('post', '/cutting', [], false);
+
+    useEffect(() => {
+        if (state.isSuccess) {
+            console.log(state.data)
+            closePopup();
+        } else if (state.isError) {
+            setCuttingErrorMessage(state.errorMessage);
+        }
+    }, [state]);
 
     async function addCutting(formData) {
-        try {
-            const { data } = await authAxios.post('/cutting/add', formData);
-            if (data[0]) {
-                closePopup();
-            }
-            else {
-                setCuttingErrorMessage('Wystąpił błąd podczas dodawania metrów');
-            }
-        } catch ({ response: { data: { message } } }) {
-            setCuttingErrorMessage(message)
-        }
+        setRequestData(formData);
+        setIsReady(true);
     }
 
     return (
