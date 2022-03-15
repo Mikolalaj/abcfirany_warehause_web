@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import './SearchProducts.css'
+import './SearchInput.css'
 import { MdClose, MdOutlineSearch } from 'react-icons/md';
-import { useHistory } from 'react-router-dom';
 
-function SearchProducts() {
-    let history = useHistory();
+function SearchInput({ onSearch, children }) {
     const [searchSymbol, setSearchSymbol] = useState('');
 
     function updateSymbol(event) {
@@ -13,14 +11,14 @@ function SearchProducts() {
 
     return (
     <>
-        <form onSubmit={(event)=>{history.push(`/search?symbol=${searchSymbol}`); event.preventDefault()}} className='search'>
+        <form onSubmit={(event) => {onSearch(searchSymbol); event.preventDefault()}} className='search'>
             <div className='search-icon left'><MdOutlineSearch /></div>
-            <input type='text' placeholder='Wpisz symbol produktu' value={searchSymbol} onChange={updateSymbol}/>
+            <input type='text' placeholder={children} value={searchSymbol} onChange={updateSymbol}/>
             <div onClick={()=>setSearchSymbol('')} className={`search-icon right ${searchSymbol !== '' ? 'visible' : ''}`}><MdClose /></div>
             <button type='submit'>Szukaj</button>
         </form>
     </>
-    );
+    )
 }
 
-export default SearchProducts;
+export default SearchInput;

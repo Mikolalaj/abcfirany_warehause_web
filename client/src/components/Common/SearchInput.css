@@ -1,11 +1,10 @@
 .search {
     display: flex;
-    justify-content: center;
-    width: 450px;
+    justify-content: stretch;
+    width: 100%;
 }
 
 .search input {
-    flex-grow: 10;
     padding: 9px;
     font-size: 20px;
     border-width: 1px 0 1px 0;
@@ -14,6 +13,7 @@
     color: #000000;
     border-style: solid;
     border-radius: 0;
+    width: calc(100% - 171px);;
 }
 
 .search .search-icon {
@@ -58,7 +58,6 @@
 } */
 
 .search button {
-    flex-grow: 2;
     background-color: var(--primary);
     border-radius: 0 5px 5px 0;
 	cursor: pointer;
@@ -68,6 +67,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100px;
 }
 
 .search button:hover {
