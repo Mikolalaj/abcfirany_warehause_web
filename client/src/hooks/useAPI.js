@@ -66,13 +66,16 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
                 }
             }
         }
-        getCsrfToken();
+
+        if (isReady) {
+            getCsrfToken();
+        }
 
         return () => {
             source.cancel();
         };
 
-    }, []);
+    }, [isReady]);
 
     useEffect(() => {
         let didCancel = false;
@@ -107,7 +110,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
             }
         };
 
-        if (isReady) {
+        if (isReady && csrfToken !== '') {
             fetchData();
         }
 
@@ -115,7 +118,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
             didCancel = true;
         };
 
-    }, [url, requestData, isReady]);
+    }, [url, requestData, isReady, csrfToken]);
 
     return [state, setUrl, setRequestData, setIsReady];
 };
