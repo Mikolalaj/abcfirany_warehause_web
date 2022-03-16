@@ -43,7 +43,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
     const { push } = useHistory();
 
     const [state, dispatch] = useReducer(dataFetchReducer, {
-        isLoading: false,
+        isLoading: true,
         isError: false,
         isSuccess: false,
         data: initialData,
