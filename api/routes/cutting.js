@@ -17,7 +17,14 @@ router.post('/', async function(req, res, next) {
     VALUES
         ('${cuttingAmount}', '${sewingAmount}', ${ifNull(orderNumber)}, '${destination}', '${comments}', '${sub}')
     RETURNING
-        *`);
+        to_char(add_date, 'DD.MM HH24:MI') as add_date,
+        order_number,
+        cutting_amount,
+        sewing_amount,
+        destination,
+        comments,
+        cutting_id
+    `);
     req.body = rows[0];
     next();
 });
@@ -35,12 +42,35 @@ router.get('/', async function(req, res, next) {
         cutting_amount,
         sewing_amount,
         destination,
-        comments
+        comments,
+        cutting_id
     FROM cutting
     WHERE user_id = '${sub}'`);
     
     req.body = rows;
     next();
+});
+
+router.delete('/', async function(req, res, next) {
+    let cuttingId
+
+    try {
+        cuttingId = req.body.cuttingId;
+    } catch (error) {
+        return res.status(400).json({ message: `Missing cutting ID (${error})` });
+    }
+
+    try {
+        await pool.query(`
+        DELETE FROM cutting
+        WHERE cutting_id = '${cuttingId}'
+        `); 
+    } catch (error) {
+        return res.status(500).json({ message: `Error deleting cutting (${error})` });
+    }
+
+    return res.sendStatus(204);
+    
 });
 
 module.exports = router;

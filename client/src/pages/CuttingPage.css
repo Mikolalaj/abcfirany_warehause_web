@@ -1,0 +1,12 @@
+
+h1 {
+    margin-bottom: 30px;
+}
+
+.add-cutting {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
