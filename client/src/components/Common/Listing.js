@@ -13,17 +13,17 @@ function Listing({ columns, data, icons }) {
                 )}
             </Grid>
             <div className='data-rows'>
-            {data.map((childProduct, index) => (
+            {data.map((row, index) => (
                 <Grid key={index} className={`row ${index%2===0 ? 'even' : 'odd'}`} container spacing={1}>
                     {columns.slice(0, -1).map((column, indexChild) => (
                         <Grid key={indexChild} item xs={column.size}>
                             <div className='data'>
-                                {column.cast !== undefined ? column.cast(childProduct[column.field]) : childProduct[column.field]}
+                                {column.cast !== undefined ? column.cast(row[column.field]) : row[column.field]}
                             </div>
                         </Grid>)
                     )}
                     <Grid item xs={columns[columns.length-1].size}>
-                        {cloneElement(icons, {childProduct: data[index]})}
+                        {cloneElement(icons, {data: data[index]})}
                     </Grid>
                 </Grid>
             ))}

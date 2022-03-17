@@ -10,7 +10,7 @@ import YesNoPopup from '../../Common/Popup/YesNoPopup';
 import CutPopup from './Popups/CutPopup';
 import ProductPopup from './Popups/ProductPopup';
 
-function ManageIcons({ childProduct }) {
+function ManageIcons({ data }) {
     const { childProducts, setChildProducts, product } = useContext(ProductContext);
     const fetchContext = useContext(FetchContext);
 
@@ -19,10 +19,10 @@ function ManageIcons({ childProduct }) {
 
     async function deleteProduct() {
         try {
-            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/one/${childProduct.productChildId}`);
+            const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/one/${data.productChildId}`);
             if (rowCount) {
                 let newProducts = childProducts.filter(function(product) {
-                    return product.productChildId !== childProduct.productChildId;
+                    return product.productChildId !== data.productChildId;
                 });
                 setDeletePopup(false);
                 setChildProducts(newProducts);
@@ -48,16 +48,16 @@ function ManageIcons({ childProduct }) {
             setCutPopupError('Podaj dodatnią ilość!');
             return;
         }
-        if (amount > childProduct.amount) {
+        if (amount > data.amount) {
             setCutPopupError('Nie ma takiej ilości produktu 🙁');
             return;
         }
-        if (parseFloat(amount) === parseFloat(childProduct.amount)) {
+        if (parseFloat(amount) === parseFloat(data.amount)) {
             try {
-                const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/one/${childProduct.productChildId}`);
+                const {data: { rowCount }} = await fetchContext.authAxios.delete(`/products/delete/one/${data.productChildId}`);
                 if (rowCount) {
                     let newProducts = childProducts.filter(function(product) {
-                        return product.productChildId !== childProduct.productChildId;
+                        return product.productChildId !== data.productChildId;
                     });
                     setCutPopup(false);
                     setChildProducts(newProducts);
@@ -73,13 +73,13 @@ function ManageIcons({ childProduct }) {
         else {
             try {
                 const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/take`, {
-                    childProductId: childProduct.productChildId,
-                    newAmount: childProduct.amount - amount
+                    childProductId: data.productChildId,
+                    newAmount: data.amount - amount
                 });
                 if (rowCount) {
                     let newProducts = childProducts.filter(function(product) {
-                        if (product.productChildId === childProduct.productChildId) {
-                            product.amount = childProduct.amount - amount;
+                        if (product.productChildId === data.productChildId) {
+                            product.amount = data.amount - amount;
                         }
                         return product;
                     });
@@ -110,11 +110,11 @@ function ManageIcons({ childProduct }) {
                 featureId = formData.feature.value;
                 feature = formData.feature.label;
             }
-            const requestData = {...formData, featureId, productChildId: childProduct.productChildId}
+            const requestData = {...formData, featureId, productChildId: data.productChildId}
             const {data: { rowCount }} = await fetchContext.authAxios.put(`/products/${product.category}/update`, requestData);
             if (rowCount) {
                 let newProducts = childProducts.filter(function(product) {
-                    if (product.productChildId === childProduct.productChildId) {
+                    if (product.productChildId === data.productChildId) {
                         product = Object.assign(product, {...formData, feature});
                     }
                     return product;
@@ -146,7 +146,7 @@ function ManageIcons({ childProduct }) {
             onYes={editProduct}
             okButtonText='Edytuj'
             labelText='Edytowanie produktu'
-            productData={childProduct}
+            productData={data}
             errorMessage={editPopupError}
         />
         <CutPopup
