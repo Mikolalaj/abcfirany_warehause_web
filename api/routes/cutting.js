@@ -9,24 +9,66 @@ router.post('/', async function(req, res, next) {
         return res.status(401).json({ message: 'Błąd autoryzacji' });
     }
 
-    const { cuttingAmount, sewingAmount, orderNumber, destination, comments } = req.body;
+    try {
+        const { cuttingAmount, sewingAmount, orderNumber, destination, comments } = req.body;
     
-    const { rows } = await pool.query(`
-    INSERT INTO cutting
-        (cutting_amount, sewing_amount, order_number, destination, comments, user_id)
-    VALUES
-        ('${cuttingAmount}', '${sewingAmount}', ${ifNull(orderNumber)}, '${destination}', '${comments}', '${sub}')
-    RETURNING
-        to_char(add_date, 'DD.MM HH24:MI') as add_date,
-        order_number,
-        cutting_amount,
-        sewing_amount,
-        destination,
-        comments,
-        cutting_id
-    `);
-    req.body = rows[0];
-    next();
+        const { rows } = await pool.query(`
+        INSERT INTO cutting
+            (cutting_amount, sewing_amount, order_number, destination, comments, user_id)
+        VALUES
+            ('${cuttingAmount}', '${sewingAmount}', ${ifNull(orderNumber)}, '${destination}', '${comments}', '${sub}')
+        RETURNING
+            to_char(add_date, 'DD.MM HH24:MI') as add_date,
+            order_number,
+            cutting_amount,
+            sewing_amount,
+            destination,
+            comments,
+            cutting_id
+        `);
+
+        req.body = rows[0];
+        next();
+    } catch (error) {
+        return res
+            .status(400)
+            .json({message: `Wystąpił błąd podczas dodawania metrów (${error.message})`});
+    }
+});
+
+router.put('/', async function(req, res, next) {
+    try {
+        const { cuttingId, cuttingAmount, sewingAmount, orderNumber, destination, comments } = req.body;
+
+        if (!cuttingId) {
+            return res.status(400).json({ message: 'Brak id metrów' });
+        }
+
+        const { rows } = await pool.query(`
+        UPDATE cutting
+        SET
+            cutting_amount = '${cuttingAmount}',
+            sewing_amount = '${sewingAmount}',
+            order_number = ${ifNull(orderNumber)},
+            destination = '${destination}',
+            comments = '${comments}'
+        WHERE
+            cutting_id = '${cuttingId}'
+        RETURNING
+            order_number,
+            cutting_amount,
+            sewing_amount,
+            destination,
+            comments,
+            cutting_id
+        `);
+        req.body = rows[0];
+        next();
+    } catch (error) {
+        return res
+            .status(400)
+            .json({message: `Wystąpił błąd podczas edytowania metrów (${error.message})`});
+    }
 });
 
 router.get('/', async function(req, res, next) {
@@ -35,20 +77,26 @@ router.get('/', async function(req, res, next) {
         return res.status(401).json({ message: 'Błąd autoryzacji' });
     }
 
-    const { rows } = await pool.query(`
-    SELECT
-        to_char(add_date, 'DD.MM HH24:MI') as add_date,
-        order_number,
-        cutting_amount,
-        sewing_amount,
-        destination,
-        comments,
-        cutting_id
-    FROM cutting
-    WHERE user_id = '${sub}'`);
-    
-    req.body = rows;
-    next();
+    try {
+        const { rows } = await pool.query(`
+        SELECT
+            to_char(add_date, 'DD.MM HH24:MI') as add_date,
+            order_number,
+            cutting_amount,
+            sewing_amount,
+            destination,
+            comments,
+            cutting_id
+        FROM cutting
+        WHERE user_id = '${sub}'`);
+        
+        req.body = rows;
+        next();
+    } catch (error) {
+        return res
+            .status(400)
+            .json({message: `Wystąpił błąd podczas pobierania metrów (${error.message})`});
+    }
 });
 
 router.delete('/', async function(req, res, next) {
@@ -57,7 +105,7 @@ router.delete('/', async function(req, res, next) {
     try {
         cuttingId = req.body.cuttingId;
     } catch (error) {
-        return res.status(400).json({ message: `Missing cutting ID (${error})` });
+        return res.status(400).json({ message: `Brak id metrów` });
     }
 
     try {
