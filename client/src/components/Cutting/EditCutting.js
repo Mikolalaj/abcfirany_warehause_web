@@ -2,13 +2,13 @@ import CuttingPopup from './Popups/CuttingPopup';
 import { useState, useEffect } from 'react';
 import useAPI from '../../hooks/useAPI';
 
-function AddCutting({ trigger, closePopup, onSuccess }) {
+function EditCutting({ trigger, closePopup, onSuccess, data }) {
     const [cuttingErrorMessage, setCuttingErrorMessage] = useState('');
-    const [state, , setRequestData, setIsReady] = useAPI('post', '/cutting', [], false);
+    const [state, , setRequestData, setIsReady] = useAPI('put', '/cutting', [], false);
 
     useEffect(() => {
         if (state.isSuccess) {
-            if (onSuccess) { onSuccess(state.data) }
+            onSuccess(state.data)
             closePopup();
         } else if (state.isError) {
             setCuttingErrorMessage(state.errorMessage);
@@ -16,7 +16,7 @@ function AddCutting({ trigger, closePopup, onSuccess }) {
     }, [state]);
 
     async function addCutting(formData) {
-        setRequestData(formData);
+        setRequestData({...formData, cuttingId: data.cuttingId});
         setIsReady(true);
     }
 
@@ -25,11 +25,12 @@ function AddCutting({ trigger, closePopup, onSuccess }) {
         trigger={trigger}
         closePopup={closePopup}
         onYes={addCutting}
-        okButtonText='Dodaj'
-        labelText='Dodaj metry'
+        okButtonText='Edytuj'
+        labelText='Edytuj metry'
         errorMessage={cuttingErrorMessage}
+        cuttingData={data}
     />
     )
 }
 
-export default AddCutting;
+export default EditCutting;

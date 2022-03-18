@@ -6,8 +6,9 @@ import Loading from '../components/Common/Loading';
 import SearchInput from '../components/Common/SearchInput';
 import YesNoPopup from '../components/Common/Popup/YesNoPopup';
 import { CuttingContext, CuttingProvider } from '../context/CuttingContext';
-import { MdDelete, MdEdit, MdAddCircle } from 'react-icons/md';
+import { MdDelete, MdEdit, MdAddCircle, MdRefresh } from 'react-icons/md';
 import AddCutting from '../components/Cutting/AddCutting';
+import EditCutting from '../components/Cutting/EditCutting';
 import useAPI from '../hooks/useAPI';
 import './CuttingPage.css'
 
@@ -18,7 +19,6 @@ function CuttingPage() {
         </CuttingProvider>
     )
 }
-
 
 function Cutting() {    
     const columns = [
@@ -61,7 +61,7 @@ function Cutting() {
     const { cuttingList, setCuttingList } = useContext(CuttingContext);
     const [cuttingPopup, setCuttingPopup] = useState(false);
 
-    const [state] = useAPI('get', '/cutting', []);
+    const [state, , , , refresh] = useAPI('get', '/cutting', []);
     
     useEffect(() => {
         if (state.isSuccess) {
@@ -84,28 +84,38 @@ function Cutting() {
                 comments: data.comments
             }]) }
         />
-        {state.isLoading ? <Loading /> :
         <div>
             <h1>Dodane metry</h1>
             <SearchInput onSearch={(e) => console.log(e)}>Wyszukaj metry</SearchInput>
-            <div className='add-cutting' onClick={() => setCuttingPopup(true)}><MdAddCircle />Dodaj nowe metry</div>
+            <div className='cutting-options'>
+                <div onClick={() => setCuttingPopup(true)}><MdAddCircle />Dodaj nowe metry</div>
+                <div onClick={refresh}><MdRefresh />Odśwież</div>
+            </div>
+            {state.isLoading
+                ?
+            <Loading />
+                :
             <Listing data={cuttingList} columns={columns} icons={<CuttingIcons />} />
+            }
         </div>
-        }
     </>
     )
 }
 
 function CuttingIcons({ data }) {
     const [deletePopup, setDeletePopup] = useState(false);
+    const [editPopup, setEditPopup] = useState(false);
     const { cuttingList, setCuttingList } = useContext(CuttingContext);
 
     const [stateDelete,, setDeleteData, setIsReady] = useAPI('delete', '/cutting', {}, false);
-    // const [stateEdit] = useAPI('put', '/cutting', {}, false);
 
     function deleteCutting() {
         setDeleteData({ cuttingId: data.cuttingId });
         setIsReady(true);
+    }
+
+    function getKeyByValue(object, value) {
+        return Object.keys(object).find(key => object[key] === value);
     }
 
     useEffect(() => {
@@ -116,9 +126,18 @@ function CuttingIcons({ data }) {
         }
     }, [stateDelete]);
 
-    function editCutting() {
-        console.log('edit')
-        console.log(data)
+    function updateCutting(formData) {
+        let newCuttingList = cuttingList.map(cutting => {
+            if (cutting.cuttingId === formData.cuttingId) {
+                cutting.orderNumber = formData.orderNumber;
+                cutting.cuttingAmount = formData.cuttingAmount;
+                cutting.sewingAmount = formData.sewingAmount;
+                cutting.destination = destinationsDict[formData.destination];
+                cutting.comments = formData.comments;
+            }
+            return cutting;
+        });
+        setCuttingList(newCuttingList);
     }
 
     return (
@@ -130,8 +149,14 @@ function CuttingIcons({ data }) {
             okButtonText='Usuń'
             message={`Czy na pewno chcesz usunąć metry (${data.orderNumber})?`}
         />
+        <EditCutting
+            trigger={editPopup}
+            closePopup={() => setEditPopup(false)}
+            data={{...data, destination: {label: data.destination, value: getKeyByValue(destinationsDict, data.destination)}}}
+            onSuccess={data => updateCutting(data)}
+        />
         <div className='icons'>
-            <MdEdit className='edit' onClick={editCutting} />
+            <MdEdit className='edit' onClick={() => setEditPopup(true)} />
             <MdDelete className='delete' onClick={() => {setDeletePopup(true)}} />
         </div>
     </>
