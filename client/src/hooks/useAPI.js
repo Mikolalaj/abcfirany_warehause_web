@@ -50,8 +50,13 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
         errorMessage: ''
     });
 
+    function refresh() {
+        setIsReady(false);
+        setCsrfToken('');
+        setIsReady(true);
+    }
+
     useEffect(() => {
-        // TODO: make this get csrf token only once
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
 
@@ -96,6 +101,8 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
 
                 if (!didCancel) {
                     dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+                    setIsReady(false);
+                    setCsrfToken('');
                 }
             } catch (error) {
                 if (!didCancel) {
@@ -106,6 +113,8 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
                         logout();
                         push('/login');
                     }
+                    setIsReady(false);
+                    setCsrfToken('');
                 }
             }
         };
@@ -118,9 +127,9 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
             didCancel = true;
         };
 
-    }, [url, requestData, isReady, csrfToken]);
+    }, [url, isReady, csrfToken]);
 
-    return [state, setUrl, setRequestData, setIsReady];
+    return [state, setUrl, setRequestData, setIsReady, refresh];
 };
 
 export default useAPI
