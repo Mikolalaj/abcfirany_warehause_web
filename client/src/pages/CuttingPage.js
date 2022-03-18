@@ -86,7 +86,7 @@ function Cutting() {
         />
         <div>
             <h1>Dodane metry</h1>
-            <SearchInput onSearch={(input) => {console.log(input); setUrl(`/cutting/${input}`); refresh()}}>Wyszukaj metry</SearchInput>
+            <SearchInput onSearch={(input) => { setUrl(`/cutting/${input}`); refresh() }}>Wyszukaj metry</SearchInput>
             <div className='cutting-options'>
                 <div onClick={() => setCuttingPopup(true)}><MdAddCircle />Dodaj nowe metry</div>
                 <div onClick={refresh}><MdRefresh />Odśwież</div>
