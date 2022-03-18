@@ -17,6 +17,7 @@
     font-size: 17px;
     color: var(--red);
     margin-top: 10px;
+    text-align: center;
     visibility: hidden;
 }
 
