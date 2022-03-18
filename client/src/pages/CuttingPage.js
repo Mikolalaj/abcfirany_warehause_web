@@ -61,7 +61,7 @@ function Cutting() {
     const { cuttingList, setCuttingList } = useContext(CuttingContext);
     const [cuttingPopup, setCuttingPopup] = useState(false);
 
-    const [state, , , , refresh] = useAPI('get', '/cutting', []);
+    const [state, setUrl, , , refresh] = useAPI('get', '/cutting', []);
     
     useEffect(() => {
         if (state.isSuccess) {
@@ -86,7 +86,7 @@ function Cutting() {
         />
         <div>
             <h1>Dodane metry</h1>
-            <SearchInput onSearch={(e) => console.log(e)}>Wyszukaj metry</SearchInput>
+            <SearchInput onSearch={(input) => {console.log(input); setUrl(`/cutting/${input}`); refresh()}}>Wyszukaj metry</SearchInput>
             <div className='cutting-options'>
                 <div onClick={() => setCuttingPopup(true)}><MdAddCircle />Dodaj nowe metry</div>
                 <div onClick={refresh}><MdRefresh />Odśwież</div>

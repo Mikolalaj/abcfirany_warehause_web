@@ -71,7 +71,14 @@ router.put('/', async function(req, res, next) {
     }
 });
 
-router.get('/', async function(req, res, next) {
+router.get('/:orderNumber?', async function(req, res, next) {
+    const orderNumber = req.params.orderNumber;
+
+    let byOrderNumber = '';
+    if (orderNumber) {
+        byOrderNumber = `AND order_number = '${orderNumber}'`;
+    }
+
     const { sub } = req.user;
     if (!sub) {
         return res.status(401).json({ message: 'Błąd autoryzacji' });
@@ -88,7 +95,9 @@ router.get('/', async function(req, res, next) {
             comments,
             cutting_id
         FROM cutting
-        WHERE user_id = '${sub}'`);
+        WHERE user_id = '${sub}' ${byOrderNumber}
+        ORDER BY add_date DESC
+        `);
         
         req.body = rows;
         next();
