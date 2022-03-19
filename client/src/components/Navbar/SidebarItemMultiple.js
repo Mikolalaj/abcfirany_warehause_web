@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 
-function NavbarItemMultiple({ item, index: parentIndex, selectedItem, setSelectedItem }) {
+function SidebarItemMultiple({ item, index: parentIndex, selectedItem, setSelectedItem }) {
     const history = useHistory();
 
     return (
@@ -20,4 +20,4 @@ function NavbarItemMultiple({ item, index: parentIndex, selectedItem, setSelecte
     );
 }
 
-export default NavbarItemMultiple;
+export default SidebarItemMultiple;

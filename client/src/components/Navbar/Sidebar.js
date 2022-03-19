@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import AddCutting from '../Cutting/AddCutting';
 import AddLacks from '../Lacks/AddLacks';
-import NavbarItemMultiple from './NavbarItemMultiple';
+import SidebarItemMultiple from './SidebarItemMultiple';
 
 import { ImStatsBars, ImSearch } from 'react-icons/im';
 import { FaPlusCircle, FaUserAlt, FaDog } from 'react-icons/fa';
@@ -116,7 +116,7 @@ function Sidebar() {
         <nav className='sidebar'>
             {sidebarItems.map((item, index) => {
                 if (item.options) {
-                    return <NavbarItemMultiple key={index} index={index} item={item} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                    return <SidebarItemMultiple key={index} index={index} item={item} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
                 }
                 else if (item.link) {
                     return (
