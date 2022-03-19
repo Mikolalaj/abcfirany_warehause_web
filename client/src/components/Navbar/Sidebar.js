@@ -7,10 +7,11 @@ import AddLacks from '../Lacks/AddLacks';
 import SidebarItemMultiple from './SidebarItemMultiple';
 
 import { ImStatsBars, ImSearch } from 'react-icons/im';
-import { FaPlusCircle, FaUserAlt, FaDog } from 'react-icons/fa';
+import { FaPlusCircle, FaUserAlt } from 'react-icons/fa';
 import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
 import { RiScissors2Fill } from 'react-icons/ri';
 import { HiHome } from 'react-icons/hi';
+import { MdWarning } from 'react-icons/md';
 
 function Sidebar() {
 
@@ -49,7 +50,7 @@ function Sidebar() {
                     link: '/lacks'
                 }
             ],
-            icon: <FaDog />
+            icon: <MdWarning />
         },
         {
             name: 'Dodaj produkt',
