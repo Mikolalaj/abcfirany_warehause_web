@@ -116,7 +116,7 @@ function Sidebar() {
         <nav className='sidebar'>
             {sidebarItems.map((item, index) => {
                 if (item.options) {
-                    return <NavbarItemMultiple item={item} index={index} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+                    return <NavbarItemMultiple key={index} index={index} item={item} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
                 }
                 else if (item.link) {
                     return (

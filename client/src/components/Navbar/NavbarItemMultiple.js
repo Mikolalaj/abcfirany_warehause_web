@@ -4,7 +4,7 @@ function NavbarItemMultiple({ item, index: parentIndex, selectedItem, setSelecte
     const history = useHistory();
 
     return (
-        <div key={parentIndex} className={`menu-item ${parentIndex === selectedItem && 'selected'}`}>
+        <div className={`menu-item ${parentIndex === selectedItem && 'selected'}`}>
             <div className={`select ${parentIndex !== selectedItem && 'not-visible'}`} />
             {item.icon}
             <div className='options'>
