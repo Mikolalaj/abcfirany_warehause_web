@@ -22,6 +22,8 @@
     justify-content: flex-start;
     align-items: center;
     z-index: 1;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .menu-item {

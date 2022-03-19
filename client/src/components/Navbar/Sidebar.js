@@ -4,6 +4,8 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import AddCutting from '../Cutting/AddCutting';
 import AddLacks from '../Lacks/AddLacks';
+import NavbarItemMultiple from './NavbarItemMultiple';
+
 import { ImStatsBars, ImSearch } from 'react-icons/im';
 import { FaPlusCircle, FaUserAlt, FaDog } from 'react-icons/fa';
 import { IoSettingsSharp, IoLogOut } from 'react-icons/io5';
@@ -24,7 +26,6 @@ function Sidebar() {
             icon: <ImSearch />
         },
         {
-            name: 'Dodaj metry',
             options: [
                 {
                     name: 'Dodaj metry',
@@ -38,8 +39,16 @@ function Sidebar() {
             icon: <RiScissors2Fill />
         },
         {
-            name: 'Dodaj brak',
-            onClick: () => {setLacksPopup(true)},
+            options: [
+                {
+                    name: 'Dodaj brak',
+                    onClick: () => {setLacksPopup(true)}
+                },
+                {
+                    name: 'Zobacz braki',
+                    link: '/lacks'
+                }
+            ],
             icon: <FaDog />
         },
         {
@@ -61,14 +70,29 @@ function Sidebar() {
             name: 'Twoje konto',
             link: '/account',
             icon: <FaUserAlt />
+        },
+        {
+            name: 'Wyloguj się',
+            onClick: onLogoutButtonClick,
+            icon: <IoLogOut />
         }
     ];
     
     useEffect(() => {
         for (let index = 0; index < sidebarItems.length; index++) {
-            if (sidebarItems[index].link === window.location.pathname) {
-                setSelectedItem(index);
-                break;
+            if (sidebarItems[index].options) {
+                for (let childIndex = 0; childIndex < sidebarItems[index].options.length; childIndex++) {
+                    if (sidebarItems[index].options[childIndex].link === window.location.pathname) {
+                        setSelectedItem(index);
+                        break;
+                    }
+                }
+            }
+            else {
+                if (sidebarItems[index].link === window.location.pathname) {
+                    setSelectedItem(index);
+                    break;
+                }
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,41 +116,9 @@ function Sidebar() {
         <nav className='sidebar'>
             {sidebarItems.map((item, index) => {
                 if (item.options) {
-                    return (
-                        <div key={index} className={`menu-item ${index===selectedItem && 'selected'}`}>
-                            <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
-                            {item.icon}
-                            <div className='options'>
-                                {item.options.map((option, index) => {
-                                    if (option.link === undefined) {
-                                        return (
-                                            <p key={index} className='item-tooltip-options' onClick={() => option.onClick()}>
-                                                {option.name}
-                                            </p>
-                                        )
-                                    }
-                                    else {
-                                        return (
-                                            <p key={index} className='item-tooltip-options' onClick={() => {setSelectedItem(index); history.push(option.link)}}>
-                                                {option.name}
-                                            </p>
-                                        )
-                                    }
-                                })}
-                            </div>
-                        </div>
-                    )
+                    return <NavbarItemMultiple item={item} index={index} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
                 }
-                else if (item.link === undefined) {
-                    return (
-                        <div key={index} className='menu-item' onClick={()=>item.onClick()}>
-                            {item.icon}
-                            <p className='item-tooltip'>
-                                {item.name}
-                            </p>
-                        </div>
-                    )
-                } else {
+                else if (item.link) {
                     return (
                         <div key={index} className={`menu-item ${index===selectedItem && 'selected'}`} onClick={() => {setSelectedItem(index); history.push(item.link)}} >
                             <div className={`select ${index!==selectedItem && 'not-visible'}`}></div>
@@ -136,14 +128,19 @@ function Sidebar() {
                             </p>
                         </div>
                     )
+                    
+                }
+                else {
+                    return (
+                        <div key={index} className='menu-item' onClick={()=>item.onClick()}>
+                            {item.icon}
+                            <p className='item-tooltip'>
+                                {item.name}
+                            </p>
+                        </div>
+                    )
                 }
             })}
-            <div className='menu-item' onClick={onLogoutButtonClick}>
-                <IoLogOut />
-                <p className='item-tooltip'>
-                    Wyloguj się
-                </p>
-            </div>
         </nav>
     </>
     )
