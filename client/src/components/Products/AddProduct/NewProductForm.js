@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { 
     SymbolInput,
     FeaturesInput,
@@ -14,15 +14,13 @@ import { PremadeInputs } from '../Forms/PremadeForm';
 import { PillowInputs } from '../Forms/PillowForm';
 import { TowelInputs } from '../Forms/TowelForm';
 
-import { FetchContext } from '../../../context/FetchContext';
+import useAPI from '../../../hooks/useAPI';
 
 import './NewProductForm.css'
 
 
 function NewProductForm({ useFormRest }) {
     const { formState: { errors }, setValue, getValues, control, unregister, register, reset, resetField } = useFormRest;
-
-    const { authAxios } = useContext(FetchContext);
 
     const [image, setImage] = useState('https://abcfirany.pl/images/no_image.jpg')
     const [imageError, setImageError] = useState(false)
@@ -38,19 +36,22 @@ function NewProductForm({ useFormRest }) {
         }))
     }
 
-    const [productId, setProductId] = useState(null);
-    
+    const [productId, setProductId] = useState('null');
+    const [state, setUrl, , , refresh] = useAPI('get', '/products/features/', [])
+
     useEffect(() => {
-        async function fetchData() {
-            const { data } = await authAxios.get(`/products/features/${productId}`)
-            setFeatureOptions(modifyDataFeatures(data))
+        if (state.isSuccess && !formStatus) {
+            setFeatureOptions(modifyDataFeatures(state.data))
         }
+    }, [state.isSuccess])
+
+    useEffect(() => {
         if (!formStatus) {
             resetField('feature')
             setFeatureOptions([])
-            fetchData()
+            setUrl(`/products/features/${productId}`)
+            refresh()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productId])
     
 
@@ -162,10 +163,10 @@ function NewProductForm({ useFormRest }) {
                     defaultValue={{value: ProductsEnum.meter, label: 'Metraż'}}
                 />
             </div>
-            {category === ProductsEnum.meter && <MeterInputs useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
-            {category === ProductsEnum.premade && <PremadeInputs useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
-            {category === ProductsEnum.pillow && <PillowInputs useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
-            {category === ProductsEnum.towel && <TowelInputs useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
+            {category === ProductsEnum.meter && <MeterInputs productId={productId} useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
+            {category === ProductsEnum.premade && <PremadeInputs productId={productId} useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
+            {category === ProductsEnum.pillow && <PillowInputs productId={productId} useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
+            {category === ProductsEnum.towel && <TowelInputs productId={productId} useFormRest={useFormRest} autoFocus={false} productData={{featureOptions}} />}
         </div>
     </>
     )

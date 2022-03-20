@@ -42,14 +42,32 @@ router.get('/symbols', async function(req, res, next) {
     res.send(rows);
 });
 
-router.get('/features', async function(req, res, next) {
-    const { rows } = await pool.query(`
-    SELECT
-        name,
-        feature_id
-    FROM
-        features`);
-    res.send(rows);
+router.get('/features/:productId?', async function(req, res, next) {
+    productId = req.params.productId;
+
+    if (productId) {
+        if (productId === 'null') {
+            return res.send([])
+        } else {
+            const { rows } = await pool.query(`
+            SELECT
+                F.name,
+                F.feature_id
+            FROM
+                features F
+                JOIN products_features PF ON F.feature_id = PF.feature_id
+            WHERE PF.product_id = '${productId}'`);
+            return res.send(rows);
+        }
+    } else {
+        const { rows } = await pool.query(`
+        SELECT
+            name,
+            feature_id
+        FROM
+            features`);
+        return res.send(rows);
+    }
 });
 
 router.post('/features', async function(req, res, next) {
@@ -93,23 +111,6 @@ router.post('/features', async function(req, res, next) {
     }
     
     return res.json({ featureId })
-});
-
-router.get('/features/:productId', async function(req, res, next) {
-    productId = req.params.productId;
-    if (productId === 'null') {
-        res.send([])
-        return
-    }
-    const { rows } = await pool.query(`
-    SELECT
-        F.name,
-        F.feature_id
-    FROM
-        features F
-        JOIN products_features PF ON F.feature_id = PF.feature_id
-    WHERE PF.product_id = '${productId}'`);
-    res.send(rows);
 });
 
 router.get('/details/:productId', async function(req, res, next) {
