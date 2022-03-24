@@ -4,11 +4,10 @@ import { destinationsDict } from '../dicts';
 import Listing from '../components/Common/Listing';
 import Loading from '../components/Common/Loading';
 import SearchInput from '../components/Common/SearchInput';
-import YesNoPopup from '../components/Common/Popup/YesNoPopup';
 import { CuttingContext, CuttingProvider } from '../context/CuttingContext';
-import { MdDelete, MdEdit, MdAddCircle, MdRefresh } from 'react-icons/md';
+import CuttingIcons from '../components/Cutting/CuttingIcons';
 import AddCutting from '../components/Cutting/AddCutting';
-import EditCutting from '../components/Cutting/EditCutting';
+import { MdAddCircle, MdRefresh } from 'react-icons/md';
 import useAPI from '../hooks/useAPI';
 import './CuttingPage.css'
 
@@ -97,67 +96,6 @@ function Cutting() {
                 :
             <Listing data={cuttingList} columns={columns} icons={<CuttingIcons />} />
             }
-        </div>
-    </>
-    )
-}
-
-function CuttingIcons({ data }) {
-    const [deletePopup, setDeletePopup] = useState(false);
-    const [editPopup, setEditPopup] = useState(false);
-    const { cuttingList, setCuttingList } = useContext(CuttingContext);
-
-    const [stateDelete,, setDeleteData, setIsReady] = useAPI('delete', '/cutting', {}, false);
-
-    function deleteCutting() {
-        setDeleteData({ cuttingId: data.cuttingId });
-        setIsReady(true);
-    }
-
-    function getKeyByValue(object, value) {
-        return Object.keys(object).find(key => object[key] === value);
-    }
-
-    useEffect(() => {
-        if (stateDelete.isSuccess) {
-            let newList = cuttingList.filter(cutting => cutting.cuttingId !== data.cuttingId);
-            setCuttingList(newList);
-            setDeletePopup(false);
-        }
-    }, [stateDelete]);
-
-    function updateCutting(formData) {
-        let newCuttingList = cuttingList.map(cutting => {
-            if (cutting.cuttingId === formData.cuttingId) {
-                cutting.orderNumber = formData.orderNumber;
-                cutting.cuttingAmount = formData.cuttingAmount;
-                cutting.sewingAmount = formData.sewingAmount;
-                cutting.destination = destinationsDict[formData.destination];
-                cutting.comments = formData.comments;
-            }
-            return cutting;
-        });
-        setCuttingList(newCuttingList);
-    }
-
-    return (
-    <>
-        <YesNoPopup
-            trigger={deletePopup}
-            onYes={deleteCutting}
-            closePopup={() => {setDeletePopup(false)}}
-            okButtonText='Usuń'
-            message={`Czy na pewno chcesz usunąć metry (${data.orderNumber})?`}
-        />
-        <EditCutting
-            trigger={editPopup}
-            closePopup={() => setEditPopup(false)}
-            data={{...data, destination: {label: data.destination, value: getKeyByValue(destinationsDict, data.destination)}}}
-            onSuccess={data => updateCutting(data)}
-        />
-        <div className='icons'>
-            <MdEdit className='edit' onClick={() => setEditPopup(true)} />
-            <MdDelete className='delete' onClick={() => {setDeletePopup(true)}} />
         </div>
     </>
     )
