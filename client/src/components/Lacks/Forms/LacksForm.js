@@ -4,25 +4,25 @@ import {
     AmountInput,
     CommentsInput,
     OrderNumberInput,
-    SymbolFeaturesInput,
+    SymbolFeatureInput,
     SizeInput
 } from './Inputs';
 import FormPopup from '../../Common/Popup/FormPopup';
 
-function CuttingForm({ closePopup, okButtonText, onYes, lacksData }) {
+function LacksForm({ closePopup, okButtonText, onYes, lacksData }) {
     const {register, handleSubmit, control, getValues, resetField, formState: { errors }} = useForm();
 
     function onSubmit(formData) {
-        if (formData.orderNumber === '') {
-            delete formData.orderNumber
-        }
-        formData.destination = formData.destination.value;
+        formData.featureId = formData.feature.value;
+        formData.productId = formData.symbol.value;
+        delete formData.feature
+        delete formData.symbol
         onYes(formData);
     }
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
-        <SymbolFeaturesInput register={register} errors={errors} defaultValue={lacksData.symbol} getValues={getValues} resetField={resetField} control={control} autoFocus={true} />
+        <SymbolFeatureInput register={register} errors={errors} defaultValue={lacksData.symbol} getValues={getValues} resetField={resetField} control={control} autoFocus={true} />
         <SizeInput register={register} errors={errors} defaultValue={lacksData.size} />
         <AmountInput register={register} errors={errors} defaultValue={lacksData.amount} />
         <OrderNumberInput register={register} errors={errors} defaultValue={lacksData.orderNumber}/>
@@ -31,4 +31,4 @@ function CuttingForm({ closePopup, okButtonText, onYes, lacksData }) {
     )
 }
 
-export default CuttingForm;
+export default LacksForm;

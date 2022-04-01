@@ -21,8 +21,8 @@ function LacksPopup({ trigger, closePopup, onYes, okButtonText, labelText, lacks
 LacksPopup.defaultProps = {
     lacksData: {
         symbol: '',
+        feature: '',
         size: '',
-        features: '',
         amount: '',
         orderNumber: '',
         comments: ''

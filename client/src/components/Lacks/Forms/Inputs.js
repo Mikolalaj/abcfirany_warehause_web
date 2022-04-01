@@ -112,7 +112,7 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
     )
 }
 
-function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetField, autoFocus }) {
+function SymbolFeatureInput({ errors, defaultValue, control, getValues, resetField, autoFocus }) {
     const [features, setFeatures] = useState([]);
     const [symbols, setSymbols] = useState([]);
 
@@ -138,7 +138,7 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
         }
     }, [stateSymbols]);
     
-    const [stateFeatures, setUrlFeatures] = useAPI('get', '/products/features/null', []);
+    const [stateFeatures, setUrlFeatures,,, refresh] = useAPI('get', '/products/features/null', []);
 
     useEffect(() => {
         if (stateFeatures.isSuccess) {
@@ -157,7 +157,7 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
                 value: true,
                 message: 'Symbol jest wymagany'
             },
-            onChange: (e) => {resetField("features"); setUrlFeatures(`/products/features/${e.target.value.value}`);}
+            onChange: (e) => {resetField('feature'); setUrlFeatures(`/products/features/${e.target.value.value}`); refresh()}
         }}
         autoFocus={autoFocus}
         placeholder='Symbol'
@@ -167,7 +167,7 @@ function SymbolFeaturesInput({ errors, defaultValue, control, getValues, resetFi
     />
     <ControlledDropdown
         errors={errors}
-        name='features'
+        name='feature'
         control={control}
         rules={{
             required: {
@@ -188,6 +188,6 @@ export {
     AmountInput,
     CommentsInput,
     OrderNumberInput,
-    SymbolFeaturesInput,
+    SymbolFeatureInput,
     SizeInput
 };

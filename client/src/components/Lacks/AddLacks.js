@@ -1,25 +1,26 @@
 import LacksPopup from './Popups/LacksPopup';
-import { FetchContext } from '../../context/FetchContext';
-import { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
+import useAPI from '../../hooks/useAPI';
 
 function AddLacks({ trigger, closePopup }) {
     const [lacksErrorMessage, setLacksErrorMessage] = useState('');
-    // const { authAxios } = useContext(FetchContext);
+    const [state, , setRequestData, setIsReady] = useAPI('post', '/lacks', {}, false);
 
     async function addLacks(formData) {
         console.log(formData);
-        // try {
-        //     const { data } = await authAxios.post('/cutting/add', formData);
-        //     if (data[0]) {
-        //         closePopup();
-        //     }
-        //     else {
-        //         setCuttingErrorMessage('Wystąpił błąd podczas dodawania metrów');
-        //     }
-        // } catch ({ response: { data: { message } } }) {
-        //     setCuttingErrorMessage(message)
-        // }
+        setRequestData(formData);
+        setIsReady(true);
     }
+
+    useEffect(() => {
+        if (state.isSuccess) {
+            closePopup();
+            console.log(state.data)
+        }
+        else if (state.isError) {
+            setLacksErrorMessage(state.errorMessage);
+        }
+    }, [state]);
 
     return (
     <LacksPopup 
