@@ -17,7 +17,7 @@ router.post('/', async function(req, res, next) {
         INSERT INTO lacks
             (product_id, feature_id, size, amount, order_number, comments, unit, added_by)
         VALUES
-            ('${productId}', '${featureId}', '${size}', '${amount}', ${orderNumber}, '${comments}', '${unit}', '${sub}')
+            ('${productId}', ${ifNull(featureId)}, '${size}', '${amount}', '${orderNumber}', '${comments}', '${unit}', '${sub}')
         RETURNING
             to_char(add_date, 'DD.MM HH24:MI') as add_date,
             product_id,
@@ -41,9 +41,8 @@ router.post('/', async function(req, res, next) {
             inserted.lack_id
         FROM inserted
         JOIN products ON inserted.product_id = products.product_id
-        JOIN features ON inserted.feature_id = features.feature_id
+        LEFT JOIN features ON inserted.feature_id = features.feature_id
         `);
-
         req.body = rows[0];
         next();
     } catch (error) {
@@ -69,15 +68,19 @@ router.get('/:orderNumber?', async function(req, res, next) {
     try {
         const { rows } = await pool.query(`
         SELECT
-            to_char(add_date, 'DD.MM HH24:MI') as add_date,
-            order_number,
-            cutting_amount,
-            sewing_amount,
-            destination,
-            comments,
-            cutting_id
-        FROM cutting
-        WHERE user_id = '${sub}' ${byOrderNumber}
+            to_char(L.add_date, 'DD.MM HH24:MI') as add_date,
+            P.symbol as symbol,
+            F.name as feature,
+            L.size,
+            L.amount,
+            L.unit,
+            L.order_number,
+            L.comments,
+            L.lack_id
+        FROM lacks L
+        JOIN products P ON L.product_id = P.product_id
+        LEFT JOIN features F ON L.feature_id = F.feature_id
+        WHERE added_by = '${sub}' ${byOrderNumber}
         ORDER BY add_date DESC
         `);
         
@@ -86,7 +89,7 @@ router.get('/:orderNumber?', async function(req, res, next) {
     } catch (error) {
         return res
             .status(400)
-            .json({message: `Wystąpił błąd podczas pobierania metrów (${error.message})`});
+            .json({message: `Wystąpił błąd podczas pobierania braków (${error.message})`});
     }
 });
 

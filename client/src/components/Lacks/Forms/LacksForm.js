@@ -13,11 +13,19 @@ function LacksForm({ closePopup, okButtonText, onYes, lacksData }) {
     const {register, handleSubmit, control, getValues, resetField, formState: { errors }} = useForm();
 
     function onSubmit(formData) {
-        formData.featureId = formData.feature.value;
+        if (formData.feature) {
+            formData.featureId = formData.feature.value;
+        }
+        else {
+            formData.featureId = null;
+        }
+        delete formData.feature;
+
         formData.productId = formData.symbol.value;
-        formData.unit = formData.unit.value;
-        delete formData.feature
         delete formData.symbol
+
+        formData.unit = formData.unit.value;
+
         onYes(formData)
     }
 
