@@ -15,16 +15,17 @@ function LacksForm({ closePopup, okButtonText, onYes, lacksData }) {
     function onSubmit(formData) {
         formData.featureId = formData.feature.value;
         formData.productId = formData.symbol.value;
+        formData.unit = formData.unit.value;
         delete formData.feature
         delete formData.symbol
-        onYes(formData);
+        onYes(formData)
     }
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
         <SymbolFeatureInput register={register} errors={errors} defaultValue={lacksData.symbol} getValues={getValues} resetField={resetField} control={control} autoFocus={true} />
         <SizeInput register={register} errors={errors} defaultValue={lacksData.size} />
-        <AmountInput register={register} errors={errors} defaultValue={lacksData.amount} />
+        <AmountInput register={register} errors={errors} control={control} defaultValue={lacksData.amount} />
         <OrderNumberInput register={register} errors={errors} defaultValue={lacksData.orderNumber}/>
         <CommentsInput register={register} errors={errors} defaultValue={lacksData.comments} />
     </FormPopup>

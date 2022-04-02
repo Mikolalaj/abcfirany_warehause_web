@@ -10,8 +10,7 @@ router.post('/', async function(req, res, next) {
     }
 
     try {
-        let unit = 'meter'
-        const { productId, featureId, size, amount, orderNumber, comments } = req.body;
+        const { productId, featureId, size, amount, orderNumber, comments, unit } = req.body;
     
         const { rows } = await pool.query(`
         WITH inserted AS (
