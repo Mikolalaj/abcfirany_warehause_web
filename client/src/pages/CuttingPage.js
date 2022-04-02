@@ -9,7 +9,6 @@ import CuttingIcons from '../components/Cutting/CuttingIcons';
 import AddCutting from '../components/Cutting/AddCutting';
 import { MdAddCircle, MdRefresh } from 'react-icons/md';
 import useAPI from '../hooks/useAPI';
-import './CuttingPage.css'
 
 function CuttingPage() {
     return (
