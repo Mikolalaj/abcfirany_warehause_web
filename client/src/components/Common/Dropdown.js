@@ -42,9 +42,9 @@ function Dropdown({ ifError, ...props }) {
     )
 }
 
-function ControlledDropdown({ errors, name, control, rules, defaultValue, ...props }) {
+function ControlledDropdown({ errors, name, control, rules, defaultValue, style, ...props }) {
     return (
-    <div className='select'>
+    <div className='select' style={style}>
     <Controller
         control={control}
         name={name}
@@ -58,12 +58,12 @@ function ControlledDropdown({ errors, name, control, rules, defaultValue, ...pro
                 onChange={onChange}
                 onBlur={onBlur}
                 inputRef={ref}
-                ifError={errors[name]}
+                ifError={errors && errors[name]}
                 {...props}
             />
         )}
     />
-    {errors[name] && <p className='input-error-text'>{errors[name].message}</p>}
+    {errors && (errors[name] && <p className='input-error-text'>{errors[name].message}</p>)}
     </div>
     )
 }

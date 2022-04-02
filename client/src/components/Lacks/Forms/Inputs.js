@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ControlledDropdown } from '../../Common/Dropdown';
 import useAPI from '../../../hooks/useAPI';
 
-function AmountInput({ register, errors, defaultValue, autoFocus }) {
+function AmountInput({ register, errors, control, defaultValue, autoFocus }) {
 
     function twoDecimals(input) {
         input = input.toString()
@@ -12,33 +12,57 @@ function AmountInput({ register, errors, defaultValue, autoFocus }) {
         return 'Ilość może mieć maksymalnie dwie cyfry po przecinku'
     }
 
+    const units = [
+        { value: 'meter', label: 'mb.' },
+        { value: 'pieces', label: 'szt.' }
+    ]
+
     return (
     <div>
-    <input
-        autoFocus={autoFocus}
-        className={errors.amount && 'input-error'}
-        type='number'
-        placeholder='Ilość'
-        defaultValue={defaultValue}
-        {...register('amount', {
-            valueAsNumber: true,
-            required: {
-                value: true,
-                message: 'Ilość jest wymagana'
-            },
-            max: {
-                value: 99999,
-                message: 'Ilość może mieć maksymalnie 5 znaków'
-            },
-            min: {
-                value: 1,
-                message: 'Ilość musi być większa od 0'
-            },
-            validate: {
-                twoDecimals: v => twoDecimals(v)
-            }
-        })}
-    />
+        <div style={{'display': 'flex', 'justifyContent': 'space-between'}}>
+            <input
+                style={{'width': '74%'}}
+                autoFocus={autoFocus}
+                className={errors.amount && 'input-error'}
+                type='number'
+                placeholder='Ilość'
+                defaultValue={defaultValue}
+                {...register('amount', {
+                    valueAsNumber: true,
+                    required: {
+                        value: true,
+                        message: 'Ilość jest wymagana'
+                    },
+                    max: {
+                        value: 99999,
+                        message: 'Ilość może mieć maksymalnie 5 znaków'
+                    },
+                    min: {
+                        value: 1,
+                        message: 'Ilość musi być większa od 0'
+                    },
+                    validate: {
+                        twoDecimals: v => twoDecimals(v)
+                    }
+                })}
+            />
+            <ControlledDropdown
+                style={{'width': '23%'}}
+                // errors={errors}
+                name='unit'
+                control={control}
+                rules={{
+                    required: {
+                        value: true,
+                        message: 'Jednostka jest wymagana'
+                    }
+                }}
+                placeholder='Jednostka'
+                options={units}
+                isSearchable={false}
+                defaultValue={units[0]}
+            />
+        </div>
     {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
     </div>
     )
