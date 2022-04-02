@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { destinationsDict } from '../dicts';
-import Listing from '../components/Common/Listing';
+import Listing, { ListingOptions } from '../components/Common/Listing';
 import Loading from '../components/Common/Loading';
 import SearchInput from '../components/Common/SearchInput';
 import { CuttingContext, CuttingProvider } from '../context/CuttingContext';
@@ -84,12 +84,12 @@ function Cutting() {
             }]) }
         />
         <div>
-            <h1>Dodane metry</h1>
+            <h1 style={{'marginBottom': '30px'}}>Dodane metry</h1>
             <SearchInput onSearch={(input) => { setUrl(`/cutting/${input}`); refresh() }}>Wyszukaj metry</SearchInput>
-            <div className='cutting-options'>
+            <ListingOptions>
                 <div onClick={() => setCuttingPopup(true)}><MdAddCircle />Dodaj nowe metry</div>
                 <div onClick={refresh}><MdRefresh />Odśwież</div>
-            </div>
+            </ListingOptions>
             {state.isLoading
                 ?
             <Loading />

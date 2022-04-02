@@ -45,3 +45,17 @@
 .row.odd {
     background-color: #fff;
 }
+
+.listing-options {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.listing-options div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}

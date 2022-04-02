@@ -32,4 +32,13 @@ function Listing({ columns, data, icons }) {
     )
 }
 
-export default Listing;
+function ListingOptions({ children }) {
+    return (
+        <div className='listing-options'>
+            {children}
+        </div>
+    )
+}
+
+export default Listing
+export { ListingOptions }
