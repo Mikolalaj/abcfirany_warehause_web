@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import SearchPage from './pages/SearchPage';
 import CuttingPage from './pages/CuttingPage';
+import LacksPage from './pages/LacksPage';
 import ProductPage from './pages/ProductPage';
 import AddProductPage from './pages/AddProductPage';
 
@@ -38,7 +39,6 @@ function AdminRoute({ children, ...rest }) {
     )
 }
 
-
 function Routes() {
     return (
     <Switch>
@@ -59,6 +59,9 @@ function Routes() {
         </AuthenticatedRoute>
         <AuthenticatedRoute path='/cutting'>
             <CuttingPage />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute path='/lacks'>
+            <LacksPage />
         </AuthenticatedRoute>
         <AuthenticatedRoute path='/product/:category/:productId'>
             <ProductPage />
