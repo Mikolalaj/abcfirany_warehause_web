@@ -76,7 +76,7 @@ router.get('/:orderNumber?', async function(req, res, next) {
 
     let byOrderNumber = '';
     if (orderNumber) {
-        byOrderNumber = `AND order_number = '${orderNumber}'`;
+        byOrderNumber = `AND LOWER(order_number) = LOWER('${orderNumber}')`;
     }
 
     const { sub } = req.user;
