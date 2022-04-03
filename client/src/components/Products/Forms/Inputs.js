@@ -296,11 +296,15 @@ function SaleInput({ useForm, defaultValue }) {
 }
 
 function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
-    const { control, resetField, formState: { errors } } = useForm;
+    const { control, resetField, setValue, formState: { errors } } = useForm;
     const [sizes, setSizes] = useState([]);
 
-    const defaultFinish = {label: defaultValue?.finish, value: defaultValue?.finish}
-    const defaultSize = {label: defaultValue?.size, value: defaultValue?.size}
+    useEffect(() => {
+        setValue('finish', {label: defaultValue?.finish, value: defaultValue?.finish})
+        resetField('size')
+        setSizes(pillows[defaultValue?.finish])
+        setValue('size', {label: defaultValue?.size, value: defaultValue?.size})
+    }, [defaultValue])
 
     return (
     <>
@@ -313,12 +317,12 @@ function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
                 value: true,
                 message: 'Wykończenie jest wymagane'
             },
-            onChange: (e) => {resetField("size"); setSizes(pillows[e.target.value.value])}
+            onChange: (e) => {resetField('size'); setSizes(pillows[e.target.value.value])}
         }}
         autoFocus={autoFocus}
         placeholder='Wykończenie'
         options={Object.keys(pillows).map(key => ({value: key, label: key}))}
-        defaultValue={defaultValue.finish && defaultValue.size ? defaultFinish : undefined}
+        // defaultValue={defaultValue.finish && defaultValue.size ? defaultFinish : undefined}
         isSearchable={false}
     />
     <ControlledDropdown
@@ -333,7 +337,7 @@ function FinishSizeInput({ useForm, defaultValue, autoFocus }) {
         }}
         placeholder='Wymiar'
         options={sizes}
-        defaultValue={defaultValue.finish && defaultValue.size ? defaultSize : undefined}
+        // defaultValue={defaultValue.finish && defaultValue.size ? defaultSize : undefined}
         isSearchable={false}
     />
     </>
