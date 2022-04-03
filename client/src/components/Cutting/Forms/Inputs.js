@@ -1,8 +1,9 @@
 import { ControlledDropdown } from '../../Common/Dropdown';
+import RegisteredInput from '../../Common/RegisteredInput';
 import InputSwitch from '../../Common/InputSwitch';
 import { destinations } from '../../../dicts';
 
-function AmountInput({ register, errors, defaultValue, registerName, placeholder, autoFocus }) {
+function AmountInput({ useForm, defaultValue, registerName, placeholder, autoFocus }) {
 
     function twoDecimals(input) {
         input = input.toString()
@@ -13,14 +14,14 @@ function AmountInput({ register, errors, defaultValue, registerName, placeholder
     }
 
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
+        name={registerName}
         autoFocus={autoFocus}
-        className={errors[registerName] && 'input-error'}
-        type='number'
-        placeholder={placeholder}
+        inputType='number'
         defaultValue={defaultValue}
-        {...register(registerName, {
+        placeholder={placeholder}
+        options={{
             valueAsNumber: true,
             required: {
                 value: true,
@@ -37,35 +38,31 @@ function AmountInput({ register, errors, defaultValue, registerName, placeholder
             validate: {
                 twoDecimals: v => twoDecimals(v)
             }
-        })}
+        }}
     />
-    {errors[registerName] && <p className='input-error-text'>{errors[registerName].message}</p>}
-    </div>
     )
 }
 
-function CommentsInput({ register, errors, defaultValue, autoFocus }) {
+function CommentsInput(props) {
     return (
-    <div>
-    <input
-        autoFocus={autoFocus}
-        className={errors.comments && 'input-error'}
-        type='text'
+    <RegisteredInput
+        {...props}
+        name='comments'
+        inputType='text'
         placeholder='Uwagi'
-        defaultValue={defaultValue}
-        {...register('comments', {
+        options={{
             maxLength: {
                 value: 100,
                 message: 'Uwagi mogą mieć maksymalnie 100 znaków'
             }
-        })}
+        }}
     />
-    {errors.comments && <p className='input-error-text'>{errors.comments.message}</p>}
-    </div>
     )
 }
 
-function OrderNumberInput({ register, errors, defaultValue, autoFocus, setValue }) {
+function OrderNumberInput({ useForm, defaultValue, autoFocus }) {
+    const { register, setValue, formState: { errors } } = useForm;
+
     return (
     <div>
     <InputSwitch errors={errors} setValue={setValue}>
@@ -95,7 +92,8 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus, setValue 
     )
 }
 
-function DestinationInput({ errors, defaultValue, control, autoFocus }) {
+function DestinationInput({ useForm, defaultValue, autoFocus }) {
+    const { control, formState: { errors } } = useForm;
 
     return (
     <ControlledDropdown

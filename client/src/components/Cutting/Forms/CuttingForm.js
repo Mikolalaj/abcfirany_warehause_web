@@ -9,7 +9,7 @@ import {
 import FormPopup from '../../Common/Popup/FormPopup';
 
 function CuttingForm({ closePopup, okButtonText, onYes, cuttingData }) {
-    const {register, handleSubmit, formState: { errors }, control, setValue} = useForm();
+    const {handleSubmit, ...restUseForm} = useForm();
     
     function onSubmit(formData) {
         if (formData.orderNumber === '') {
@@ -21,11 +21,11 @@ function CuttingForm({ closePopup, okButtonText, onYes, cuttingData }) {
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
-        <AmountInput register={register} errors={errors} defaultValue={cuttingData.cuttingAmount} registerName='cuttingAmount' placeholder='Docięte metry' autoFocus={true} />
-        <AmountInput register={register} errors={errors} defaultValue={cuttingData.sewingAmount} registerName='sewingAmount' placeholder='Metry do szycia' />
-        <OrderNumberInput register={register} errors={errors} defaultValue={cuttingData.orderNumber} setValue={setValue}/>
-        <DestinationInput errors={errors} control={control} defaultValue={cuttingData.destination} />
-        <CommentsInput register={register} errors={errors} defaultValue={cuttingData.comments} />
+        <AmountInput useForm={restUseForm} defaultValue={cuttingData.cuttingAmount} registerName='cuttingAmount' placeholder='Docięte metry' autoFocus={true} />
+        <AmountInput useForm={restUseForm} defaultValue={cuttingData.sewingAmount} registerName='sewingAmount' placeholder='Metry do szycia' />
+        <OrderNumberInput useForm={restUseForm} defaultValue={cuttingData.orderNumber} />
+        <DestinationInput useForm={restUseForm} defaultValue={cuttingData.destination} />
+        <CommentsInput useForm={restUseForm} defaultValue={cuttingData.comments} />
     </FormPopup>
     )
 }
