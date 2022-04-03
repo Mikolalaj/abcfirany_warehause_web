@@ -12,9 +12,14 @@ const destinationsDict = {
     'lacks': 'Braki'
 }
 
+const units = [
+    { value: 'meter', label: 'mb' },
+    { value: 'pieces', label: 'szt' }
+]
+
 const unitsDict = {
-    'meter': 'mb.',
-    'pieces': 'szt.'
+    'meter': 'mb',
+    'pieces': 'szt'
 }
 
 const pillows = {
@@ -33,4 +38,4 @@ const pillows = {
     ]
 }
 
-export { destinations, destinationsDict, unitsDict, pillows }
+export { destinations, destinationsDict, units, unitsDict, pillows }

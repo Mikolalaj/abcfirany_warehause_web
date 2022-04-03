@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { units, unitsDict } from '../../../dicts';
 import { ControlledDropdown } from '../../Common/Dropdown';
 import useAPI from '../../../hooks/useAPI';
 
@@ -12,11 +13,6 @@ function AmountInput({ register, errors, control, defaultValue, autoFocus }) {
         return 'Ilość może mieć maksymalnie dwie cyfry po przecinku'
     }
 
-    const units = [
-        { value: 'meter', label: 'mb.' },
-        { value: 'pieces', label: 'szt.' }
-    ]
-
     return (
     <div>
         <div style={{'display': 'flex', 'justifyContent': 'space-between'}}>
@@ -26,7 +22,7 @@ function AmountInput({ register, errors, control, defaultValue, autoFocus }) {
                 className={errors.amount && 'input-error'}
                 type='number'
                 placeholder='Ilość'
-                defaultValue={defaultValue}
+                defaultValue={defaultValue.amount}
                 {...register('amount', {
                     valueAsNumber: true,
                     required: {
@@ -48,7 +44,6 @@ function AmountInput({ register, errors, control, defaultValue, autoFocus }) {
             />
             <ControlledDropdown
                 style={{'width': '23%'}}
-                // errors={errors}
                 name='unit'
                 control={control}
                 rules={{
@@ -60,7 +55,7 @@ function AmountInput({ register, errors, control, defaultValue, autoFocus }) {
                 placeholder='Jednostka'
                 options={units}
                 isSearchable={false}
-                defaultValue={units[0]}
+                defaultValue={defaultValue.unit ? {label: unitsDict[defaultValue.unit], value: defaultValue.unit} : units[0]}
             />
         </div>
     {errors.amount && <p className='input-error-text'>{errors.amount.message}</p>}
@@ -136,7 +131,7 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
     )
 }
 
-function SymbolFeatureInput({ errors, defaultValue, control, getValues, resetField, autoFocus }) {
+function SymbolFeatureInput({ errors, defaultValue, control, getValues, setValue, resetField, autoFocus }) {
     const [features, setFeatures] = useState([]);
     const [symbols, setSymbols] = useState([]);
 
@@ -169,6 +164,14 @@ function SymbolFeatureInput({ errors, defaultValue, control, getValues, resetFie
             setFeatures(modifyDataFeatures(stateFeatures.data))
         }
     }, [stateFeatures]);
+
+    useEffect(() => {
+        setValue('symbol', {label: defaultValue?.symbol, value: defaultValue?.productId})
+        resetField('feature')
+        setUrlFeatures(`/products/features/${defaultValue?.productId}`)
+        refresh()
+        setValue('feature', {label: defaultValue?.feature, value: defaultValue?.featureId})
+    }, [defaultValue])
 
     return (
     <>

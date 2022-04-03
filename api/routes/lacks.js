@@ -30,18 +30,23 @@ router.post('/', async function(req, res, next) {
             lack_id
         )
         SELECT
-            inserted.add_date,
-            products.symbol,
-            features.name,
-            inserted.size,
-            inserted.amount,
-            inserted.order_number,
-            inserted.comments,
-            inserted.unit,
-            inserted.lack_id
-        FROM inserted
-        JOIN products ON inserted.product_id = products.product_id
-        LEFT JOIN features ON inserted.feature_id = features.feature_id
+            I.add_date,
+            I.product_id,
+            P.symbol,
+            I.feature_id,
+            F.name as feature,
+            I.size,
+            CASE
+                WHEN I.unit='meter' THEN I.amount
+                ELSE CAST(I.amount AS INTEGER)
+            END,
+            I.order_number,
+            I.comments,
+            I.unit,
+            I.lack_id
+        FROM inserted I
+        JOIN products P ON I.product_id = P.product_id
+        LEFT JOIN features F ON I.feature_id = F.feature_id
         `);
         req.body = rows[0];
         next();
@@ -57,7 +62,7 @@ router.get('/:orderNumber?', async function(req, res, next) {
 
     let byOrderNumber = '';
     if (orderNumber) {
-        byOrderNumber = `AND order_number = '${orderNumber}'`;
+        byOrderNumber = `AND LOWER(order_number) = LOWER('${orderNumber}')`;
     }
 
     const { sub } = req.user;
@@ -69,10 +74,15 @@ router.get('/:orderNumber?', async function(req, res, next) {
         const { rows } = await pool.query(`
         SELECT
             to_char(L.add_date, 'DD.MM HH24:MI') as add_date,
-            P.symbol as symbol,
+            L.product_id,
+            P.symbol,
+            L.feature_id,
             F.name as feature,
             L.size,
-            L.amount,
+            CASE
+                WHEN L.unit='meter' THEN L.amount
+                ELSE CAST(L.amount AS INTEGER)
+            END,
             L.unit,
             L.order_number,
             L.comments,
@@ -93,61 +103,85 @@ router.get('/:orderNumber?', async function(req, res, next) {
     }
 });
 
-// router.put('/', async function(req, res, next) {
-//     try {
-//         const { cuttingId, cuttingAmount, sewingAmount, orderNumber, destination, comments } = req.body;
+router.put('/', async function(req, res, next) {
+    try {
+        const { lackId, productId, featureId, size, amount, orderNumber, comments, unit } = req.body;
 
-//         if (!cuttingId) {
-//             return res.status(400).json({ message: 'Brak id metrów' });
-//         }
+        if (!lackId) {
+            return res.status(400).json({ message: 'Brak id braku' });
+        }
 
-//         const { rows } = await pool.query(`
-//         UPDATE cutting
-//         SET
-//             cutting_amount = '${cuttingAmount}',
-//             sewing_amount = '${sewingAmount}',
-//             order_number = ${ifNull(orderNumber)},
-//             destination = '${destination}',
-//             comments = '${comments}'
-//         WHERE
-//             cutting_id = '${cuttingId}'
-//         RETURNING
-//             order_number,
-//             cutting_amount,
-//             sewing_amount,
-//             destination,
-//             comments,
-//             cutting_id
-//         `);
-//         req.body = rows[0];
-//         next();
-//     } catch (error) {
-//         return res
-//             .status(400)
-//             .json({message: `Wystąpił błąd podczas edytowania metrów (${error.message})`});
-//     }
-// });
+        const { rows } = await pool.query(`
+        WITH inserted AS (
+        UPDATE lacks
+        SET
+            product_id = '${productId}',
+            feature_id = ${ifNull(featureId)},
+            size = '${size}',
+            amount = '${amount}',
+            order_number = '${orderNumber}',
+            comments = '${comments}',
+            unit = '${unit}'
+        WHERE
+            lack_id = '${lackId}'
+        RETURNING
+            to_char(add_date, 'DD.MM HH24:MI') as add_date,
+            product_id,
+            feature_id,
+            size,
+            amount,
+            order_number,
+            comments,
+            unit,
+            lack_id
+        )
+        SELECT
+            I.add_date,
+            I.product_id,
+            P.symbol,
+            I.feature_id,
+            F.name as feature,
+            I.size,
+            CASE
+                WHEN I.unit='meter' THEN I.amount
+                ELSE CAST(I.amount AS INTEGER)
+            END,
+            I.order_number,
+            I.comments,
+            I.unit,
+            I.lack_id
+        FROM inserted I
+        JOIN products P ON I.product_id = P.product_id
+        LEFT JOIN features F ON I.feature_id = F.feature_id
+        `);
+        req.body = rows[0];
+        next();
+    } catch (error) {
+        return res
+            .status(400)
+            .json({message: `Wystąpił błąd podczas edytowania braku (${error.message})`});
+    }
+});
 
-// router.delete('/', async function(req, res, next) {
-//     let cuttingId
+router.delete('/', async function(req, res, next) {
+    let lackId
 
-//     try {
-//         cuttingId = req.body.cuttingId;
-//     } catch (error) {
-//         return res.status(400).json({ message: `Brak id metrów` });
-//     }
-
-//     try {
-//         await pool.query(`
-//         DELETE FROM cutting
-//         WHERE cutting_id = '${cuttingId}'
-//         `); 
-//     } catch (error) {
-//         return res.status(500).json({ message: `Error deleting cutting (${error})` });
-//     }
-
-//     return res.sendStatus(204);
+    try {
+        lackId = req.body.lackId;
+    } catch (error) {
+        return res.status(400).json({ message: `Brak id braku` });
+    }
     
-// });
+    try {
+        await pool.query(`
+        DELETE FROM lacks
+        WHERE lack_id = '${lackId}'
+        `); 
+    } catch (error) {
+        return res.status(500).json({ message: `Wystąpił błąd podczas usuwania braku (${error})` });
+    }
+
+    return res.sendStatus(204);
+});
 
 module.exports = router;

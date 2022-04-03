@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import AddCutting from '../Cutting/AddCutting';
-import AddLacks from '../Lacks/AddLacks';
+import AddLack from '../Lacks/AddLack';
 import SidebarItemMultiple from './SidebarItemMultiple';
 
 import { ImStatsBars, ImSearch } from 'react-icons/im';
@@ -113,7 +113,7 @@ function Sidebar() {
     return (
     <>
         <AddCutting trigger={cuttingPopup} closePopup={() => setCuttingPopup(false)} />
-        <AddLacks trigger={lacksPopup} closePopup={() => setLacksPopup(false)} />
+        <AddLack trigger={lacksPopup} closePopup={() => setLacksPopup(false)} />
         <nav className='sidebar'>
             {sidebarItems.map((item, index) => {
                 if (item.options) {

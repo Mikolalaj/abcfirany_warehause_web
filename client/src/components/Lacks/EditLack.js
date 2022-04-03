@@ -2,12 +2,12 @@ import LacksPopup from './Popups/LacksPopup';
 import { useState, useEffect } from 'react';
 import useAPI from '../../hooks/useAPI';
 
-function AddLacks({ trigger, closePopup, onSuccess }) {
+function EditLack({ trigger, closePopup, onSuccess, data }) {
     const [lacksErrorMessage, setLacksErrorMessage] = useState('');
-    const [state, , setRequestData, setIsReady] = useAPI('post', '/lacks', {}, false);
+    const [state, , setRequestData, setIsReady] = useAPI('put', '/lacks', {}, false);
 
     async function addLacks(formData) {
-        setRequestData(formData);
+        setRequestData({...formData, lackId: data.lackId});
         setIsReady(true);
     }
 
@@ -26,11 +26,12 @@ function AddLacks({ trigger, closePopup, onSuccess }) {
         trigger={trigger}
         closePopup={closePopup}
         onYes={addLacks}
-        okButtonText='Dodaj'
-        labelText='Dodaj brak'
+        okButtonText='Edytuj'
+        labelText='Edytuj brak'
         errorMessage={lacksErrorMessage}
+        lacksData={data}
     />
     )
 }
 
-export default AddLacks;
+export default EditLack;
