@@ -1,16 +1,14 @@
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { destinationsDict } from '../../dicts';
 import YesNoPopup from '../Common/Popup/YesNoPopup';
-import { CuttingContext } from '../../context/CuttingContext';
 import EditCutting from './EditCutting';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import useAPI from '../../hooks/useAPI';
 
-function CuttingIcons({ data }) {
+function CuttingIcons({ data, cuttingList, setCuttingList }) {
     const [deletePopup, setDeletePopup] = useState(false);
     const [editPopup, setEditPopup] = useState(false);
-    const { cuttingList, setCuttingList } = useContext(CuttingContext);
 
     const [stateDelete,, setDeleteData, setIsReady] = useAPI('delete', '/cutting', {}, false);
 

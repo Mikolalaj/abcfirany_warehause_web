@@ -1,24 +1,15 @@
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { destinationsDict } from '../dicts';
 import Listing, { ListingOptions } from '../components/Common/Listing';
 import Loading from '../components/Common/Loading';
 import SearchInput from '../components/Common/SearchInput';
-import { CuttingContext, CuttingProvider } from '../context/CuttingContext';
 import CuttingIcons from '../components/Cutting/CuttingIcons';
 import AddCutting from '../components/Cutting/AddCutting';
 import { MdAddCircle, MdRefresh } from 'react-icons/md';
 import useAPI from '../hooks/useAPI';
 
-function CuttingPage() {
-    return (
-        <CuttingProvider>
-            <Cutting />
-        </CuttingProvider>
-    )
-}
-
-function Cutting() {    
+function CuttingPage() {    
     const columns = [
         {
             label: 'Data',
@@ -56,7 +47,7 @@ function Cutting() {
         }
     ]
     
-    const { cuttingList, setCuttingList } = useContext(CuttingContext);
+    const [cuttingList, setCuttingList] = useState([]);
     const [cuttingPopup, setCuttingPopup] = useState(false);
 
     const [state, setUrl, , , refresh] = useAPI('get', '/cutting', []);
@@ -93,7 +84,7 @@ function Cutting() {
                 ?
             <Loading />
                 :
-            <Listing data={cuttingList} columns={columns} icons={<CuttingIcons />} />
+            <Listing data={cuttingList} columns={columns} icons={<CuttingIcons cuttingList={cuttingList} setCuttingList={setCuttingList} />} />
             }
         </div>
     </>
