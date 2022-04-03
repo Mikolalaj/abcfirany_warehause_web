@@ -77,7 +77,7 @@ app.use('/api/lacks', lacksRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/products/premade', productsPremadeRouter);
 app.use('/api/products/meter', productsMeterRouter);
-app.use('/api/products/pillows', productsPillowRouter);
+app.use('/api/products/pillow', productsPillowRouter);
 app.use('/api/products/towels', productsTowelRouter);
 
 // change object keys to camelCase

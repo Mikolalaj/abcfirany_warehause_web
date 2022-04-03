@@ -4,7 +4,7 @@ var pool = require('../../db');
 const { v4: uuidv4 } = require('uuid');
 const { ifNull } = require('../../utils')
 
-// api/products/pillows/
+// api/products/pillow/
 
 router.get('/search/:productId', async function(req, res, next) {
     productId = req.params.productId;

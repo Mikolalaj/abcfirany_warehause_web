@@ -2,7 +2,7 @@
 const ProductsEnum = Object.freeze({
     'meter': 'meter',
     'premade': 'premade',
-    'pillow': 'pillows',
+    'pillow': 'pillow',
     'towel': 'towels'
 })
 
