@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { units, unitsDict } from '../../../dicts';
 import { ControlledDropdown } from '../../Common/Dropdown';
+import RegisteredInput from '../../Common/RegisteredInput';
 import useAPI from '../../../hooks/useAPI';
 
-function AmountInput({ register, errors, control, defaultValue, autoFocus }) {
+function AmountInput({ useForm, defaultValue, autoFocus }) {
+    const { control, register, formState: { errors } } = useForm;
 
     function twoDecimals(input) {
         input = input.toString()
@@ -63,59 +65,54 @@ function AmountInput({ register, errors, control, defaultValue, autoFocus }) {
     )
 }
 
-function CommentsInput({ register, errors, defaultValue, autoFocus }) {
+function CommentsInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
+        name='comments'
         autoFocus={autoFocus}
-        className={errors.comments && 'input-error'}
-        type='text'
+        inputType='text'
         placeholder='Uwagi'
         defaultValue={defaultValue}
-        {...register('comments', {
+        options={{
             maxLength: {
                 value: 100,
                 message: 'Uwagi mogą mieć maksymalnie 100 znaków'
             }
-        })}
+        }}
     />
-    {errors.comments && <p className='input-error-text'>{errors.comments.message}</p>}
-    </div>
     )
 }
 
-function SizeInput({ register, errors, defaultValue, autoFocus }) {
+function SizeInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
-        autoFocus={autoFocus}
-        className={errors.size && 'input-error'}
-        type='text'
-        placeholder='Wymiar'
-        defaultValue={defaultValue}
-        {...register('size', {
-            maxLength: {
-                value: 100,
-                message: 'Wymiar może mieć maksymalnie 100 znaków'
-            }
-        })}
-    />
-    {errors.size && <p className='input-error-text'>{errors.size.message}</p>}
-    </div>
+        <RegisteredInput
+            useForm={useForm}
+            name='size'
+            autoFocus={autoFocus}
+            inputType='text'
+            placeholder='Wymiar'
+            defaultValue={defaultValue}
+            options={{
+                maxLength: {
+                    value: 100,
+                    message: 'Wymiar może mieć maksymalnie 100 znaków'
+                }
+            }}
+        />
     )
 }
 
-function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
-    
+function OrderNumberInput({ useForm, defaultValue, autoFocus }) {
     return (
-    <div>
-    <input
+    <RegisteredInput
+        useForm={useForm}
+        name='orderNumber'
         autoFocus={autoFocus}
-        className={errors.orderNumber && 'input-error'}
-        type='text'
+        inputType='text'
         placeholder='Numer zamówienia'
         defaultValue={defaultValue}
-        {...register('orderNumber', {
+        options={{
             maxLength: {
                 value: 100,
                 message: 'Numer zamówienia może mieć maksymalnie 100 znaków'
@@ -124,14 +121,15 @@ function OrderNumberInput({ register, errors, defaultValue, autoFocus }) {
                 value: true,
                 message: 'Numer zamówienia jest wymagany'
             }
-        })}
+        }}
     />
-    {errors.orderNumber && <p className='input-error-text'>{errors.orderNumber.message}</p>}
-    </div>
+
     )
 }
 
-function SymbolFeatureInput({ errors, defaultValue, control, getValues, setValue, resetField, autoFocus }) {
+function SymbolFeatureInput({ useForm, defaultValue, autoFocus }) {
+    const { control, setValue, resetField, formState: { errors } } = useForm;
+
     const [features, setFeatures] = useState([]);
     const [symbols, setSymbols] = useState([]);
 

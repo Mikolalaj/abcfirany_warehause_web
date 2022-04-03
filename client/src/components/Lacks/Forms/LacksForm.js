@@ -10,7 +10,7 @@ import {
 import FormPopup from '../../Common/Popup/FormPopup';
 
 function LacksForm({ closePopup, okButtonText, onYes, lacksData }) {
-    const {register, handleSubmit, control, getValues, setValue, resetField, formState: { errors }} = useForm();
+    const {handleSubmit, ...useFormRest} = useForm();
 
     function onSubmit(formData) {
         if (formData.feature) {
@@ -31,11 +31,11 @@ function LacksForm({ closePopup, okButtonText, onYes, lacksData }) {
 
     return (
     <FormPopup closePopup={closePopup} okButtonText={okButtonText} onYes={handleSubmit(onSubmit)}>
-        <SymbolFeatureInput register={register} errors={errors} defaultValue={lacksData} getValues={getValues} setValue={setValue} resetField={resetField} control={control} autoFocus={true} />
-        <SizeInput register={register} errors={errors} defaultValue={lacksData.size} />
-        <AmountInput register={register} errors={errors} control={control} defaultValue={lacksData} />
-        <OrderNumberInput register={register} errors={errors} defaultValue={lacksData.orderNumber}/>
-        <CommentsInput register={register} errors={errors} defaultValue={lacksData.comments} />
+        <SymbolFeatureInput useForm={useFormRest} defaultValue={lacksData} autoFocus={true} />
+        <SizeInput useForm={useFormRest} defaultValue={lacksData.size} />
+        <AmountInput useForm={useFormRest} defaultValue={lacksData} />
+        <OrderNumberInput useForm={useFormRest} defaultValue={lacksData.orderNumber}/>
+        <CommentsInput useForm={useFormRest} defaultValue={lacksData.comments} />
     </FormPopup>
     )
 }
