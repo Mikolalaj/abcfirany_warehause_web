@@ -1,14 +1,14 @@
-import { useContext, useState } from 'react';
-import { FetchContext } from '../context/FetchContext';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import NewProductForm from '../components/Products/AddProduct/NewProductForm'
 import Button from '../components/Common/Button';
+import useAPI from '../hooks/useAPI';
 import './AddProductPage.css';
 
 function AddProductPage() {
     const { handleSubmit, ...useFormRest } = useForm();
-    const { authAxios } = useContext(FetchContext);
     const [errorMessage, setErrorMessage] = useState('');
+    const [state,, setRequestData, setIsReady] = useAPI('post', '/products/add', [], false)
 
     async function addProduct(formData) {
         let { category, feature, symbol, finish, size, ...formDataRest } = formData;
@@ -44,15 +44,22 @@ function AddProductPage() {
                 size: size.value
             }
         }
+        
+        setRequestData(formData)
+        setIsReady(true)
+    }
 
-        try {
-            const { data } = await authAxios.post('/products/add', formData);
-            console.log(data)
-        } catch ({ response: { data: { message } } }) {
-            setErrorMessage(message);
+    useEffect(() => {
+        if (state.isSuccess) {
+            setErrorMessage('Pomyślnie dodano nowy produkt');
+            window.scrollTo(0, 0);
+            console.log(state.data)
+        }
+        else if (state.isError) {
+            setErrorMessage(state.errorMessage);
             window.scrollTo(0, 0);
         }
-    }
+    }, [state.isSuccess])
 
     return (
         <div className='add-product-page'>
