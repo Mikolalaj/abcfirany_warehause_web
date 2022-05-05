@@ -62,13 +62,13 @@ function ProductsList() {
             if (product.meterCount > 0) {
                 return <Product key={product.productId + '1'} {...product} category={ProductsEnum.meter} />
             }
-            else if (product.pillowsCount > 0) {
+            if (product.pillowsCount > 0) {
                 return <Product key={product.productId + '2'} {...product} category={ProductsEnum.pillow} />
             }
-            else if (product.premadeCount > 0) {
+            if (product.premadeCount > 0) {
                 return <Product key={product.productId + '3'} {...product} category={ProductsEnum.premade} />
             }
-            else if (product.towelsCount > 0) {
+            if (product.towelsCount > 0) {
                 return <Product key={product.productId + '4'} {...product} category={ProductsEnum.towel} />
             }
         })}

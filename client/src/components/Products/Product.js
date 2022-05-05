@@ -2,9 +2,8 @@ import './Product.css';
 import ProductsEnum from './ProductsEnum';
 import { useHistory } from 'react-router-dom';
 
-function Product(props) {
+function Product({ symbol, productId, img, category }) {
     const history = useHistory();
-    const { symbol, productId, img, category } = props;
 
     function category_name(category) {
         if (category === ProductsEnum.pillow) {
