@@ -44,8 +44,9 @@ router.get('/symbols', async function(req, res, next) {
 
 router.get('/features/:productId?', async function(req, res, next) {
     productId = req.params.productId;
+    console.log(productId)
 
-    if (productId) {
+    if (productId !== 'undefined') {
         if (productId === 'null') {
             return res.send([])
         } else {

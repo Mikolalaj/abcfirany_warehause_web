@@ -155,7 +155,7 @@ function SymbolFeatureInput({ useForm, defaultValue, autoFocus }) {
         }
     }, [stateSymbols]);
     
-    const [stateFeatures, setUrlFeatures,,, refresh] = useAPI('get', '/products/features/null', []);
+    const [stateFeatures, setUrlFeatures,,, refreshFeatures] = useAPI('get', '/products/features/null', []);
 
     useEffect(() => {
         if (stateFeatures.isSuccess) {
@@ -164,11 +164,11 @@ function SymbolFeatureInput({ useForm, defaultValue, autoFocus }) {
     }, [stateFeatures]);
 
     useEffect(() => {
-        setValue('symbol', {label: defaultValue?.symbol, value: defaultValue?.productId})
+        defaultValue.symbol !== '' && setValue('symbol', {label: defaultValue?.symbol, value: defaultValue?.productId})
         resetField('feature')
-        setUrlFeatures(`/products/features/${defaultValue?.productId}`)
-        refresh()
-        setValue('feature', {label: defaultValue?.feature, value: defaultValue?.featureId})
+        setUrlFeatures(`/products/features/${defaultValue?.productId ? defaultValue.productId : 'null'}`)
+        refreshFeatures()
+        defaultValue.feature !== '' && setValue('feature', {label: defaultValue?.feature, value: defaultValue?.featureId})
     }, [defaultValue])
 
     return (
@@ -182,7 +182,7 @@ function SymbolFeatureInput({ useForm, defaultValue, autoFocus }) {
                 value: true,
                 message: 'Symbol jest wymagany'
             },
-            onChange: (e) => {resetField('feature'); setUrlFeatures(`/products/features/${e.target.value.value}`); refresh()}
+            onChange: (e) => {resetField('feature'); setUrlFeatures(`/products/features/${e.target.value.value}`); refreshFeatures()}
         }}
         autoFocus={autoFocus}
         placeholder='Symbol'
