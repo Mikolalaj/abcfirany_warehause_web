@@ -99,7 +99,10 @@ function DetailHeader() {
     <>
         <ParentProductPopup
             trigger={editPopup}
-            closePopup={() => setEditPopup(false)}
+            closePopup={() => {
+                setEditPopup(false)
+                setEditPopupError('')
+            }}
             onYes={editProduct}
             productData={{
                 symbol: symbol,
@@ -131,8 +134,7 @@ function DetailHeader() {
             <div className='detail-description'>
                 <div className='symbol'>
                     <h1>{symbol}</h1>
-                    <MdEdit className='edit' onClick={()=>setEditPopup(true
-                    )}/>
+                    <MdEdit className='edit' onClick={()=>setEditPopup(true)}/>
                 </div>
                 {sale && <p className='sale'><IoMdPricetag/>Wyprzedaż</p>}
                 <p>{comments}</p>

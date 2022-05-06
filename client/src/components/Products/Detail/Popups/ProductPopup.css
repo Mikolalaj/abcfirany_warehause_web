@@ -23,6 +23,7 @@
     color: var(--red);
     margin-top: 10px;
     visibility: hidden;
+    text-align: center;
 }
 
 .product-popup .form-error:after {

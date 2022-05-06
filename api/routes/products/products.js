@@ -44,9 +44,8 @@ router.get('/symbols', async function(req, res, next) {
 
 router.get('/features/:productId?', async function(req, res, next) {
     productId = req.params.productId;
-    console.log(productId)
 
-    if (productId !== 'undefined') {
+    if (productId !== undefined) {
         if (productId === 'null') {
             return res.send([])
         } else {
@@ -165,8 +164,14 @@ router.put('/update', async function(req, res) {
 
     // delete existing features from product
     // console.log('delete: ', deleteFeaturesList);
-
-    disconnectFeatures(deleteFeaturesList, productId);
+    try {
+        await disconnectFeatures(deleteFeaturesList, productId);
+    } catch (error) {
+        console.log(error)
+        return res
+            .status(500)
+            .json({ message: `Nie udało się usunąć istniejących cech. ${error}` });
+    }
 
     // add new features to product    
     // console.log('add: ', addFeaturesList);
