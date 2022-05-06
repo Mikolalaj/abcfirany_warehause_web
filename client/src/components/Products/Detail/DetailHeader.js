@@ -5,7 +5,7 @@ import YesNoPopup from '../../Common/Popup/YesNoPopup'
 import { FetchContext } from '../../../context/FetchContext';
 import { ProductContext } from '../../../context/ProductContext';
 import { IoMdPricetag } from 'react-icons/io';
-import { MdAddCircle, MdEdit, MdFindInPage, MdDelete } from 'react-icons/md';
+import { MdAddCircle, MdEdit, MdFindInPage, MdDelete, MdRefresh } from 'react-icons/md';
 import { BsThreeDots } from 'react-icons/bs';
 import './DetailHeader.css'
 
@@ -141,6 +141,8 @@ function DetailHeader() {
                     <div className='option' onClick={() => setAddPopup(true)}><MdAddCircle />Dodaj nowy produkt</div>
                     <div className='option' onClick={openInShop}><MdFindInPage/>Wyszukaj na sklepie</div>
                     <div className='option' onClick={() => setDeletePopup(true)}><MdDelete/>Usuń produkt</div>
+                    <div className='option'><MdRefresh/>Odśwież</div>
+                    {/* TODO: Refreshing */}
                 </div>
             </div>
             <div className='options'>
