@@ -101,7 +101,7 @@ function DetailHeader() {
             trigger={editPopup}
             closePopup={() => {
                 setEditPopup(false)
-                editPopupError('')
+                setEditPopupError('')
             }}
             onYes={editProduct}
             productData={{
