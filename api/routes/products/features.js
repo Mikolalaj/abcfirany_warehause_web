@@ -68,27 +68,41 @@ async function addFeatures(features, productId) {
 
 async function disconnectFeatures(features, productId) {
     if (features.length > 0) {
-        try {
-            const res = await pool.query(`
-            DELETE FROM
-                products_features
-            WHERE
-                product_id = '${productId}' AND
-                feature_id IN
-                    (
-                        SELECT feature_id FROM features WHERE name IN (${features.map(feature => `'${feature}'`).join(',')})
-                    )
-            `);
-            if (res.rowCount === 0) {
-                return res
-                    .status(500)
-                    .json({ message: 'Nie udało się usunąć istniejących cech.' });
-            }
-        } catch (error) {
-            console.log(error);
-            return res
-                .status(400)
-                .json({ message: 'Nie udało się usunąć istniejących cech.' });
+        // check if there are any child products with those features
+
+        const isChildProductWithFeatures = await pool.query(`
+        SELECT
+            COUNT(product_child_id)
+        FROM
+            products_child
+        WHERE
+            product_id = '${productId}'
+            AND feature_id IN (
+                SELECT
+                    feature_id
+                FROM
+                    features
+                WHERE
+                    name IN (${features.map(feature => `'${feature}'`).join(',')})
+            )
+        `);
+
+        if (isChildProductWithFeatures.rows[0].count > 0) {
+            throw 'Istnieją podprodukty które mają przypisaną tą cechę.'
+        }
+
+        const res = await pool.query(`
+        DELETE FROM
+            products_features
+        WHERE
+            product_id = '${productId}' AND
+            feature_id IN
+                (
+                    SELECT feature_id FROM features WHERE name IN (${features.map(feature => `'${feature}'`).join(',')})
+                )
+        `);
+        if (res.rowCount === 0) {
+            throw 'Nie udało się usunąć istniejących cech.'
         }
     }
 }
