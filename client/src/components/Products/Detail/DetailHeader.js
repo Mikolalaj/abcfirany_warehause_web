@@ -1,7 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import ProductPopup from './Popups/ProductPopup';
 import ParentProductPopup from './Popups/ParentProductPopup';
 import YesNoPopup from '../../Common/Popup/YesNoPopup'
+import ProductsEnum from '../ProductsEnum';
 import { FetchContext } from '../../../context/FetchContext';
 import { ProductContext } from '../../../context/ProductContext';
 import { IoMdPricetag } from 'react-icons/io';
@@ -9,10 +11,18 @@ import { MdAddCircle, MdEdit, MdFindInPage, MdDelete, MdRefresh } from 'react-ic
 import { BsThreeDots } from 'react-icons/bs';
 import './DetailHeader.css'
 
-function DetailHeader() {
+function DetailHeader({changeCategory}) {
+    const history = useHistory();
+
     const { authAxios } = useContext(FetchContext);
     const { childProducts, setChildProducts, product, setProduct } = useContext(ProductContext);
     const { category, productId, img, sale, comments, symbol, features } = product;
+
+    const otherCategories = [
+        {name: 'Metraż', value: ProductsEnum.meter},
+        {name: 'Gotowe', value: ProductsEnum.premade},
+        {name: 'Poszewki', value: ProductsEnum.pillow}
+    ];
     
     const [editPopup, setEditPopup] = useState(false);
     const [editPopupError, setEditPopupError] = useState('');
@@ -150,6 +160,24 @@ function DetailHeader() {
             <div className='options'>
                 <BsThreeDots />
             </div>
+        </div>
+        <div className='other-categories'>
+            {otherCategories.map((otherCategory, index) => (
+                <span
+                    className={otherCategory.value === category ? 'current' : 'other'}
+                    key={index}
+                    onClick={() => {
+                        history.push(`/product/${otherCategory.value}/${productId}`)
+                        setProduct({
+                            ...product,
+                            category: otherCategory.value
+                        })
+                        changeCategory(otherCategory.value)
+                    }}>
+                    {otherCategory.name}
+                </span>
+                
+            ))}
         </div>
     </>
     )

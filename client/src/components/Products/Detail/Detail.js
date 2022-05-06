@@ -6,6 +6,7 @@ import { MdOutlineArrowBackIos } from 'react-icons/md'
 import Loading from '../../Common/Loading';
 import DetailHeader from './DetailHeader';
 import ProductsEnum from '../ProductsEnum';
+import { useParams } from 'react-router-dom';
 
 import ManageIcons from './ManageIcons';
 import Listing from '../../Common/Listing';
@@ -13,7 +14,8 @@ import { MeterColumns, PillowColumns, PremadeColumns, TowelColumns } from './Lis
 
 import './Detail.css';
 
-function Detail({ category, productId }) {
+function Detail() {
+    const { category, productId } = useParams();
     let history = useHistory();
 
     const { childProducts, setChildProducts, setProduct } = useContext(ProductContext);
@@ -42,7 +44,7 @@ function Detail({ category, productId }) {
     }, [stateParent, setProduct, productId, category]);
 
     // Child product data
-    const [stateChild] = useAPI('get', `/products/${category.toLocaleLowerCase()}/search/${productId}`, []);
+    const [stateChild, setChildProductsUrl,,, refreshChildProducts] = useAPI('get', `/products/${category}/search/${productId}`, []);
     useEffect(() => {
         if (stateChild.isSuccess) {
             setChildProducts(stateChild.data);
@@ -50,13 +52,15 @@ function Detail({ category, productId }) {
     }, [stateChild, setChildProducts]);
 
     return (
-    (stateChild.isLoading || stateParent.isLoading) ? <Loading /> :
+    (stateChild.isLoading && stateParent.isLoading) ? <Loading /> :
     <div className='product-detail'>
         <div className='back' onClick={history.goBack}>
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
-        <DetailHeader />
-        <Listing columns={getColumns()} data={childProducts} icons={<ManageIcons />} />
+        {stateParent.isLoading ? <Loading /> :
+        <DetailHeader changeCategory={(category) => {setChildProductsUrl(`/products/${category}/search/${productId}`); refreshChildProducts()}} />}
+        {stateChild.isLoading ? <Loading /> :
+        <Listing columns={getColumns()} data={childProducts} icons={<ManageIcons />} />}
     </div>
     );
 }

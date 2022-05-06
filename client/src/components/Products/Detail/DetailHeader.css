@@ -104,3 +104,27 @@
 .option svg {
     margin-right: 5px;
 }
+
+.other-categories {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 5px;
+    width: 250px;
+}
+
+.other-categories .other {
+    cursor: pointer;
+}
+
+.other-categories .current {
+    cursor: default;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.other-categories .other:hover {
+    color: var(--color-wheel-2);
+    text-decoration: underline 1px;
+}
