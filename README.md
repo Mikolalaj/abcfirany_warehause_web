@@ -1,5 +1,5 @@
 #  Warehouse Management System
-## Made for online shop abcfirany.pl
+**Made for online shop abcfirany.pl**
 
 It's 100% adapted for their needs.
 
