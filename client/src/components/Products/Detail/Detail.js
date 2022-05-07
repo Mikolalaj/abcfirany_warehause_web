@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useAPI from '../../../hooks/useAPI';
 import { ProductContext } from '../../../context/ProductContext';
@@ -15,8 +15,11 @@ import { MeterColumns, PillowColumns, PremadeColumns, TowelColumns } from './Lis
 import './Detail.css';
 
 function Detail() {
-    const { category, productId } = useParams();
     let history = useHistory();
+
+    const [counter, setCounter] = useState(-1);
+
+    const { category, productId } = useParams();
 
     const { childProducts, setChildProducts, setProduct } = useContext(ProductContext);
 
@@ -54,11 +57,11 @@ function Detail() {
     return (
     (stateChild.isLoading && stateParent.isLoading) ? <Loading /> :
     <div className='product-detail'>
-        <div className='back' onClick={history.goBack}>
+        <div className='back' onClick={() => history.go(counter)}>
             <MdOutlineArrowBackIos/> Wróć do wyników wyszukiwania
         </div>
         {stateParent.isLoading ? <Loading /> :
-        <DetailHeader changeCategory={(category) => {setChildProductsUrl(`/products/${category}/search/${productId}`); refreshChildProducts()}} />}
+        <DetailHeader deincrementCounter={() => setCounter(counter-1)} refreshChildProducts={refreshChildProducts} changeCategory={(category) => {setChildProductsUrl(`/products/${category}/search/${productId}`); refreshChildProducts()}} />}
         {stateChild.isLoading ? <Loading /> :
         <Listing columns={getColumns()} data={childProducts} icons={<ManageIcons />} />}
     </div>

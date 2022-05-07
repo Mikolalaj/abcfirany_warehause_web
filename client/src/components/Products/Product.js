@@ -1,11 +1,11 @@
-import './Product.css';
 import ProductsEnum from './ProductsEnum';
 import { useHistory } from 'react-router-dom';
+import './Product.css';
 
 function Product({ symbol, productId, img, category }) {
     const history = useHistory();
 
-    function category_name(category) {
+    function categoryName(category) {
         if (category === ProductsEnum.pillow) {
             return 'Poszewki'
         } else if (category === ProductsEnum.premade) {
@@ -28,7 +28,7 @@ function Product({ symbol, productId, img, category }) {
         </div>
         <div className='description'>
             <h1 className='symbol'>{symbol}</h1>
-            <p className={`category ${category}`}>{category_name(category)}</p>
+            <p className={`category ${category}`}>{categoryName(category)}</p>
         </div>
     </div>
     );

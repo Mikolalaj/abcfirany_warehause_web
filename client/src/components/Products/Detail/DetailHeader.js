@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import ProductPopup from './Popups/ProductPopup';
 import ParentProductPopup from './Popups/ParentProductPopup';
@@ -11,7 +11,7 @@ import { MdAddCircle, MdEdit, MdFindInPage, MdDelete, MdRefresh } from 'react-ic
 import { BsThreeDots } from 'react-icons/bs';
 import './DetailHeader.css'
 
-function DetailHeader({changeCategory}) {
+function DetailHeader({changeCategory, refreshChildProducts, deincrementCounter}) {
     const history = useHistory();
 
     const { authAxios } = useContext(FetchContext);
@@ -153,8 +153,7 @@ function DetailHeader({changeCategory}) {
                     <div className='option' onClick={() => setAddPopup(true)}><MdAddCircle />Dodaj nowy produkt</div>
                     <div className='option' onClick={openInShop}><MdFindInPage/>Wyszukaj na sklepie</div>
                     <div className='option' onClick={() => setDeletePopup(true)}><MdDelete/>Usuń produkt</div>
-                    <div className='option'><MdRefresh/>Odśwież</div>
-                    {/* TODO: Refreshing */}
+                    <div className='option' onClick={() => refreshChildProducts()}><MdRefresh/>Odśwież</div>
                 </div>
             </div>
             <div className='options'>
@@ -167,6 +166,7 @@ function DetailHeader({changeCategory}) {
                     className={otherCategory.value === category ? 'current' : 'other'}
                     key={index}
                     onClick={() => {
+                        deincrementCounter()
                         history.push(`/product/${otherCategory.value}/${productId}`)
                         setProduct({
                             ...product,

@@ -94,11 +94,7 @@ function ProductsList() {
         {(!errorMessage && searchResult.length > 0) && `Wynik wyszukiwania dla "${query.get('symbol')}"`}
     </div>}
     <div className='products'>
-        {searchResult.map((product, index) => {
-            return (
-                <Product key={index} {...product} category={product.category} />
-            )
-        })}
+        {searchResult.map((product, index) => <Product key={index} {...product} category={product.category} />)}
     </div>
     </>
     )
