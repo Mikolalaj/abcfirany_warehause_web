@@ -155,7 +155,7 @@ function SymbolFeatureInput({ useForm, defaultValue, autoFocus }) {
         }
     }, [stateSymbols]);
     
-    const [stateFeatures, setUrlFeatures,,, refreshFeatures] = useAPI('get', '/products/features/null', []);
+    const [stateFeatures, setUrlFeatures,,,, refreshFeatures] = useAPI('get', '/products/features/null', []);
 
     useEffect(() => {
         if (stateFeatures.isSuccess) {

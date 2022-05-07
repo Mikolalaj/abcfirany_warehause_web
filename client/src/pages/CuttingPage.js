@@ -50,7 +50,7 @@ function CuttingPage() {
     const [cuttingList, setCuttingList] = useState([]);
     const [cuttingPopup, setCuttingPopup] = useState(false);
 
-    const [state, setUrl, , , refresh] = useAPI('get', '/cutting', []);
+    const [state, setUrl, , , , refresh] = useAPI('get', '/cutting', []);
     
     useEffect(() => {
         if (state.isSuccess) {

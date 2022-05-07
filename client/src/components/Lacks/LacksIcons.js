@@ -10,7 +10,7 @@ function LacksIcons({ data, lacksList, setLacksList }) {
     const [deletePopup, setDeletePopup] = useState(false);
     const [editPopup, setEditPopup] = useState(false);
     
-    const [stateDelete,, setDeleteData, setIsReady] = useAPI('delete', '/lacks', {}, false);
+    const [stateDelete,, setDeleteData, , setIsReady] = useAPI('delete', '/lacks', {}, false);
 
     function deleteLack() {
         setDeleteData({ lackId: data.lackId });

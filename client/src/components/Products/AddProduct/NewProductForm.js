@@ -37,7 +37,7 @@ function NewProductForm({ useFormRest }) {
     }
 
     const [productId, setProductId] = useState('null');
-    const [state, setUrl, , , refresh] = useAPI('get', '/products/features/', [])
+    const [state, setUrl, , , , refresh] = useAPI('get', '/products/features/', [])
 
     useEffect(() => {
         if (state.isSuccess && !formStatus) {

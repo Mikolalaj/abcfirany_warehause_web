@@ -10,7 +10,7 @@ function CuttingIcons({ data, cuttingList, setCuttingList }) {
     const [deletePopup, setDeletePopup] = useState(false);
     const [editPopup, setEditPopup] = useState(false);
 
-    const [stateDelete,, setDeleteData, setIsReady] = useAPI('delete', '/cutting', {}, false);
+    const [stateDelete,, setDeleteData, , setIsReady] = useAPI('delete', '/cutting', {}, false);
 
     function deleteCutting() {
         setDeleteData({ cuttingId: data.cuttingId });

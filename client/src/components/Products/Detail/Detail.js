@@ -44,7 +44,7 @@ function Detail() {
     }, [stateParent, setProduct, productId, category]);
 
     // Child product data
-    const [stateChild, setChildProductsUrl,,, refreshChildProducts] = useAPI('get', `/products/${category}/search/${productId}`, []);
+    const [stateChild, setChildProductsUrl,,,, refreshChildProducts] = useAPI('get', `/products/${category}/search/${productId}`, []);
     useEffect(() => {
         if (stateChild.isSuccess) {
             setChildProducts(stateChild.data);

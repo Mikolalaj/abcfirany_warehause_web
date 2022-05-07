@@ -37,6 +37,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
     const [csrfToken, setCsrfToken] = useState('');
     const [url, setUrl] = useState(initialUrl);
     const [requestData, setRequestData] = useState(null);
+    const [params, setParams] = useState(null);
     const [isReady, setIsReady] = useState(initialIsReady);
 
     const { logout } = useContext(AuthContext);
@@ -94,6 +95,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
                     method: method,
                     baseURL: process.env.REACT_APP_API_URL,
                     data: requestData,
+                    params: params,
                     credentials: 'include',
                     withCredentials: true,
                     headers: { 'X-CSRF-TOKEN': csrfToken }
@@ -129,7 +131,7 @@ function useAPI(method, initialUrl, initialData, initialIsReady=true) {
 
     }, [url, isReady, csrfToken]);
 
-    return [state, setUrl, setRequestData, setIsReady, refresh];
+    return [state, setUrl, setRequestData, setParams, setIsReady, refresh];
 };
 
 export default useAPI

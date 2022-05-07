@@ -8,7 +8,7 @@ import './AddProductPage.css';
 function AddProductPage() {
     const { handleSubmit, ...useFormRest } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
-    const [state,, setRequestData, setIsReady] = useAPI('post', '/products/add', [], false)
+    const [state,, setRequestData,, setIsReady] = useAPI('post', '/products/add', [], false)
 
     async function addProduct(formData) {
         let { category, feature, symbol, finish, size, ...formDataRest } = formData;

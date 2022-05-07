@@ -55,7 +55,7 @@ function LacksPage() {
     const [lacksList, setLacksList] = useState([]);
     const [lacksPopup, setLacksPopup] = useState(false);
 
-    const [state, setUrl, , , refresh] = useAPI('get', '/lacks', []);
+    const [state, setUrl, , , , refresh] = useAPI('get', '/lacks', []);
     
     useEffect(() => {
         if (state.isSuccess) {

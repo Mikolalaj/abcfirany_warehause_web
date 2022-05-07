@@ -4,7 +4,7 @@ import useAPI from '../../hooks/useAPI';
 
 function EditLack({ trigger, closePopup, onSuccess, data }) {
     const [lacksErrorMessage, setLacksErrorMessage] = useState('');
-    const [state, , setRequestData, setIsReady] = useAPI('put', '/lacks', {}, false);
+    const [state, , setRequestData, , setIsReady] = useAPI('put', '/lacks', {}, false);
 
     async function addLacks(formData) {
         setRequestData({...formData, lackId: data.lackId});

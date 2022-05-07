@@ -4,7 +4,7 @@ import useAPI from '../../hooks/useAPI';
 
 function AddCutting({ trigger, closePopup, onSuccess }) {
     const [cuttingErrorMessage, setCuttingErrorMessage] = useState('');
-    const [state, , setRequestData, setIsReady] = useAPI('post', '/cutting', [], false);
+    const [state, , setRequestData, , setIsReady] = useAPI('post', '/cutting', [], false);
 
     useEffect(() => {
         if (state.isSuccess) {
