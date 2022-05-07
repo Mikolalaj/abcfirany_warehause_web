@@ -18,18 +18,22 @@ const requireAdmin = (req, res, next) => {
 };
 
 router.get('/search', async function(req, res, next) {
-    const { searchSymbol } = req.query;
-    const { rows } = await pool.query(`
-    SELECT
-        *,
-        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'meter') AS meter_count,
-        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'premade') AS premade_count,
-        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'pillow') AS pillows_count,
-        (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'towel') AS towels_count
-    FROM products
-    WHERE symbol LIKE '${searchSymbol}%'`);
-    req.body = rows;
-    next();
+    try {
+        const { searchSymbol } = req.query;
+        const { rows } = await pool.query(`
+        SELECT
+            *,
+            (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'meter') AS meter_count,
+            (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'premade') AS premade_count,
+            (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'pillow') AS pillows_count,
+            (SELECT COUNT(product_child_id) FROM products_child WHERE products_child.product_id = products.product_id AND category = 'towel') AS towels_count
+        FROM products
+        WHERE symbol LIKE '${searchSymbol}%'`);
+        req.body = rows;
+        next();
+    } catch (error) {
+        return res.status(500).json({ message: `Wystąpił błąd podczas wyszukiwania (${error})` });
+    }
 });
 
 router.get('/symbols', async function(req, res, next) {

@@ -1,7 +1,7 @@
 import Product from './Product';
-import { useContext, useMemo, useEffect, useState } from 'react';
+import { useMemo, useEffect, useState } from 'react';
+import useAPI from '../../hooks/useAPI';
 import { useLocation } from 'react-router-dom';
-import { FetchContext } from '../../context/FetchContext';
 import Loading from '../Common/Loading';
 import ProductsEnum from './ProductsEnum';
 import './ProductsList.css';
@@ -12,65 +12,92 @@ function useQuery() {
 }
 
 function ProductsList() {
-    const [ searchResult, setSearchResult ] = useState([]);
+    const [searchResult, setSearchResult] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
     const [ifLoading, setIfLoading] = useState(false);
     const [ifEmpty, setIfEmpty] = useState(false);
-    const { authAxios } = useContext(FetchContext);
 
     const query = useQuery();
 
-    useEffect(() => {
-        async function fetchData() {
-            setIfEmpty(false);
-            setSearchResult([]);
-            try {
-                const { data } = await authAxios.get('products/search', {
-                    params: {
-                        searchSymbol: searchSymbol
-                    }
-                });
-                setSearchResult(data);
-                if (data.length) {
-                    setIfEmpty(false);
-                }
-                else {
-                    setIfEmpty(true);
-                }
-                
-            } catch ({ response: {data: {message}} }) {
-                console.log(message);
+    const [state,,, setParams, setIsReady, refresh] = useAPI('get', 'products/search', {}, false);
+
+    function splitSearchResults(data) {
+        let splittedSearchResults = [];
+        data.forEach(result => {
+            var splitedResult = {
+                comments: result.comments,
+                img: result.img,
+                productId: result.productId,
+                sale: result.sale,
+                symbol: result.symbol
+            } 
+            if (result.meterCount > 0) {
+                var copySplitedResult = {...splitedResult};
+                copySplitedResult.category = ProductsEnum.meter
+                splittedSearchResults.push(copySplitedResult);
             }
-            setIfLoading(false);
-        }
-        
+            if (result.premadeCount > 0) {
+                var copySplitedResult = {...splitedResult};
+                copySplitedResult.category = ProductsEnum.premade
+                splittedSearchResults.push(copySplitedResult);
+            }
+            if (result.pillowsCount > 0) {
+                var copySplitedResult = {...splitedResult};
+                copySplitedResult.category = ProductsEnum.pillow
+                splittedSearchResults.push(copySplitedResult);
+            }
+            if (result.towelCount > 0) {
+                var copySplitedResult = {...splitedResult};
+                copySplitedResult.category = ProductsEnum.towel
+                splittedSearchResults.push(copySplitedResult);
+            }
+        })
+        return splittedSearchResults;
+    }
+
+    useEffect(() => {
         const searchSymbol = query.get('symbol');
+        
         if (searchSymbol) {
             setIfLoading(true);
-            fetchData();
-        }
+            setIfEmpty(false);
+            setSearchResult([]);
+            setParams({
+                searchSymbol: searchSymbol
+            })
+            setIsReady(true);
+            refresh();
+        }        
     }, [query.get('symbol')]);
+
+    useEffect(() => {
+        if (state.isSuccess) {
+            setIfLoading(false);
+            setIfEmpty(state.data.length === 0);
+            setSearchResult(splitSearchResults(state.data));
+        }
+        else if (state.isError) {
+            setIfLoading(false);
+            setIfEmpty(false);
+            setSearchResult([]);
+            setErrorMessage(state.errorMessage);
+            console.log(state.errorMessage);
+        }
+    }, [state]);
 
     return (
     <>
     {ifLoading ? <Loading /> :
     <div className='results-info'>
-        {ifEmpty && `Brak wyników dla "${query.get('symbol')}"`}
-        {searchResult.length > 0 && `Wynik wyszukiwania dla "${query.get('symbol')}"`}
+        {errorMessage ? <div className='error-message'>{errorMessage}</div> : null}
+        {(!errorMessage && ifEmpty) && `Brak wyników dla "${query.get('symbol')}"`}
+        {(!errorMessage && searchResult.length > 0) && `Wynik wyszukiwania dla "${query.get('symbol')}"`}
     </div>}
     <div className='products'>
-        {searchResult.map(product => {
-            if (product.meterCount > 0) {
-                return <Product key={product.productId + '1'} {...product} category={ProductsEnum.meter} />
-            }
-            if (product.pillowsCount > 0) {
-                return <Product key={product.productId + '2'} {...product} category={ProductsEnum.pillow} />
-            }
-            if (product.premadeCount > 0) {
-                return <Product key={product.productId + '3'} {...product} category={ProductsEnum.premade} />
-            }
-            if (product.towelsCount > 0) {
-                return <Product key={product.productId + '4'} {...product} category={ProductsEnum.towel} />
-            }
+        {searchResult.map((product, index) => {
+            return (
+                <Product key={index} {...product} category={product.category} />
+            )
         })}
     </div>
     </>
